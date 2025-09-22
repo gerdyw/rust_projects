@@ -36,39 +36,64 @@ pub struct MarkDoneButton(pub i64, pub bool);
 
 impl Render for MarkDoneButton {
     fn render(&self) -> Markup {
+        let checked = "' ✅ '";
+        let unchecked = "' ⬜ '";
         html! {
             @if self.1 {
                 a .button hx-put=(format!("/todos/{}/undone", self.0)) hx-swap="outerHTML" hx-target="#todo-list"
-                    hx-on:mouseenter="this.textContent = ' ⬜ '"
-                    hx-on:mouseleave="this.textContent = ' ✅ '"
+                    hx-on:mouseenter={"this.textContent=" (unchecked)}
+                    hx-on:mouseleave={"this.textContent=" (checked)}
                     { " ✅ " }
             } @else {
                 a .button hx-put=(format!("/todos/{}/done", self.0)) hx-swap="outerHTML" hx-target="#todo-list"
-                  hx-on:mouseenter="this.textContent = ' ✅ '"
-                  hx-on:mouseleave="this.textContent = ' ⬜ '"
+                  hx-on:mouseenter={"this.textContent=" (checked)}
+                  hx-on:mouseleave={"this.textContent=" (unchecked)}
                   { " ⬜ " }
             }
         }
     }
 }
 
+struct DeleteButton(pub i64);
+
+impl Render for DeleteButton {
+    fn render(&self) -> Markup {
+        html! {
+            a .button hx-delete=(format!("/todos/{}", self.0)) hx-swap="outerHTML" hx-target="#todo-list" { " ❌ " }
+        }
+    }
+}
+
+impl Render for Todo {
+    fn render(&self) -> Markup {
+        html! {
+          li {
+            (MarkDoneButton(self.id, self.done))
+              @if self.done {
+                s { (self.title) }
+              } @else {
+                (self.title)
+              }
+              (DeleteButton(self.id))
+          }
+        }
+    }
+}
+
 pub struct TodoList(pub Vec<Todo>);
+
+impl From<Vec<Todo>> for TodoList {
+    fn from(todos: Vec<Todo>) -> Self {
+        TodoList(todos)
+    }
+}
 
 impl Render for TodoList {
     fn render(&self) -> Markup {
         html! {
             ul #todo-list {
                 @for todo in &self.0 {
-                    li {
-                        @if todo.done {
-                            (MarkDoneButton(todo.id, todo.done).render())
-                            s { (todo.title) }
-                            a .button hx-delete=(format!("/todos/{}", todo.id)) hx-swap="outerHTML" hx-target="#todo-list" { " ❌ " }
-                        } @else {
-                            (MarkDoneButton(todo.id, todo.done).render())
-                            (todo.title)
-                        }
-                    }
+                    (todo)
                 }
             }
         }

@@ -17,19 +17,29 @@ pub async fn get_index(state: State<AppState>) -> impl IntoResponse {
 
 pub async fn list_todos(State(state): State<AppState>) -> HtmlComponent<TodoList> {
     let todos = state.repo.list().await.unwrap();
-    TodoList(todos).into_html_component()
+    TodoList::from(todos).into_html_component()
 }
 
 pub async fn create_todo(
     state: State<AppState>,
     Form(payload): Form<CreateTodo>,
 ) -> impl IntoResponse {
-    state.repo.create(payload).await.unwrap();
+    let _ = state
+        .repo
+        .create(payload)
+        .await
+        .inspect_err(|e| println!("{}", e));
+
     list_todos(state).await
 }
 
 pub async fn mark_done(state: State<AppState>, Path(id): Path<i64>) -> impl IntoResponse {
-    state.repo.mark_done(id).await.unwrap();
+    let _ = state
+        .repo
+        .mark_done(id)
+        .await
+        .inspect_err(|e| println!("{}", e));
+
     list_todos(state).await
 }
 
