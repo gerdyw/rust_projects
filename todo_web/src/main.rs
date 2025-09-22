@@ -18,7 +18,7 @@ async fn main() {
     let app = create_router(app_state);
 
     // serve
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], settings.port));
     println!("Listening on http://{addr}");
     serve(TcpListener::bind(addr).await.unwrap(), app)
         .await
