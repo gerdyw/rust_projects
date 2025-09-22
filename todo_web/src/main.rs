@@ -12,7 +12,7 @@ async fn main() {
     let pool = init_db().await;
     let repo = repository::TodoRepository::new(pool.clone());
     let app_state = AppState { repo };
-    // app state + router
+    // app state + routes
     let app = create_router(app_state);
 
     // serve

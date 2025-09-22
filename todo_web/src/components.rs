@@ -98,8 +98,8 @@ impl Render for Index {
             html {
                 head {
                     script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" {}
-                    link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" {}
-                    style { ".button { cursor:  pointer; text-decoration: none; }" }
+                    link rel="stylesheet" href="/assets/pico.min.css" {}
+                    link rel="stylesheet" href="/assets/styles.css" {}
                 }
                 body {
                     #todo-app style="max-width: 800px; margin: 0 auto" {
@@ -112,49 +112,3 @@ impl Render for Index {
         }
     }
 }
-
-// struct IncrementerButton {
-//     href: String,
-// }
-
-// impl Render for IncrementerButton {
-//     fn render(&self) -> Markup {
-//         html! {
-//             a hx-post=(self.href) hx-target="#count" hx-swap="innerHTML" {
-//                 "Increment"
-//             }
-//         }
-//     }
-// }
-
-// struct Counter {
-//     count: usize,
-// }
-
-// impl Render for Counter {
-//     fn render(&self) -> Markup {
-//         html! {
-//             #count { (self.count) }
-//         }
-//     }
-// }
-
-// // -----------------
-// // Handlers
-// // -----------------
-// async fn index(State(state): State<Arc<AppState>>) -> impl IntoResponse {
-//     let count = state.count.lock().unwrap().clone();
-
-//     html! {
-//         html {
-//             head {
-//                 script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" {}
-//             }
-//             body {
-//                 (Counter { count })
-//                 (IncrementerButton { href: "/increment".into() })
-//             }
-//         }
-//     }
-//     .into_html_component()
-// }
