@@ -3,30 +3,30 @@ FROM rust:1.89 as builder
 
 WORKDIR /usr/src/app
 
-# Copy manifest files first to leverage caching
+# Copy manifest files first to cache dependencies
 COPY Cargo.toml Cargo.lock ./
 
-# Build dependencies only
+# Dummy main.rs to cache dependencies
 RUN mkdir src && echo "fn main() {}" > src/main.rs
 RUN cargo build --release || true
 
-# Copy the source code
+# Copy full source code
 COPY . .
 
-# Build the actual project
-RUN cargo build --release
+# Add musl target and build a static binary
+RUN rustup target add aarch64-unknown-linux-musl
+RUN cargo build --release --target aarch64-unknown-linux-musl
 
-# ===== Stage 2: Minimal runtime image =====
-FROM debian:bookworm-slim
-
-RUN apt-get update && apt-get install -y libssl-dev ca-certificates && rm -rf /var/lib/apt/lists/*
+# ===== Stage 2: Minimal Alpine runtime =====
+FROM alpine:3.18
 
 WORKDIR /app
 
-COPY --from=builder /usr/src/app/target/release/todo_web .
+# Copy the statically linked binary
+COPY --from=builder /usr/src/app/target/aarch64-unknown-linux-musl/release/todo_web .
 
-# Expose the port the app listens on
+# Expose port from env (for documentation)
 EXPOSE 8080
 
-# Set the default command
+# Run the binary
 CMD ["./todo_web"]
