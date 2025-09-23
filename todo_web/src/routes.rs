@@ -9,8 +9,8 @@ use axum::{
 
 use tower_http::services::ServeDir;
 
-pub fn create_router(state: AppState) -> Router {
-    let static_router = get_servedir();
+pub fn create_router(state: AppState, assets_location: &String) -> Router {
+    let static_router = get_servedir(assets_location);
     Router::new()
         .route("/", get(get_index))
         .route("/todos", get(list_todos).post(create_todo))
@@ -21,9 +21,9 @@ pub fn create_router(state: AppState) -> Router {
         .nest_service("/assets", static_router)
 }
 
-fn get_servedir() -> ServeDir {
+fn get_servedir(assets_location: &String) -> ServeDir {
     // embed_assets!("assets", compress = true);
     // static_router()
 
-    ServeDir::new("assets")
+    ServeDir::new(assets_location)
 }

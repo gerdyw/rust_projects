@@ -7,7 +7,8 @@ services:
     ports:
       - "8080:8080" # expose port
     environment:
-      DATABASE_URL: /app/data/todo.db
+      DATBASE_LOCATION: /app/data/todo.db
+      ASSETS_LOCATION: /app/assets
       PORT: 8080
     volumes:
       - ./data:/app/data # persist SQLite database

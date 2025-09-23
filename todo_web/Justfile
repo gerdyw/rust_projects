@@ -1,5 +1,5 @@
 run:
-    DATABASE_URL=./todo_data/todo.db PORT=3000 cargo run                                                        
+    DATABASE_LOCATION=./todo_data/todo.db PORT=3000 ASSETS_LOCATION=./assets cargo run                                                        
 
 deploy:
-    pi 'bash -s' < ./scripts/deploy-service.sh
+    ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/deploy-service.sh

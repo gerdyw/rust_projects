@@ -11,6 +11,6 @@ pub mod repository;
 pub mod routes;
 pub mod settings;
 
-pub async fn build_app(state: AppState) -> Router {
-    routes::create_router(state)
+pub async fn build_app(state: AppState, assets_location: &String) -> Router {
+    routes::create_router(state, assets_location)
 }

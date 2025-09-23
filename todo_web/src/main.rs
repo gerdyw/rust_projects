@@ -11,11 +11,11 @@ use tokio::net::TcpListener;
 async fn main() {
     let settings = load_settings();
     // init DB
-    let pool = init_db(&settings.database_url).await;
+    let pool = init_db(&settings.database_location).await;
     let repo = repository::TodoRepository::new(pool.clone());
     let app_state = AppState { repo };
     // app state + routes
-    let app = create_router(app_state);
+    let app = create_router(app_state, &settings.assets_location);
 
     // serve
     let addr = SocketAddr::from(([0, 0, 0, 0], settings.port));
