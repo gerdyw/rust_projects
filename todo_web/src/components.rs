@@ -127,7 +127,7 @@ impl Render for Index {
                     link rel="stylesheet" href="./assets/styles.css" {}
                 }
                 body {
-                    #todo-app style="max-width: 800px; margin: 0 auto" {
+                    #todo-app {
                         h1 { "Todo App" }
                         (self.todos)
                         (CreateTodoForm { })
