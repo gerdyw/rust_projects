@@ -19,5 +19,4 @@ serde = { version = "1.0.*", features = ["derive"], default-features = false }
 # Tokio: minimal features for async runtime
 tokio = { version = "1.47.1", features = ["rt-multi-thread", "macros"] }
 
-# Static file serving
-static-serve = "0.4.0"
+tower-http = { version = "0.6.6", features = ["fs"] }

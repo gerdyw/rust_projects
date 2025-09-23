@@ -27,5 +27,8 @@ WORKDIR /app
 # Copy the statically linked binary
 COPY --from=builder /usr/src/app/target/aarch64-unknown-linux-musl/release/todo_web .
 
+# Copy static files
+COPY --from=builder /usr/src/app/static ./static
+
 EXPOSE 8080
 CMD ["./todo_web"]

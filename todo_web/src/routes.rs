@@ -6,10 +6,11 @@ use axum::{
     Router,
     routing::{delete, get, put},
 };
-use static_serve::embed_assets;
+
+use tower_http::services::ServeDir;
 
 pub fn create_router(state: AppState) -> Router {
-    let static_router: Router<()> = get_static_router();
+    let static_router = get_servedir();
     Router::new()
         .route("/", get(get_index))
         .route("/todos", get(list_todos).post(create_todo))
@@ -17,10 +18,12 @@ pub fn create_router(state: AppState) -> Router {
         .route("/todos/{id}/undone", put(mark_undone))
         .route("/todos/{id}", delete(delete_todo))
         .with_state(state)
-        .nest("/assets", static_router)
+        .nest_service("/assets", static_router)
 }
 
-fn get_static_router() -> Router<()> {
-    embed_assets!("assets", compress = true);
-    static_router()
+fn get_servedir() -> ServeDir {
+    // embed_assets!("assets", compress = true);
+    // static_router()
+
+    ServeDir::new("assets")
 }
