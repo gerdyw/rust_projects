@@ -4,12 +4,20 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-sqlx = { version = "0.8.6", features = ["runtime-tokio", "sqlite"] }
+# SQLx: only SQLite + runtime for Tokio
+sqlx = { version = "0.8.6", features = ["runtime-tokio-native-tls", "sqlite"] }
+
+# Axum web framework
 axum = "0.8.4"
-html = "0.6.3"
+
+# HTML templating
 maud = "0.27.0"
-rand = "0.9.2"
-serde = { version = "1.0.*", features = ["derive"] }
-serde_json = "1.0.145"
-tokio = { version = "1.47.1", features = ["full"] }
+
+# Serialization / deserialization
+serde = { version = "1.0.*", features = ["derive"], default-features = false }
+
+# Tokio: minimal features for async runtime
+tokio = { version = "1.47.1", features = ["rt-multi-thread", "macros"] }
+
+# Static file serving
 static-serve = "0.4.0"
