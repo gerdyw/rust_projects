@@ -14,3 +14,12 @@ services:
       - ./data:/app/data # persist SQLite database
       - ./assets:/app/assets # serve static files if needed
     restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token $CLOUDFLARE_TOKEN
+    container_name: cloudflared
+    restart: unless-stopped
+
+networks:
+  default:
