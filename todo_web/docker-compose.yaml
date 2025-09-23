@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  todo_web:
+    image: todo_web:latest # your locally built image
+    container_name: todo_web
+    build:
+      context: . # build from current directory
+    ports:
+      - "8080:8080" # expose port
+    environment:
+      DATABASE_URL: sqlite:///app/todo.db
+      PORT: 8080
+    volumes:
+      - ./todo.db:/app/todo.db # persist SQLite database
+      - ./assets:/app/assets # serve static files if needed
+    restart: unless-stopped
