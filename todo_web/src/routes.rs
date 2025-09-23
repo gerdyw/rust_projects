@@ -4,10 +4,15 @@ use crate::{
 };
 use axum::{
     Router,
+    http::{HeaderValue, header},
     routing::{delete, get, put},
 };
 
-use tower_http::services::ServeDir;
+use tower::ServiceBuilder;
+use tower_http::{
+    services::ServeDir,
+    set_header::{SetResponseHeader, SetResponseHeaderLayer},
+};
 
 pub fn create_router(state: AppState, assets_location: &String) -> Router {
     let static_router = get_servedir(assets_location);
@@ -21,9 +26,12 @@ pub fn create_router(state: AppState, assets_location: &String) -> Router {
         .nest_service("/assets", static_router)
 }
 
-fn get_servedir(assets_location: &String) -> ServeDir {
-    // embed_assets!("assets", compress = true);
-    // static_router()
-
-    ServeDir::new(assets_location)
+fn get_servedir(assets_location: &String) -> SetResponseHeader<ServeDir, HeaderValue> {
+    let service_builder = ServiceBuilder::new()
+        .layer(SetResponseHeaderLayer::overriding(
+            header::CACHE_CONTROL,
+            HeaderValue::from_static("max-age=60"),
+        ))
+        .service(ServeDir::new(assets_location));
+    service_builder
 }
