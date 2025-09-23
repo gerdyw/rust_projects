@@ -1,4 +1,4 @@
-name: Build and publish Rust Docker image
+name: Build and Publish Docker Image
 
 on:
   push:
@@ -7,45 +7,53 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout the repo
-      - uses: actions/checkout@v4
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # Cache Cargo registry and git sources
-      - name: Cache Cargo registry
+      # Cache Cargo registry and target dir to speed up builds
+      - name: Cache Cargo
         uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-          key: cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      # Cache musl target compilation for Docker build
-      - name: Cache musl build
-        uses: actions/cache@v3
+      # Set up Rust
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
         with:
-          path: |
-            target/aarch64-unknown-linux-musl/release/deps
-          key: musl-target-${{ hashFiles('**/Cargo.lock') }}
+          toolchain: stable
+          override: true
+          profile: minimal
 
-      # Set up QEMU for cross-building (optional if building ARM64 on x86)
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # Add ARM64 Linux target
+      - name: Add ARM64 target
+        run: rustup target add aarch64-unknown-linux-gnu
 
-      # Log in to GHCR
-      - name: Log in to GitHub Container Registry
+      # Build ARM64 binary
+      - name: Build ARM64 release binary
+        run: cargo build --release --target aarch64-unknown-linux-gnu
+
+      # Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg TARGET=release \
+            --build-arg BINARY=target/aarch64-unknown-linux-gnu/release/todo_web \
+            -t ghcr.io/${{ github.repository }}/todo_web:latest .
+
+      # Log in to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push Docker image using Buildx for ARM64
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/<username>/rust-todo-app:latest
-          platforms: linux/arm64
+      # Push Docker image to GHCR
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}/todo_web:latest

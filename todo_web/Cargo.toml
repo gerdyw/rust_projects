@@ -4,8 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-# SQLx: only SQLite + runtime for Tokio
+
+# Database
 sqlx = { version = "0.8.6", features = ["runtime-tokio", "sqlite"] }
+libsqlite3-sys = { version = "0.30", features = ["bundled"] }
 
 # Axum web framework
 axum = "0.8.4"
