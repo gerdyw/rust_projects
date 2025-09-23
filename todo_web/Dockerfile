@@ -1,40 +1,29 @@
-# ====================
-# Stage 1: Build
-# ====================
-FROM --platform=linux/arm64 rust:1.80 AS builder
+# ===== Stage 1: Build =====
+FROM messense/rust-musl-cross:aarch64-musl as builder
 
 WORKDIR /usr/src/app
 
-# Install required libs for sqlx/sqlite
-RUN apt-get update && apt-get install -y pkg-config libsqlite3-dev musl-tools && rm -rf /var/lib/apt/lists/*
-
-# Copy manifests and fetch dependencies (for better caching)
+# Copy manifest files first (for dependency caching)
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs
-RUN cargo build --release || true
+RUN cargo build --release --target=aarch64-unknown-linux-musl || true
 
-# Copy full project
+# Copy the real source
 COPY . .
 
-# Build release binary for ARM64
-RUN cargo build --release
+# Build with SQLite bundled
+RUN cargo build --release --target=aarch64-unknown-linux-musl --features sqlx/sqlite
 
-# ====================
-# Stage 2: Runtime
-# ====================
-FROM --platform=linux/arm64 debian:bookworm-slim
+# ===== Stage 2: Runtime =====
+FROM alpine:3.19 AS runtime
 
 WORKDIR /app
 
-# Install sqlite runtime (needed by sqlx if not fully static)
-RUN apt-get update && apt-get install -y libsqlite3-0 && rm -rf /var/lib/apt/lists/*
+# Copy the static binary
+COPY --from=builder /usr/src/app/target/aarch64-unknown-linux-musl/release/todo_web .
 
-# Copy binary
-COPY --from=builder /usr/src/app/target/release/todo_web .
-
-# Copy static assets if you have them
+# Copy assets (adjust if your dir is different)
 COPY ./assets ./assets
 
 EXPOSE 8080
-
 CMD ["./todo_web"]
