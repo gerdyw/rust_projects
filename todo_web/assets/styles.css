@@ -1,5 +1,4 @@
 #todo-app {
-    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     border-radius: 5px;
@@ -8,16 +7,21 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    max-width: 800px;
+    /* Desktop max width */
+    box-sizing: border-box;
 }
 
-@media (max-width: 600px) {
+/* Small screens take full width */
+@media (max-width: 800px) {
     #todo-app {
-        padding: 10px;
+        width: 100%;
+        padding: 15px;
     }
 }
 
 @media (max-width: 400px) {
     #todo-app {
-        padding: 5px;
+        padding: 10px;
     }
 }
