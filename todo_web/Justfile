@@ -1,2 +1,2 @@
 run:
-    DATABASE_URL=sqlite://todo.db PORT=3000 cargo run                                                        
+    DATABASE_URL=./todo_data/todo.db PORT=3000 cargo run                                                        

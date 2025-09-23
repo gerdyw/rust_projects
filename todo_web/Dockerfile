@@ -1,5 +1,5 @@
 # ===== Stage 1: Build =====
-FROM messense/rust-musl-cross:aarch64-musl as builder
+FROM messense/rust-musl-cross:aarch64-musl AS builder
 
 WORKDIR /usr/src/app
 
