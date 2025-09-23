@@ -3,3 +3,6 @@ run:
 
 deploy:
     ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/deploy-service.sh
+
+update-repo:
+    ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/update-repo.sh

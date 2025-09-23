@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080" # expose port
     environment:
-      DATBASE_LOCATION: /app/data/todo.db
+      DATABASE_LOCATION: /app/data/todo.db
       ASSETS_LOCATION: /app/assets
       PORT: 8080
     volumes:
