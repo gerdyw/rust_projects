@@ -1,5 +1,3 @@
-pub mod repository;
-
 use std::{fs, path::Path};
 
 use sqlx::{Pool, Sqlite, sqlite::SqlitePoolOptions};
@@ -20,16 +18,7 @@ pub async fn init_db(db_url: &String) -> Pool<Sqlite> {
         .await
         .unwrap();
 
-    sqlx::query(
-        "CREATE TABLE IF NOT EXISTS todos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            done BOOLEAN NOT NULL DEFAULT 0
-        )",
-    )
-    .execute(&pool)
-    .await
-    .unwrap();
+    sqlx::migrate!().run(&pool).await.unwrap();
 
     pool
 }

@@ -1,37 +1,34 @@
-use crate::{
-    api::handlers::{create_todo, delete_todo, get_index, list_todos, mark_done, mark_undone},
-    domain::appstate::AppState,
-};
 use axum::{
     Router,
     http::{HeaderValue, header},
-    routing::{delete, get, put},
+    routing::get,
 };
 
 use tower::ServiceBuilder;
-use tower_http::{
-    services::ServeDir,
-    set_header::{SetResponseHeader, SetResponseHeaderLayer},
+use tower_http::{services::ServeDir, set_header::SetResponseHeaderLayer};
+
+use crate::{
+    api::{handlers::get_index, todo::routes},
+    domain::appstate::AppState,
 };
 
 pub fn create_router(state: AppState, assets_location: &String) -> Router {
     let static_router = get_servedir(assets_location);
+    let todo_router = routes::create_router(state.clone());
+
     Router::new()
         .route("/", get(get_index))
-        .route("/todos", get(list_todos).post(create_todo))
-        .route("/todos/{id}/done", put(mark_done))
-        .route("/todos/{id}/undone", put(mark_undone))
-        .route("/todos/{id}", delete(delete_todo))
-        .with_state(state)
+        .with_state(state.clone())
+        .nest("/todos", todo_router)
         .nest_service("/assets", static_router)
 }
 
-fn get_servedir(assets_location: &String) -> SetResponseHeader<ServeDir, HeaderValue> {
+fn get_servedir(assets_location: &String) -> ServeDir {
     let service_builder = ServiceBuilder::new()
         .layer(SetResponseHeaderLayer::overriding(
             header::CACHE_CONTROL,
             HeaderValue::from_static("max-age=60"),
         ))
         .service(ServeDir::new(assets_location));
-    service_builder
+    service_builder.into_inner()
 }
