@@ -1,4 +1,4 @@
-use crate::models::Todo;
+use crate::domain::models::Todo;
 use axum::response::IntoResponse;
 use axum::response::{Html, Response};
 use maud::{Markup, Render, html};

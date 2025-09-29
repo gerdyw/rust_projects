@@ -1,6 +1,6 @@
 use crate::{
-    appstate::AppState,
-    handlers::{create_todo, delete_todo, get_index, list_todos, mark_done, mark_undone},
+    api::handlers::{create_todo, delete_todo, get_index, list_todos, mark_done, mark_undone},
+    domain::appstate::AppState,
 };
 use axum::{
     Router,

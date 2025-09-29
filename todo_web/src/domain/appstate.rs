@@ -1,4 +1,4 @@
-use crate::repository::TodoRepository;
+use crate::db::repository::TodoRepository;
 
 #[derive(Clone)]
 pub struct AppState {

@@ -1,3 +1,5 @@
+pub mod repository;
+
 use std::{fs, path::Path};
 
 use sqlx::{Pool, Sqlite, sqlite::SqlitePoolOptions};

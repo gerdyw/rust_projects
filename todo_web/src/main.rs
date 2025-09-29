@@ -1,10 +1,10 @@
 use axum::serve;
 use std::net::SocketAddr;
-use todo_web::appstate::AppState;
-use todo_web::db::init_db;
-use todo_web::repository;
-use todo_web::routes::create_router;
-use todo_web::settings::load_settings;
+use todo_web::{
+    api::routes::create_router,
+    db::{init_db, repository},
+    domain::{appstate::AppState, settings::load_settings},
+};
 use tokio::net::TcpListener;
 
 #[tokio::main]

@@ -1,4 +1,4 @@
-use crate::models::{CreateTodo, Todo};
+use crate::domain::models::{CreateTodo, Todo};
 use sqlx::{Pool, Sqlite};
 
 #[derive(Clone)]

@@ -1,7 +1,7 @@
 use crate::{
-    appstate::AppState,
-    components::{HtmlComponent, Index, IntoHtmlComponent, TodoList},
-    models::CreateTodo,
+    api::components::{HtmlComponent, Index, IntoHtmlComponent, TodoList},
+    domain::appstate::AppState,
+    domain::models::CreateTodo,
 };
 
 use axum::{
