@@ -1,36 +1,6 @@
-use crate::domain::models::Todo;
-use axum::response::IntoResponse;
-use axum::response::{Html, Response};
+use crate::api::todo::models::Todo;
+use crate::domain::components::HtmlComponent;
 use maud::{Markup, Render, html};
-// -----------------
-// Reusable wrapper
-// -----------------
-pub struct HtmlComponent<T: Render>(pub T);
-
-impl<T: Render> IntoResponse for HtmlComponent<T> {
-    fn into_response(self) -> Response {
-        Html(self.0.render().into_string()).into_response()
-    }
-}
-
-impl<T: Render> Render for HtmlComponent<T> {
-    fn render(&self) -> Markup {
-        self.0.render()
-    }
-}
-
-// Extension trait for ergonomics
-pub trait IntoHtmlComponent: Render + Sized {
-    fn into_html_component(self) -> HtmlComponent<Self> {
-        HtmlComponent(self)
-    }
-}
-
-impl<T: Render> IntoHtmlComponent for T {}
-
-// -----------------
-// Components
-// -----------------
 
 pub struct MarkDoneButton(pub i64, pub bool);
 
@@ -113,11 +83,11 @@ impl Render for CreateTodoForm {
     }
 }
 
-pub struct Index {
+pub struct TodoPage {
     pub todos: HtmlComponent<TodoList>,
 }
 
-impl Render for Index {
+impl Render for TodoPage {
     fn render(&self) -> Markup {
         html! {
             html {

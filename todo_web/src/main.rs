@@ -1,8 +1,8 @@
 use axum::serve;
 use std::net::SocketAddr;
 use todo_web::{
-    api::routes::create_router,
-    db::{init_db, repository},
+    api::{routes::create_router, todo::repository::TodoRepository},
+    db::init_db,
     domain::{appstate::AppState, settings::load_settings},
 };
 use tokio::net::TcpListener;
@@ -12,8 +12,8 @@ async fn main() {
     let settings = load_settings();
     // init DB
     let pool = init_db(&settings.database_location).await;
-    let repo = repository::TodoRepository::new(pool.clone());
-    let app_state = AppState { repo };
+    let todo_repo: TodoRepository = TodoRepository::new(pool.clone());
+    let app_state = AppState::new(todo_repo);
     // app state + routes
     let app = create_router(app_state, &settings.assets_location);
 
