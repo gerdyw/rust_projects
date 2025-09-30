@@ -5,9 +5,9 @@ services:
     build:
       context: .
     ports:
-      - "${SERVICE_PORT}:8080"
+      - "${SERVICE_PORT}:${SERVICE_PORT}"
     environment:
-      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_HOST: db
       DATABASE_PORT: ${DATABASE_PORT}
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USER: ${DATABASE_USER}
