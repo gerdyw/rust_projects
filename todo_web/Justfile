@@ -1,13 +1,28 @@
+set dotenv-load := true
+set dotenv-path := "local.env"
+
 run:
-    DATABASE_LOCATION=./todo_data/todo.db PORT=3000 ASSETS_LOCATION=./assets RUST_LOG=debug cargo run
+    cargo run
 
 docker-up:
-    docker compose --env-file docker.env build
-    docker compose --env-file docker.env up -d
+    docker compose --env-file local.env build
+    docker compose --env-file local.env up -d
+
+docker-down:
+    docker compose --env-file local.env down
+
+service-restart:
+    docker compose --env-file local.env restart todo_web
+
+service-up:
+    docker compose --env-file local.env up -d todo_web
+
+service-down:
+    docker compose --env-file local.env down todo_web
 
 rebuild:
-    docker compose --env-file docker.env build --no-cache
-    docker compose --env-file docker.env up -d
+    docker compose --env-file local.env build --no-cache
+    docker compose --env-file local.env up -d
 
 # Deployment commands
 deploy:
@@ -18,14 +33,20 @@ update-repo:
 
 # Database commands
 db-up:
-    docker compose --env-file docker.env up -d db
+    docker compose --env-file local.env up -d db
 
 db-down:
-    docker compose --env-file docker.env down db
+    docker compose --env-file local.env down db
 
 # Tunnel commands
 tunnel-up:
-    docker compose --env-file docker.env up -d cloudflared
+    docker compose --env-file local.env up -d cloudflared
 
 tunnel-down:
-    docker compose --env-file docker.env down cloudflared
+    docker compose --env-file local.env down cloudflared
+
+logs:
+    docker compose --env-file local.env logs -f
+
+ps:
+    docker compose --env-file local.env ps

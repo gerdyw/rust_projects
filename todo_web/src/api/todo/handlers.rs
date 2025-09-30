@@ -29,14 +29,11 @@ pub async fn create_todo(
 }
 
 pub async fn mark_done(state: State<AppState>, Path(id): Path<Uuid>) -> impl IntoResponse {
-    match state.todo_repo.mark_done(id).await {
-        Ok(rows) => {
-            if rows == 0 {
-                error!("No todo found with id: {}", id);
-            }
-        }
-        Err(e) => error!("Failed to mark todo as done: {:#?}", e),
-    }
+    let _ = state
+        .todo_repo
+        .mark_done(id)
+        .await
+        .inspect_err(|e| error!("{:#?}", e));
 
     list_todos(state).await
 }

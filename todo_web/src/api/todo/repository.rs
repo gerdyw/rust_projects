@@ -44,16 +44,12 @@ impl TodoRepository {
         .await
     }
 
-    /// Mark a todo as done
-    pub async fn mark_done(&self, id: Uuid) -> sqlx::Result<u64> {
-        let result = sqlx::query("UPDATE todo_items SET done = true WHERE id = $1")
+    pub async fn mark_done(&self, id: Uuid) -> sqlx::Result<Todo> {
+        debug!("Marking todo as done with id: {}", id);
+        sqlx::query_as::<_, Todo>("UPDATE todo_items SET done = true WHERE id = $1 RETURNING *")
             .bind(id)
-            .execute(&self.pool)
-            .await?;
-
-        debug!("mark_done rows affected: {}", result.rows_affected());
-
-        Ok(result.rows_affected())
+            .fetch_one(&self.pool)
+            .await
     }
 
     /// Mark a todo as not done
