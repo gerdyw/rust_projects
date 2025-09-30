@@ -1,4 +1,3 @@
-use chrono::Utc;
 use sqlx::{Pool, Postgres};
 use tracing::debug;
 use uuid::Uuid;
@@ -46,14 +45,10 @@ impl TodoRepository {
 
     /// Mark a todo as not done
     pub async fn mark_undone(&self, id: Uuid) -> sqlx::Result<u64> {
-        let now = Utc::now();
-
-        let result =
-            sqlx::query("UPDATE todo_items SET done = false, updated_at = $1 WHERE id = $2")
-                .bind(now)
-                .bind(id)
-                .execute(&self.pool)
-                .await?;
+        let result = sqlx::query("UPDATE todo_items SET done = false WHERE id = $1")
+            .bind(id)
+            .execute(&self.pool)
+            .await?;
 
         debug!("mark_undone rows affected: {}", result.rows_affected());
 
