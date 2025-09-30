@@ -1,8 +1,11 @@
+-- Enable the pgcrypto extension
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- Add migration script here
 CREATE TABLE todo_items (
-    id UUID PRIMARY KEY,
-    created_at TIMESTAMPTZ NOT NULL,
-    updated_at TIMESTAMPTZ NOT NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW (),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW (),
     title TEXT NOT NULL,
     done BOOLEAN NOT NULL DEFAULT false
 );

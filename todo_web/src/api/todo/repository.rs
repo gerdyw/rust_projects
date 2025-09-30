@@ -24,22 +24,14 @@ impl TodoRepository {
 
     /// Create a new todo
     pub async fn create(&self, payload: CreateTodo) -> sqlx::Result<Todo> {
-        let now = Utc::now();
-        let id = Uuid::new_v4();
-
-        // Use `query_as` for the INSERT with RETURNING clause
         sqlx::query_as::<_, Todo>(
             r#"
-            INSERT INTO todo_items (id, created_at, updated_at, title, done)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO todo_items (title)
+            VALUES ($1)
             RETURNING *
             "#,
         )
-        .bind(id)
-        .bind(now)
-        .bind(now)
         .bind(payload.title)
-        .bind(false)
         .fetch_one(&self.pool)
         .await
     }
