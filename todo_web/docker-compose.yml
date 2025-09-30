@@ -1,25 +1,45 @@
 services:
   todo_web:
-    image: todo_web:latest # your locally built image
+    image: todo_web:latest
     container_name: todo_web
     build:
-      context: . # build from current directory
+      context: .
     ports:
-      - "8080:8080" # expose port
+      - "8080:8080"
     environment:
-      DATABASE_LOCATION: /app/data/todo.db
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/todo_db
+      RUST_LOG: info
       ASSETS_LOCATION: /app/assets
       PORT: 8080
     volumes:
-      - ./data:/app/data # persist SQLite database
-      - ./assets:/app/assets # serve static files if needed
+      - ./data:/app/data
+      - ./assets:/app/assets
     restart: unless-stopped
+
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: todo_db
+    ports:
+      - "5432:5432"
 
   cloudflared:
     image: cloudflare/cloudflared:latest
     command: tunnel --no-autoupdate run --token $CLOUDFLARE_TOKEN
     container_name: cloudflared
     restart: unless-stopped
+    profiles:
+      - prod
 
 networks:
   default:
+
+
+volumes:
+  postgres_data:
+    driver: local

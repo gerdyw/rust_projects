@@ -3,16 +3,20 @@ FROM messense/rust-musl-cross:aarch64-musl AS builder
 
 WORKDIR /usr/src/app
 
-# Copy manifest files first (for dependency caching)
+# Create a new source file for dependency caching
 COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo "fn main() {}" > src/main.rs
-RUN cargo build --release --target=aarch64-unknown-linux-musl || true
+RUN mkdir src && \
+    echo "fn main() {}" > src/main.rs && \
+    cargo build --release --target=aarch64-unknown-linux-musl && \
+    rm src/main.rs
 
-# Copy the real source
-COPY . .
+# Copy just the source code (exclude target, etc)
+COPY src src/
+COPY migrations migrations/
+COPY assets assets/
 
-# Build with SQLite bundled
-RUN cargo build --release --target=aarch64-unknown-linux-musl --features sqlx/sqlite
+# Build the actual binary
+RUN cargo build --release --target=aarch64-unknown-linux-musl
 
 # ===== Stage 2: Runtime =====
 FROM alpine:3.19 AS runtime

@@ -1,8 +1,31 @@
 run:
-    DATABASE_LOCATION=./todo_data/todo.db PORT=3000 ASSETS_LOCATION=./assets cargo run                                                        
+    DATABASE_LOCATION=./todo_data/todo.db PORT=3000 ASSETS_LOCATION=./assets RUST_LOG=debug cargo run
 
+docker-up:
+    docker compose --env-file docker.env build
+    docker compose --env-file docker.env up -d
+
+rebuild:
+    docker compose --env-file docker.env build --no-cache
+    docker compose --env-file docker.env up -d
+
+# Deployment commands
 deploy:
     ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/deploy-service.sh
 
 update-repo:
     ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/update-repo.sh
+
+# Database commands
+db-up:
+    docker compose --env-file docker.env up -d db
+
+db-down:
+    docker compose --env-file docker.env down db
+
+# Tunnel commands
+tunnel-up:
+    docker compose --env-file docker.env up -d cloudflared
+
+tunnel-down:
+    docker compose --env-file docker.env down cloudflared
