@@ -27,8 +27,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: todo_db
     ports:
       - "5432:5432"
