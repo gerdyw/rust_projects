@@ -17,7 +17,7 @@ git reset --hard "origin/$GIT_BRANCH"
 
 # 2. Build the image and bring up containers
 echo "--- Building images and updating containers ---"
-docker compose -f "$COMPOSE_FILE" build "$SERVICE_NAME"
+docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" build "$SERVICE_NAME"
 docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" --profile prod up -d
 
 # Optional: remove old dangling images
