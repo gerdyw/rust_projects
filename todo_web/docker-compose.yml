@@ -1,6 +1,6 @@
 services:
   todo_web:
-    image: todo_web:latest
+    image: raspberrypi.local:5000/todo_web:latest
     container_name: todo_web
     build:
       context: .
@@ -27,8 +27,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      PG_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: todo_db
     ports:
       - "5432:5432"
