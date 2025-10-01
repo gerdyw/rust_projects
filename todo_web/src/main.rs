@@ -1,7 +1,9 @@
 use axum::serve;
 use std::net::SocketAddr;
 use todo_web::{
-    api::{routes::create_router, todo::repository::TodoRepository},
+    api::{
+        routes::create_router, todo::repository::TodoRepository, user::repository::UserRepository,
+    },
     db::init_db,
     domain::{appstate::AppState, settings::load_settings},
 };
@@ -14,7 +16,8 @@ async fn main() {
     // init DB
     let pool = init_db(&settings.database).await;
     let todo_repo: TodoRepository = TodoRepository::new(pool.clone());
-    let app_state = AppState::new(todo_repo);
+    let user_repo = UserRepository::new(pool);
+    let app_state = AppState::new(todo_repo, user_repo);
     // app state + routes
     let app = create_router(app_state, &settings.assets_location);
 

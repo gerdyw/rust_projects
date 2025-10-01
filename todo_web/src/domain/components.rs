@@ -28,6 +28,18 @@ pub trait IntoHtmlComponent: Render + Sized {
 
 impl<T: Render> IntoHtmlComponent for T {}
 
+pub struct ErrorComponent {
+    pub message: String,
+}
+
+impl Render for ErrorComponent {
+    fn render(&self) -> Markup {
+        html! {
+            div class="notification is-danger" { (self.message) }
+        }
+    }
+}
+
 pub struct Page(pub &'static str, pub Markup);
 
 impl Render for Page {
@@ -42,7 +54,9 @@ impl Render for Page {
                     link rel="stylesheet" href="./assets/styles.css" {}
                 }
                 body {
-                    (self.1)
+                    #app {
+                        (self.1)
+                    }
                 }
             }
         }

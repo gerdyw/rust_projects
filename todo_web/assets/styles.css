@@ -1,4 +1,4 @@
-#todo-app {
+#app {
     margin: 0 auto;
     padding: 20px;
     border-radius: 5px;
@@ -14,14 +14,14 @@
 
 /* Small screens take full width */
 @media (max-width: 800px) {
-    #todo-app {
+    #app {
         width: 100%;
         padding: 15px;
     }
 }
 
 @media (max-width: 400px) {
-    #todo-app {
+    #app {
         padding: 10px;
     }
 }

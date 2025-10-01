@@ -93,7 +93,7 @@ impl Render for TodoPage {
         Page(
             "Todo list",
             html! {
-                #todo-app {
+                #app {
                         h1 { "Todo App" }
                         (self.todos)
                         (CreateTodoForm { })

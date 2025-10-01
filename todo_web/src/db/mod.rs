@@ -23,7 +23,8 @@ pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
     sqlx::migrate!()
         .run(&pool)
         .await
-        .expect("Failed to run database migrations");
+        .inspect_err(|e| debug!("Failed to run migrations: {}", e))
+        .ok();
 
     pool
 }
