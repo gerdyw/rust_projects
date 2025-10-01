@@ -1,9 +1,12 @@
 use serde::Deserialize;
 use sqlx::FromRow;
 
+use crate::db::metadata::Metadata;
+
 #[derive(Debug, FromRow)]
 pub struct Todo {
-    pub id: i64,
+    #[sqlx(flatten)]
+    pub meta: Metadata,
     pub title: String,
     pub done: bool,
 }

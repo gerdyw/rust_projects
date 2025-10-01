@@ -1,8 +1,9 @@
-use crate::api::todo::models::Todo;
 use crate::domain::components::HtmlComponent;
+use crate::{api::todo::models::Todo, domain::components::Page};
 use maud::{Markup, Render, html};
+use uuid::Uuid;
 
-pub struct MarkDoneButton(pub i64, pub bool);
+pub struct MarkDoneButton(pub Uuid, pub bool);
 
 impl Render for MarkDoneButton {
     fn render(&self) -> Markup {
@@ -24,7 +25,7 @@ impl Render for MarkDoneButton {
     }
 }
 
-struct DeleteButton(pub i64);
+struct DeleteButton(pub Uuid);
 
 impl Render for DeleteButton {
     fn render(&self) -> Markup {
@@ -38,13 +39,13 @@ impl Render for Todo {
     fn render(&self) -> Markup {
         html! {
           li {
-            (MarkDoneButton(self.id, self.done))
+            (MarkDoneButton(self.meta.id, self.done))
               @if self.done {
                 s { (self.title) }
               } @else {
                 (self.title)
               }
-              (DeleteButton(self.id))
+              (DeleteButton(self.meta.id))
           }
         }
     }
@@ -89,21 +90,16 @@ pub struct TodoPage {
 
 impl Render for TodoPage {
     fn render(&self) -> Markup {
-        html! {
-            html {
-                head {
-                    script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" {}
-                    link rel="stylesheet" href="./assets/pico.min.css" {}
-                    link rel="stylesheet" href="./assets/styles.css" {}
-                }
-                body {
-                    #todo-app {
+        Page(
+            "Todo list",
+            html! {
+                #todo-app {
                         h1 { "Todo App" }
                         (self.todos)
                         (CreateTodoForm { })
                     }
-                }
-            }
-        }
+            },
+        )
+        .render()
     }
 }

@@ -9,9 +9,10 @@ use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() {
+    tracing_subscriber::fmt::init(); // logging initialization
     let settings = load_settings();
     // init DB
-    let pool = init_db(&settings.database_location).await;
+    let pool = init_db(&settings.database).await;
     let todo_repo: TodoRepository = TodoRepository::new(pool.clone());
     let app_state = AppState::new(todo_repo);
     // app state + routes

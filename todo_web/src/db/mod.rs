@@ -1,24 +1,29 @@
-use std::{fs, path::Path};
+use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
+use tracing::debug;
 
-use sqlx::{Pool, Sqlite, sqlite::SqlitePoolOptions};
+use crate::domain::settings::DatabaseSettings;
+pub mod metadata;
 
-pub async fn init_db(db_url: &String) -> Pool<Sqlite> {
-    let db_path = Path::new(db_url);
-
-    // Ensure the database file exists
-    if !db_path.exists() {
-        fs::File::create(db_path).expect("Failed to create SQLite database file");
-    }
-
-    let connection_string = format!("sqlite://{}", db_url);
-    println!("connection_string: {}", connection_string);
-
-    let pool = SqlitePoolOptions::new()
-        .connect(&connection_string)
+pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
+    let db_url = format!(
+        "postgres://{}:{}@{}:{}/{}",
+        db_settings.username,
+        db_settings.password,
+        db_settings.host,
+        db_settings.port,
+        db_settings.db_name
+    );
+    debug!("Database URL: {}", db_url);
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect(&db_url)
         .await
-        .unwrap();
+        .expect("Failed to create PostgreSQL connection pool");
 
-    sqlx::migrate!().run(&pool).await.unwrap();
+    sqlx::migrate!()
+        .run(&pool)
+        .await
+        .expect("Failed to run database migrations");
 
     pool
 }
