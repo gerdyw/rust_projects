@@ -10,7 +10,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      RUST_LOG: info
+      RUST_LOG: debug
       ASSETS_LOCATION: /app/assets
       SERVICE_PORT: ${SERVICE_PORT}
     restart: unless-stopped

@@ -8,7 +8,10 @@ LOCAL_ENV_FILE="local.env"
 SERVICE_NAME="todo_web"
 REGISTRY="raspberrypi.local:5000"
 BUILD_TIME=$(date +%Y%m%d_%H%M%S)
-IMAGE_TAG="${BUILD_TIME}"
+GIT_COMMIT=$(git rev-parse --short HEAD)
+IMAGE_TAG="${GIT_COMMIT}"
+
+export DOCKER_TAG="${IMAGE_TAG}"
 
 echo "=== Building and deploying $SERVICE_NAME ==="
 
@@ -21,7 +24,7 @@ echo "--- Pushing to registry ---"
 docker tag "${SERVICE_NAME}:latest" "${REGISTRY}/${SERVICE_NAME}:${IMAGE_TAG}"
 docker tag "${SERVICE_NAME}:latest" "${REGISTRY}/${SERVICE_NAME}:latest"
 docker push "${REGISTRY}/${SERVICE_NAME}:${IMAGE_TAG}"
-docker push "${REGISTRY}/${SERVICE_NAME}:latest"
+docker push "${REGISTRY}/${SERVICE_NAME}:${IMAGE_TAG}"
 
 # 3. Deploy the service using docker compose
 echo "--- Deploying service using docker compose ---"
