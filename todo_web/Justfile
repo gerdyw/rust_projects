@@ -5,7 +5,7 @@ run:
     cargo run
 
 docker-up:
-    docker compose --env-file local.env build
+    docker build -t todo_web .
     docker compose --env-file local.env up -d
 
 docker-down:

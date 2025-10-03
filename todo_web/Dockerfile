@@ -25,6 +25,7 @@ WORKDIR /app
 
 # Copy the static binary
 COPY --from=builder /usr/src/app/target/aarch64-unknown-linux-musl/release/todo_web .
+COPY migrations migrations/
 
 EXPOSE 8080
 CMD ["./todo_web"]

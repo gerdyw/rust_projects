@@ -7,10 +7,12 @@ use todo_web::{
 };
 use tokio::net::TcpListener;
 use tower_sessions::{Expiry, MemoryStore, cookie::time::Duration};
+use tracing::debug;
 
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init(); // logging initialization
+    debug!("Starting up...");
     let settings = load_settings();
     // init DB
     let pool = init_db(&settings.database).await;
