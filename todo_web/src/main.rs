@@ -1,13 +1,12 @@
 use axum::serve;
 use std::net::SocketAddr;
 use todo_web::{
-    api::{
-        routes::create_router, todo::repository::TodoRepository, user::repository::UserRepository,
-    },
+    api::routes::create_router,
     db::init_db,
     domain::{appstate::AppState, settings::load_settings},
 };
 use tokio::net::TcpListener;
+use tower_sessions::{Expiry, MemoryStore, cookie::time::Duration};
 
 #[tokio::main]
 async fn main() {
@@ -15,11 +14,15 @@ async fn main() {
     let settings = load_settings();
     // init DB
     let pool = init_db(&settings.database).await;
-    let todo_repo: TodoRepository = TodoRepository::new(pool.clone());
-    let user_repo = UserRepository::new(pool);
-    let app_state = AppState::new(todo_repo, user_repo);
+    let session_store = MemoryStore::default();
+    let session_service = tower_sessions::SessionManagerLayer::new(session_store)
+        .with_secure(false)
+        .with_expiry(Expiry::OnInactivity(Duration::minutes(30)));
+
+    let app_state = AppState::init(&pool);
+
     // app state + routes
-    let app = create_router(app_state, &settings.assets_location);
+    let app = create_router(app_state, session_service, &settings.assets_location);
 
     // serve
     let addr = SocketAddr::from(([0, 0, 0, 0], settings.port));

@@ -50,8 +50,8 @@ impl Render for Page {
                     meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" {}
                     title { (self.0) }
                     script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" {}
-                    link rel="stylesheet" href="./assets/pico.min.css" {}
-                    link rel="stylesheet" href="./assets/styles.css" {}
+                    link rel="stylesheet" href="/assets/pico.min.css" {}
+                    link rel="stylesheet" href="/assets/styles.css" {}
                 }
                 body {
                     #app {

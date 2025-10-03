@@ -13,3 +13,14 @@ pub struct User {
 pub struct SignupUser {
     pub email: String,
 }
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ErrorQuery {
+    pub error: Option<String>,
+}
+
+impl Default for ErrorQuery {
+    fn default() -> Self {
+        Self { error: None }
+    }
+}

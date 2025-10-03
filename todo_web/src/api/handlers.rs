@@ -1,11 +1,12 @@
-use axum::{extract::State, response::IntoResponse};
+use axum::response::{IntoResponse, Redirect};
+use maud::html;
 
-use crate::{
-    api::todo::{components::TodoPage, handlers::list_todos},
-    domain::{appstate::AppState, components::IntoHtmlComponent},
-};
+use crate::domain::components::{IntoHtmlComponent, Page};
 
-pub async fn get_index(state: State<AppState>) -> impl IntoResponse {
-    let todos = list_todos(state).await;
-    TodoPage { todos }.into_html_component()
+pub async fn get_index() -> impl IntoResponse {
+    Redirect::to("/todos")
+}
+
+pub async fn get_error() -> impl IntoResponse {
+    Page("error", html!(h3 { "An unexpected error has occurred" })).into_html_component()
 }
