@@ -13,8 +13,6 @@ services:
       RUST_LOG: info
       ASSETS_LOCATION: /app/assets
       SERVICE_PORT: ${SERVICE_PORT}
-    volumes:
-      - ./migrations:/app/migrations
     restart: unless-stopped
 
   db:

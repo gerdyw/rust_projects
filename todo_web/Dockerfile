@@ -13,7 +13,6 @@ RUN mkdir src && \
 # Copy just the source code (exclude target, etc)
 COPY src src/
 COPY migrations migrations/
-COPY assets assets/
 
 # Build the actual binary
 RUN cargo build --release --target=aarch64-unknown-linux-musl
@@ -26,6 +25,7 @@ WORKDIR /app
 # Copy the static binary
 COPY --from=builder /usr/src/app/target/aarch64-unknown-linux-musl/release/todo_web .
 COPY migrations migrations/
+COPY assets assets/
 
 EXPOSE 8080
 CMD ["./todo_web"]

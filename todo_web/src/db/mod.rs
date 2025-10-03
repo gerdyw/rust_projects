@@ -19,8 +19,9 @@ pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
         .connect(&db_url)
         .await
         .expect("Failed to create PostgreSQL connection pool");
-
-    sqlx::migrate!()
+    let migrator = sqlx::migrate!();
+    debug!("Found {} migrations", migrator.migrations.len());
+    migrator
         .run(&pool)
         .await
         .inspect_err(|e| debug!("Failed to run migrations: {}", e))
