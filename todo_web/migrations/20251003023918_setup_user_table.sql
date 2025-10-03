@@ -3,12 +3,12 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE IF NOT EXISTS users (
     -- Metadata fields
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
--- User specific fields
-email TEXT NOT NULL UNIQUE );
+    -- User specific fields
+    email TEXT NOT NULL UNIQUE
+);
 
 -- Create a function for updating the timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()

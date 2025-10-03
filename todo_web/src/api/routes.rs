@@ -9,7 +9,10 @@ use tower_http::{services::ServeDir, set_header::SetResponseHeaderLayer};
 use tower_sessions::{MemoryStore, SessionManagerLayer};
 
 use crate::{
-    api::{handlers::get_index, todo, user},
+    api::{
+        handlers::{get_error, get_index},
+        todo, user,
+    },
     domain::appstate::AppState,
 };
 
@@ -24,6 +27,7 @@ pub fn create_router(
 
     Router::new()
         .route("/", get(get_index))
+        .route("/error", get(get_error))
         .nest("/todos", todo_router)
         .nest("/users", user_router)
         .nest_service("/assets", static_router)

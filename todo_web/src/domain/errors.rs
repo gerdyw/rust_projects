@@ -1,5 +1,6 @@
-use axum::response::{IntoResponse, Redirect};
+use axum::{http::Response, response::IntoResponse};
 use tower_sessions::session::Error;
+use tracing::warn;
 
 #[derive(Debug)]
 pub struct InternalServerError {
@@ -8,7 +9,12 @@ pub struct InternalServerError {
 
 impl IntoResponse for InternalServerError {
     fn into_response(self) -> axum::response::Response {
-        Redirect::to("/error").into_response()
+        warn!("Internal Server Error: {}", self.message);
+        Response::builder()
+            .status(500)
+            .header("HX-Redirect", format!("/error?message={}", self.message))
+            .body(format!("Internal Server Error: {}", self.message).into())
+            .unwrap()
     }
 }
 

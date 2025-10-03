@@ -4,10 +4,11 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 -- Add migration script here
 CREATE TABLE todo_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW (),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW (),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     title TEXT NOT NULL,
-    done BOOLEAN NOT NULL DEFAULT false
+    done BOOLEAN NOT NULL DEFAULT false,
+    user_id UUID NOT NULL REFERENCES users (id)
 );
 
 -- Create a function for updating the timestamp

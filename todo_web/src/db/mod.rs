@@ -25,7 +25,9 @@ pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
         .run(&pool)
         .await
         .inspect_err(|e| debug!("Failed to run migrations: {}", e))
-        .ok();
-
+        .unwrap();
+    migrator.iter().for_each(|m| {
+        debug!("Applied migration: {:#?}", m);
+    });
     pool
 }
