@@ -2,8 +2,6 @@ services:
   todo_web:
     image: raspberrypi.local:5000/todo_web:latest
     container_name: todo_web
-    build:
-      context: .
     ports:
       - "${SERVICE_PORT}:${SERVICE_PORT}"
     environment:

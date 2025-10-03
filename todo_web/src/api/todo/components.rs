@@ -1,4 +1,4 @@
-use crate::domain::components::HtmlComponent;
+use crate::domain::components::{HtmlComponent, IntoHtmlComponent};
 use crate::{api::todo::models::Todo, domain::components::Page};
 use maud::{Markup, Render, html};
 use uuid::Uuid;
@@ -86,20 +86,41 @@ impl Render for CreateTodoForm {
 
 pub struct TodoPage {
     pub todos: HtmlComponent<TodoList>,
+    pub email: String,
+    pub error: Option<String>,
+}
+
+impl TodoPage {
+    pub fn new(todos: Vec<Todo>, email: String) -> Self {
+        Self {
+            todos: TodoList::from(todos).into_html_component(),
+            email,
+            error: None,
+        }
+    }
 }
 
 impl Render for TodoPage {
     fn render(&self) -> Markup {
-        Page(
-            "Todo list",
-            html! {
-                #todo-app {
-                        h1 { "Todo App" }
+        let markup = html! {
+            div.page-container {
+                header.app-header {
+                    h1 { "Todo App" }
+                    form.signout-form method="post" action="/users/signout" {
+                        button.button type="submit" { "Sign Out" }
+                    }
+                }
+
+                #app {
                         (self.todos)
                         (CreateTodoForm { })
+                        @if let Some(err) = &self.error {
+                            p .error { (err) }
+                        }
                     }
-            },
-        )
-        .render()
+                }
+        };
+
+        Page("Todos", markup).render()
     }
 }

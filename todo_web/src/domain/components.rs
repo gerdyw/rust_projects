@@ -28,6 +28,18 @@ pub trait IntoHtmlComponent: Render + Sized {
 
 impl<T: Render> IntoHtmlComponent for T {}
 
+pub struct ErrorComponent {
+    pub message: String,
+}
+
+impl Render for ErrorComponent {
+    fn render(&self) -> Markup {
+        html! {
+            div class="notification is-danger" { (self.message) }
+        }
+    }
+}
+
 pub struct Page(pub &'static str, pub Markup);
 
 impl Render for Page {
@@ -38,11 +50,13 @@ impl Render for Page {
                     meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" {}
                     title { (self.0) }
                     script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" {}
-                    link rel="stylesheet" href="./assets/pico.min.css" {}
-                    link rel="stylesheet" href="./assets/styles.css" {}
+                    link rel="stylesheet" href="/assets/pico.min.css" {}
+                    link rel="stylesheet" href="/assets/styles.css" {}
                 }
                 body {
-                    (self.1)
+                    #app {
+                        (self.1)
+                    }
                 }
             }
         }

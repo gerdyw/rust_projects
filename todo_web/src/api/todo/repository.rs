@@ -21,15 +21,25 @@ impl TodoRepository {
             .await
     }
 
+    pub async fn list_for_user(&self, user_id: Uuid) -> sqlx::Result<Vec<Todo>> {
+        sqlx::query_as::<_, Todo>(
+            "SELECT * FROM todo_items WHERE user_id = $1 ORDER BY done DESC, created_at ASC",
+        )
+        .bind(user_id)
+        .fetch_all(&self.pool)
+        .await
+    }
+
     /// Create a new todo
-    pub async fn create(&self, payload: CreateTodo) -> sqlx::Result<Todo> {
+    pub async fn create(&self, user_id: Uuid, payload: CreateTodo) -> sqlx::Result<Todo> {
         sqlx::query_as::<_, Todo>(
             r#"
-            INSERT INTO todo_items (title)
-            VALUES ($1)
+            INSERT INTO todo_items (user_id, title)
+            VALUES ($1, $2)
             RETURNING *
             "#,
         )
+        .bind(user_id)
         .bind(payload.title)
         .fetch_one(&self.pool)
         .await

@@ -28,6 +28,9 @@ rebuild:
 deploy:
     ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/deploy-service.sh
 
+deploy-image:
+    ./scripts/deploy-from-registry.sh
+
 update-repo:
     ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/update-repo.sh
 

@@ -1,31 +1,141 @@
-#todo-app {
+/* Base app container */
+#app {
     margin: 0 auto;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
     width: 100%;
     max-width: 800px;
-    /* Desktop max width */
     box-sizing: border-box;
 }
 
-/* Small screens take full width */
+/* Auth container styling */
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: var(--pico-spacing) auto;
+    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    background: var(--pico-card-sectionning-background-color);
+    border-radius: var(--pico-border-radius);
+}
+
+/* Tab navigation */
+.tab-nav {
+    display: flex;
+    gap: var(--pico-spacing);
+    margin: var(--pico-spacing) 0;
+}
+
+.tab-link {
+    flex: 1;
+    padding: var(--pico-nav-link-spacing-vertical) var(--pico-nav-link-spacing-horizontal);
+    background: var(--pico-card-background-color);
+    border: var(--pico-border-width) solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    color: var(--pico-muted-color);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--pico-transition);
+}
+
+.tab-link.active {
+    background: var(--pico-primary);
+    color: var(--pico-primary-inverse);
+    border-color: var(--pico-primary);
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pico-spacing);
+}
+
+input {
+    margin-bottom: 0;
+}
+
+label {
+    margin-bottom: calc(var(--pico-form-element-spacing-vertical) * 0.25);
+}
+
+button[type="submit"] {
+    margin-top: var(--pico-spacing);
+}
+
+/* Error message */
+.error-message {
+    margin-top: var(--pico-spacing);
+    padding: var(--pico-form-element-spacing-vertical) var(--pico-form-element-spacing-horizontal);
+    background: var(--pico-card-background-color);
+    border: var(--pico-border-width) solid var(--pico-form-element-invalid-border-color);
+    border-radius: var(--pico-border-radius);
+    color: var(--pico-form-element-invalid-border-color);
+}
+
+/* HTMX transitions */
+.htmx-settling {
+    opacity: 1;
+    transition: opacity 200ms ease-out;
+}
+
+.htmx-request {
+    opacity: 0.5;
+}
+
+/* Responsive adjustments */
 @media (max-width: 800px) {
-    #todo-app {
+    #app {
         width: 100%;
-        padding: 15px;
+        padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
     }
 }
 
 @media (max-width: 400px) {
-    #todo-app {
-        padding: 10px;
+    #app {
+        padding: calc(var(--pico-block-spacing-vertical) * 0.5) calc(var(--pico-block-spacing-horizontal) * 0.5);
     }
 }
 
+/* Button cursor */
 .button {
     cursor: pointer;
+}
+
+.page-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--pico-spacing);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--pico-spacing);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.signout-form {
+    position: absolute;
+    top: var(--pico-spacing);
+    right: var(--pico-spacing);
+}
+
+.signout-form button {
+    padding: 0.25rem 0.75rem;
+    background: transparent;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    color: var(--pico-muted-color);
+    font-size: 0.875rem;
+    transition: all var(--pico-transition);
+}
+
+.signout-form button:hover {
+    background: var(--pico-muted-border-color);
+    color: var(--pico-primary-inverse);
 }
