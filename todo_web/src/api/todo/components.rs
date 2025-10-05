@@ -107,7 +107,7 @@ impl Render for TodoPage {
                 header.app-header {
                     h1 { "Todo App" }
                     form.signout-form method="post" action="/users/signout" {
-                        button type="submit" { "Sign out (" (self.email) ")" }
+                        button.button type="submit" { "Sign Out" }
                     }
                 }
 
@@ -117,6 +117,7 @@ impl Render for TodoPage {
                         @if let Some(err) = &self.error {
                             p .error { (err) }
                         }
+                        sub { "Signed in as " (self.email) }
                     }
                 }
         };

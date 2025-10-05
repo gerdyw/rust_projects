@@ -4,7 +4,6 @@ use axum::{
     response::{IntoResponse, Redirect, Response},
 };
 use serde::Deserialize;
-use sqlx::query;
 use tower_sessions::Session;
 
 use crate::{

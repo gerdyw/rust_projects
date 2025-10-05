@@ -7,7 +7,7 @@ use axum::{
 
 use tower::ServiceBuilder;
 use tower_http::{services::ServeDir, set_header::SetResponseHeaderLayer};
-use tower_sessions::{MemoryStore, SessionManagerLayer};
+use tower_sessions::SessionManagerLayer;
 use tower_sessions_redis_store::{RedisStore, fred::prelude::Pool};
 
 use crate::{

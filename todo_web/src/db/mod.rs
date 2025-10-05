@@ -1,5 +1,5 @@
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use tracing::{debug, error, warn};
+use tracing::{debug, error};
 
 use crate::domain::settings::DatabaseSettings;
 pub mod metadata;
