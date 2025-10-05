@@ -32,8 +32,18 @@ pub async fn require_auth(
     match user_id {
         Some(_) => Ok(next.run(req).await),
         None => {
-            tracing::debug!("No user session found, redirecting to signin");
-            Err(Redirect::to("/users").into_response())
+            tracing::debug!("No user session found. Checking for authenticated Cloudflare header.");
+            // Check for Cloudflare header
+            if let Some(cloudflare_user) = req.headers().get("cf-access-authenticated-user-email") {
+                //redirect to /users?user_email={cloudflare_user}
+                let redirect_url = format!(
+                    "/users?user_email={}",
+                    cloudflare_user.to_str().unwrap_or_default()
+                );
+                Err(Redirect::to(&redirect_url).into_response())
+            } else {
+                Err(Redirect::to("/users").into_response())
+            }
         }
     }
 }

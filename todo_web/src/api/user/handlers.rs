@@ -3,6 +3,8 @@ use axum::{
     extract::{Query, State},
     response::{IntoResponse, Redirect, Response},
 };
+use serde::Deserialize;
+use sqlx::query;
 use tower_sessions::Session;
 
 use crate::{
@@ -13,8 +15,23 @@ use crate::{
     domain::{appstate::AppState, components::IntoHtmlComponent},
 };
 
-pub async fn get_index() -> impl IntoResponse {
-    UserPage::sign_up(None).into_html_component()
+#[derive(Debug, Clone, Deserialize)]
+pub struct LoginQuery {
+    pub user_email: Option<String>,
+}
+
+pub async fn get_index(
+    state: State<AppState>,
+    mut session: Session,
+    Query(query): Query<LoginQuery>,
+) -> impl IntoResponse {
+    if let Some(user_email) = query.user_email {
+        let _ = state.user_service.sign_in(&mut session, &user_email).await;
+        return Redirect::to("/").into_response();
+    }
+    UserPage::sign_up(None)
+        .into_html_component()
+        .into_response()
 }
 
 pub async fn get_sign_in(query: Query<ErrorQuery>) -> impl IntoResponse {
