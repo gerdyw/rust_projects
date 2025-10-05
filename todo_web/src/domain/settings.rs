@@ -50,10 +50,10 @@ fn load_cache_settings() -> Config {
         server: ServerConfig::Centralized {
             server: Server {
                 host: std::env::var("CACHE_HOST")
-                    .unwrap_or_else(|_| "127.0.0.1".to_string())
+                    .expect("CACHE_HOST must be set")
                     .into(),
                 port: std::env::var("CACHE_PORT")
-                    .unwrap_or_else(|_| "6379".to_string())
+                    .expect("CACHE_PORT must be set")
                     .parse()
                     .expect("CACHE_PORT must be a valid port number"),
             },
