@@ -30,6 +30,13 @@ services:
     ports:
       - "5432:5432"
 
+  cache:
+    image: redis
+    container_name: todo_redis
+    restart: unless-stopped
+    ports:
+      - "${CACHE_PORT}:6379"
+
   cloudflared:
     image: cloudflare/cloudflared:latest
     command: tunnel --no-autoupdate run --token $CLOUDFLARE_TOKEN

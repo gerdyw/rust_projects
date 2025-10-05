@@ -1,3 +1,5 @@
+use tower_sessions_redis_store::fred::prelude::{Config, Server, ServerConfig};
+
 #[derive(Debug)]
 pub struct DatabaseSettings {
     pub host: String,
@@ -10,15 +12,18 @@ pub struct DatabaseSettings {
 #[derive(Debug)]
 pub struct Settings {
     pub database: DatabaseSettings,
+    pub cache: Config,
     pub assets_location: String,
     pub port: u16,
 }
 
 pub fn load_settings() -> Settings {
     let database = load_db_settings();
+    let cache = load_cache_settings();
 
     Settings {
         database,
+        cache,
         assets_location: std::env::var("ASSETS_LOCATION").expect("ASSETS_LOCATION must be set"),
         port: std::env::var("SERVICE_PORT")
             .unwrap_or_else(|_| "3000".to_string())
@@ -37,5 +42,22 @@ fn load_db_settings() -> DatabaseSettings {
         db_name: std::env::var("DATABASE_NAME").expect("DATABASE_NAME must be set"),
         username: std::env::var("DATABASE_USER").expect("DATABASE_USER must be set"),
         password: std::env::var("DATABASE_PASSWORD").expect("DATABASE_PASSWORD must be set"),
+    }
+}
+
+fn load_cache_settings() -> Config {
+    Config {
+        server: ServerConfig::Centralized {
+            server: Server {
+                host: std::env::var("CACHE_HOST")
+                    .unwrap_or_else(|_| "127.0.0.1".to_string())
+                    .into(),
+                port: std::env::var("CACHE_PORT")
+                    .unwrap_or_else(|_| "6379".to_string())
+                    .parse()
+                    .expect("CACHE_PORT must be a valid port number"),
+            },
+        },
+        ..Default::default()
     }
 }

@@ -13,4 +13,4 @@ git fetch origin "$GIT_BRANCH"
 git reset --hard "origin/$GIT_BRANCH"
 
 docker compose --env-file ${PI_ENV_FILE} pull ${SERVICE_NAME} &&
-docker compose --env-file ${PI_ENV_FILE} --profile prod up -d --force-recreate ${SERVICE_NAME}
+docker compose --env-file ${PI_ENV_FILE} --profile prod up -d --force-recreate
