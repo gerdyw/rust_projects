@@ -1,6 +1,7 @@
 use axum::{
     Router,
     http::{HeaderValue, header},
+    middleware::from_fn,
     routing::get,
 };
 
@@ -13,7 +14,7 @@ use crate::{
         handlers::{get_error, get_index},
         todo, user,
     },
-    domain::appstate::AppState,
+    domain::{appstate::AppState, middleware::log_headers},
 };
 
 pub fn create_router(
@@ -32,6 +33,7 @@ pub fn create_router(
         .nest("/users", user_router)
         .nest_service("/assets", static_router)
         .layer(session_layer.clone())
+        .layer(from_fn(log_headers))
 }
 
 fn get_servedir(assets_location: &String) -> ServeDir {

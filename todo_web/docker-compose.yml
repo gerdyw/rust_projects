@@ -13,6 +13,8 @@ services:
       RUST_LOG: debug
       ASSETS_LOCATION: /app/assets
       SERVICE_PORT: ${SERVICE_PORT}
+      OTEL_EXPORTER_OTLP_ENDPOINT: localhost:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=todo_web
     restart: unless-stopped
 
   db:

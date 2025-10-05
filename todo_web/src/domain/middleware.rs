@@ -5,6 +5,7 @@ use axum::{
     response::{IntoResponse, Redirect, Response},
 };
 use tower_sessions::Session;
+use tracing::info;
 use uuid::Uuid;
 
 const PUBLIC_PATHS: [&str; 2] = ["/users/signin", "/users/signup"];
@@ -35,4 +36,17 @@ pub async fn require_auth(
             Err(Redirect::to("/users").into_response())
         }
     }
+}
+
+/// Logs all headers on incoming requests.
+pub async fn log_headers(req: Request<Body>, next: Next) -> Response {
+    info!("{} {}", req.method(), req.uri());
+
+    // for (name, value) in req.headers() {
+    //     info!("Header: {} = {:?}", name, value);
+    // }
+
+    info!("{:?}", req.headers());
+
+    next.run(req).await
 }

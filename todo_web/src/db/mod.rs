@@ -1,5 +1,5 @@
 use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use tracing::debug;
+use tracing::{debug, error, warn};
 
 use crate::domain::settings::DatabaseSettings;
 pub mod metadata;
@@ -24,8 +24,9 @@ pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
     migrator
         .run(&pool)
         .await
-        .inspect_err(|e| debug!("Failed to run migrations: {}", e))
+        .inspect_err(|e| error!("Failed to run migrations: {}", e))
         .unwrap();
+
     migrator.iter().for_each(|m| {
         debug!("Applied migration: {:#?}", m);
     });
