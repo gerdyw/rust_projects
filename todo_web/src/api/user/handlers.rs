@@ -1,17 +1,23 @@
 use axum::{
     Form,
     extract::{Query, State},
-    response::{IntoResponse, Redirect, Response},
+    response::IntoResponse,
 };
 use serde::Deserialize;
 use tower_sessions::Session;
+use tracing::error;
 
 use crate::{
     api::user::{
         components::{SigninForm, SignupForm, UserPage},
         models::{ErrorQuery, SignupUser},
     },
-    domain::{appstate::AppState, components::IntoHtmlComponent},
+    domain::{
+        appstate::AppState,
+        components::IntoHtmlComponent,
+        errors::ServiceError,
+        models::{HttpResponse, Never},
+    },
 };
 
 #[derive(Debug, Clone, Deserialize)]
@@ -23,14 +29,19 @@ pub async fn get_index(
     state: State<AppState>,
     mut session: Session,
     Query(query): Query<LoginQuery>,
-) -> impl IntoResponse {
-    if let Some(user_email) = query.user_email {
-        let _ = state.user_service.sign_in(&mut session, &user_email).await;
-        return Redirect::to("/").into_response();
+) -> HttpResponse<UserPage> {
+    let Some(email) = query.user_email else {
+        // No email provided: show login form
+        return HttpResponse::Html(UserPage::sign_in(None).into_html_component());
+    };
+
+    match state.user_service.sign_in(&mut session, &email).await {
+        Ok(_) => HttpResponse::Redirect("/todos".to_string()),
+        Err(ServiceError::NotFound) => {
+            HttpResponse::Html(UserPage::sign_up(None).into_html_component())
+        }
+        Err(_) => HttpResponse::Html(UserPage::sign_up(None).into_html_component()),
     }
-    UserPage::sign_up(None)
-        .into_html_component()
-        .into_response()
 }
 
 pub async fn get_sign_in(query: Query<ErrorQuery>) -> impl IntoResponse {
@@ -41,26 +52,21 @@ pub async fn post_sign_in(
     state: State<AppState>,
     mut session: Session,
     Form(payload): Form<SignupUser>,
-) -> Response {
+) -> HttpResponse<Never> {
     let result = state
         .user_service
         .sign_in(&mut session, &payload.email)
-        .await;
+        .await
+        .inspect_err(|e| error!("Error signing in user: {:#?}", e));
 
     match result {
-        Ok(Some(_user)) => {
-            tracing::debug!("Redirecting to absolute root path after successful sign in");
-            // Use absolute path for redirect
-            Redirect::to("/").into_response()
+        Ok(_) => HttpResponse::HxRedirect("/todos".to_string()),
+        Err(ServiceError::NotFound) => {
+            HttpResponse::NotFound(format!("User with email {} not found", payload.email))
         }
-        Ok(None) => UserPage::sign_in(Some("User not found".to_string()))
-            .into_html_component()
-            .into_response(),
         Err(e) => {
-            tracing::error!("Sign-in error: {}", e.message);
-            UserPage::sign_in(Some(e.message))
-                .into_html_component()
-                .into_response()
+            error!("Error signing in user: {:#?}", e);
+            HttpResponse::InternalServerError
         }
     }
 }
@@ -74,27 +80,28 @@ pub async fn post_sign_up(
     state: State<AppState>,
     mut session: Session,
     Form(payload): Form<SignupUser>,
-) -> impl IntoResponse {
+) -> HttpResponse<Never> {
     let result = state
         .user_service
         .sign_up(&mut session, &payload.email)
-        .await;
+        .await
+        .inspect_err(|e| error!("Error signing in user: {:#?}", e));
 
     match result {
-        Ok(_user) => Redirect::to("/").into_response(),
-        Err(e) => {
-            tracing::error!("Sign-up error: {}", e.message);
-            UserPage::sign_up(Some(e.message))
-                .into_html_component()
-                .into_response()
-        }
+        Ok(_) => HttpResponse::HxRedirect("/todos".into()),
+        Err(ServiceError::Conflict) => HttpResponse::Conflict(format!(
+            "User {} already exists, try signing in",
+            payload.email
+        )),
+        Err(_) => HttpResponse::InternalServerError,
     }
 }
 
-pub async fn post_sign_out(session: Session) -> Response {
-    session.delete().await.unwrap_or_else(|e| {
-        tracing::error!("Failed to destroy session: {}", e);
-    });
-
-    Redirect::to("/users").into_response()
+pub async fn post_sign_out(session: Session) -> HttpResponse<Never> {
+    let delete_result = session.delete().await;
+    let save_result = session.save().await;
+    match (delete_result, save_result) {
+        (Ok(_), Ok(_)) => HttpResponse::HxRedirect("/users".into()),
+        _ => HttpResponse::InternalServerError,
+    }
 }

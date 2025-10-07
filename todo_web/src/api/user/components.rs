@@ -7,7 +7,7 @@ pub struct SignupForm(pub Option<String>);
 impl Render for SignupForm {
     fn render(&self) -> Markup {
         html! {
-            form #signup-form method="post" action="/users/signup" {
+            form #signup-form hx-post="/users/signup" hx-target-error="#error" {
                 @if let Some(err) = &self.0 {
                     div.error-message { (err) }
                 }
@@ -16,6 +16,7 @@ impl Render for SignupForm {
                     label for="email" { "Email" }
                     input type="email" name="email" id="email" required {}
                 }
+                #error .error-message {}
 
                 button.button type="submit" { "Sign Up" }
             }
@@ -27,7 +28,7 @@ pub struct SigninForm(pub Option<String>);
 impl Render for SigninForm {
     fn render(&self) -> Markup {
         html! {
-            form #signin-form method="post" action="/users/signin" {
+            form #signin-form hx-post="/users/signin" hx-target-error="#error" {
                 @if let Some(err) = &self.0 {
                     div.error-message { (err) }
                 }
@@ -36,6 +37,7 @@ impl Render for SigninForm {
                     label for="email" { "Email" }
                     input type="email" name="email" id="email" required {}
                 }
+                #error .error-message {}
 
                 button.button type="submit" { "Sign In" }
             }

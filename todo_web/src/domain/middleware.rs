@@ -1,50 +1,46 @@
-use axum::{
-    body::Body,
-    http::{Request, StatusCode},
-    middleware::Next,
-    response::{IntoResponse, Redirect, Response},
-};
+use axum::{body::Body, extract::State, http::Request, middleware::Next, response::Response};
 use tower_sessions::Session;
 use tracing::info;
 use uuid::Uuid;
 
-const PUBLIC_PATHS: [&str; 2] = ["/users/signin", "/users/signup"];
+use crate::domain::{
+    appstate::AppState,
+    models::{HttpResponse, Never},
+};
+
 const USER_KEY: &str = "user";
 
 pub async fn require_auth(
-    session: Session,
+    mut session: Session,
+    State(state): State<AppState>,
     req: Request<Body>,
     next: Next,
-) -> Result<Response, Response> {
-    let path = req.uri().path();
+) -> Result<Response, HttpResponse<Never>> {
+    // Check session
+    let user_id = session.get::<Uuid>(USER_KEY).await.ok().flatten();
 
-    // Allow public paths to bypass auth
-    if PUBLIC_PATHS.iter().any(|p| path.starts_with(p)) {
+    if user_id.is_some() {
         return Ok(next.run(req).await);
     }
 
-    // Check session
-    let user_id = session.get::<Uuid>(USER_KEY).await.map_err(|e| {
-        tracing::error!("Session error: {}", e);
-        StatusCode::INTERNAL_SERVER_ERROR.into_response()
-    })?;
+    // Check Cloudflare header
+    if let Some(cf_user) = req.headers().get("cf-access-authenticated-user-email") {
+        let email = cf_user.to_str().unwrap_or_default();
+        // Look up or create user in DB
+        let result = state
+            .user_service
+            .sign_up_or_sign_in(&mut session, &email.to_string())
+            .await;
 
-    match user_id {
-        Some(_) => Ok(next.run(req).await),
-        None => {
-            tracing::debug!("No user session found. Checking for authenticated Cloudflare header.");
-            // Check for Cloudflare header
-            if let Some(cloudflare_user) = req.headers().get("cf-access-authenticated-user-email") {
-                //redirect to /users?user_email={cloudflare_user}
-                let redirect_url = format!(
-                    "/users?user_email={}",
-                    cloudflare_user.to_str().unwrap_or_default()
-                );
-                Err(Redirect::to(&redirect_url).into_response())
-            } else {
-                Err(Redirect::to("/users").into_response())
-            }
+        // Proceed with request as authenticated user
+        if let Ok(_) = result {
+            Ok(next.run(req).await)
+        } else {
+            Err(HttpResponse::Redirect("/users".to_string()))
         }
+    } else {
+        // No session, no Cloudflare header: redirect to login
+        Err(HttpResponse::Redirect("/users".to_string()))
     }
 }
 
@@ -59,4 +55,14 @@ pub async fn log_headers(req: Request<Body>, next: Next) -> Response {
     info!("{:?}", req.headers());
 
     next.run(req).await
+}
+
+pub async fn log_cookie_outbound(req: Request<Body>, next: Next) -> Response {
+    let response = next.run(req).await;
+    // Log response cookie header
+    info!(
+        "Response cookie header: {:?}",
+        response.headers().get("Set-Cookie")
+    );
+    response
 }

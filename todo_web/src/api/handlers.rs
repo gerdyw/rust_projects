@@ -1,14 +1,16 @@
-use axum::{
-    extract::Query,
-    response::{IntoResponse, Redirect},
-};
+use axum::{extract::Query, response::IntoResponse};
 use maud::html;
 use serde::{Deserialize, Serialize};
+use tracing::debug;
 
-use crate::domain::components::{IntoHtmlComponent, Page};
+use crate::domain::{
+    components::{IntoHtmlComponent, Page},
+    models::{HttpResponse, Never},
+};
 
-pub async fn get_index() -> impl IntoResponse {
-    Redirect::to("/todos")
+pub async fn get_index() -> HttpResponse<Never> {
+    debug!("GET / redirecting to /todos");
+    HttpResponse::Redirect("/todos".into())
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

@@ -15,6 +15,6 @@ pub fn create_router(state: AppState) -> Router {
         .route("/{id}/done", put(mark_done))
         .route("/{id}/undone", put(mark_undone))
         .route("/{id}", delete(delete_todo))
-        .with_state(state)
-        .layer(middleware::from_fn(require_auth))
+        .with_state(state.clone())
+        .layer(middleware::from_fn_with_state(state.clone(), require_auth))
 }

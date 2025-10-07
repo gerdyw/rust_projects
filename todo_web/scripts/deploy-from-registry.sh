@@ -18,9 +18,7 @@ docker build -t "${SERVICE_NAME}:latest" .
 
 # 2. Tag and push to registry
 echo "--- Pushing to registry ---"
-docker tag "${SERVICE_NAME}:latest" "${REGISTRY}/${SERVICE_NAME}:${IMAGE_TAG}"
 docker tag "${SERVICE_NAME}:latest" "${REGISTRY}/${SERVICE_NAME}:latest"
-docker push "${REGISTRY}/${SERVICE_NAME}:${IMAGE_TAG}"
 docker push "${REGISTRY}/${SERVICE_NAME}:latest"
 
 # 3. Deploy using the registry image

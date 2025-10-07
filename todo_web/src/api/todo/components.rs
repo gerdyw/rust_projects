@@ -86,12 +86,12 @@ impl Render for CreateTodoForm {
 
 pub struct TodoPage {
     pub todos: HtmlComponent<TodoList>,
-    pub email: String,
+    pub email: Option<String>,
     pub error: Option<String>,
 }
 
 impl TodoPage {
-    pub fn new(todos: Vec<Todo>, email: String) -> Self {
+    pub fn new(todos: Vec<Todo>, email: Option<String>) -> Self {
         Self {
             todos: TodoList::from(todos).into_html_component(),
             email,
@@ -106,7 +106,7 @@ impl Render for TodoPage {
             div.page-container {
                 header.app-header {
                     h1 { "Todo App" }
-                    form.signout-form method="post" action="/users/signout" {
+                    form.signout-form hx-post="/users/signout" {
                         button.button type="submit" { "Sign Out" }
                     }
                 }
@@ -117,7 +117,9 @@ impl Render for TodoPage {
                         @if let Some(err) = &self.error {
                             p .error { (err) }
                         }
-                        sub { "Signed in as " (self.email) }
+                        @if let Some(email) = &self.email {
+                            sub { "Signed in as " (email) }
+                        }
                     }
                 }
         };

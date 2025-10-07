@@ -1,7 +1,8 @@
 /* Base app container */
 #app {
     margin: 0 auto;
-    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    padding: var(--pico-block-spacing-vertical)
+        var(--pico-block-spacing-horizontal);
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
@@ -12,7 +13,8 @@
     width: 100%;
     max-width: 400px;
     margin: var(--pico-spacing) auto;
-    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    padding: var(--pico-block-spacing-vertical)
+        var(--pico-block-spacing-horizontal);
     background: var(--pico-card-sectionning-background-color);
     border-radius: var(--pico-border-radius);
 }
@@ -26,7 +28,8 @@
 
 .tab-link {
     flex: 1;
-    padding: var(--pico-nav-link-spacing-vertical) var(--pico-nav-link-spacing-horizontal);
+    padding: var(--pico-nav-link-spacing-vertical)
+        var(--pico-nav-link-spacing-horizontal);
     background: var(--pico-card-background-color);
     border: var(--pico-border-width) solid var(--pico-muted-border-color);
     border-radius: var(--pico-border-radius);
@@ -62,11 +65,13 @@ button[type="submit"] {
 }
 
 /* Error message */
-.error-message {
+.error-message:not(:empty) {
     margin-top: var(--pico-spacing);
-    padding: var(--pico-form-element-spacing-vertical) var(--pico-form-element-spacing-horizontal);
+    padding: var(--pico-form-element-spacing-vertical)
+        var(--pico-form-element-spacing-horizontal);
     background: var(--pico-card-background-color);
-    border: var(--pico-border-width) solid var(--pico-form-element-invalid-border-color);
+    border: var(--pico-border-width) solid
+        var(--pico-form-element-invalid-border-color);
     border-radius: var(--pico-border-radius);
     color: var(--pico-form-element-invalid-border-color);
 }
@@ -85,13 +90,15 @@ button[type="submit"] {
 @media (max-width: 800px) {
     #app {
         width: 100%;
-        padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+        padding: var(--pico-block-spacing-vertical)
+            var(--pico-block-spacing-horizontal);
     }
 }
 
 @media (max-width: 400px) {
     #app {
-        padding: calc(var(--pico-block-spacing-vertical) * 0.5) calc(var(--pico-block-spacing-horizontal) * 0.5);
+        padding: calc(var(--pico-block-spacing-vertical) * 0.5)
+            calc(var(--pico-block-spacing-horizontal) * 0.5);
     }
 }
 

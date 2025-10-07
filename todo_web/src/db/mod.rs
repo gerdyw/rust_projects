@@ -2,6 +2,7 @@ use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 use tracing::{debug, error};
 
 use crate::domain::settings::DatabaseSettings;
+pub mod errors;
 pub mod metadata;
 
 pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {

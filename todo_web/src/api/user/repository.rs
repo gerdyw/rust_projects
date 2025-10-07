@@ -1,5 +1,8 @@
 use sqlx::{Pool, Postgres};
+use tracing::debug;
 use uuid::Uuid;
+
+use crate::{api::user::models::User, db::errors::RepoError};
 
 #[derive(Clone)]
 pub struct UserRepository {
@@ -11,25 +14,26 @@ impl UserRepository {
         Self { pool }
     }
 
-    pub async fn find_user_by_email(
-        &self,
-        email: &str,
-    ) -> sqlx::Result<Option<super::models::User>> {
-        sqlx::query_as::<_, super::models::User>("SELECT * FROM users WHERE email = $1")
+    pub async fn find_user_by_email(&self, email: &str) -> Result<User, RepoError> {
+        let user = sqlx::query_as::<_, super::models::User>("SELECT * FROM users WHERE email = $1")
             .bind(email)
-            .fetch_optional(&self.pool)
-            .await
+            .fetch_one(&self.pool)
+            .await?;
+
+        Ok(user)
     }
 
-    pub async fn find_user_by_id(&self, id: Uuid) -> sqlx::Result<Option<super::models::User>> {
-        sqlx::query_as::<_, super::models::User>("SELECT * FROM users WHERE id = $1")
+    pub async fn find_user_by_id(&self, id: Uuid) -> Result<User, RepoError> {
+        let user = sqlx::query_as::<_, super::models::User>("SELECT * FROM users WHERE id = $1")
             .bind(id)
-            .fetch_optional(&self.pool)
-            .await
+            .fetch_one(&self.pool)
+            .await?;
+
+        Ok(user)
     }
 
-    pub async fn create_user(&self, email: &str) -> sqlx::Result<super::models::User> {
-        sqlx::query_as::<_, super::models::User>(
+    pub async fn create_user(&self, email: &str) -> Result<User, RepoError> {
+        let user = sqlx::query_as::<_, super::models::User>(
             r#"
             INSERT INTO users (email)
             VALUES ($1)
@@ -38,15 +42,22 @@ impl UserRepository {
         )
         .bind(email)
         .fetch_one(&self.pool)
-        .await
+        .await?;
+
+        Ok(user)
     }
 
-    pub async fn delete_user(&self, email: &str) -> sqlx::Result<u64> {
-        let result = sqlx::query("DELETE FROM users WHERE email = $1")
-            .bind(email)
+    pub async fn delete(&self, id: Uuid) -> Result<(), RepoError> {
+        debug!("Deleting todo with id: {}", id);
+        let result = sqlx::query("DELETE FROM todo_items WHERE id = $1")
+            .bind(id)
             .execute(&self.pool)
             .await?;
 
-        Ok(result.rows_affected())
+        if result.rows_affected() == 0 {
+            Err(RepoError::NotFound)
+        } else {
+            Ok(())
+        }
     }
 }
