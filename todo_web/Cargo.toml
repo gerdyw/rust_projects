@@ -18,6 +18,7 @@ sqlx = { version = "0.8.6", features = [
 axum = "0.8.4"
 maud = "0.27.0"
 serde = { version = "1.0.*", features = ["derive"], default-features = false }
+serde_json = "1.0.*"
 tokio = { version = "1.47.1", features = ["rt-multi-thread", "macros"] }
 tower-http = { version = "0.6.6", features = ["fs", "set-header"] }
 tower = "0.5.2"

@@ -21,7 +21,7 @@ impl UserRepository {
             .await
     }
 
-    pub async fn find_user_by_id(&self, id: Uuid) -> sqlx::Result<Option<super::models::User>> {
+    pub async fn find_user_by_id(&self, id: &Uuid) -> sqlx::Result<Option<super::models::User>> {
         sqlx::query_as::<_, super::models::User>("SELECT * FROM users WHERE id = $1")
             .bind(id)
             .fetch_optional(&self.pool)

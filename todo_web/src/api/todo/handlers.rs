@@ -1,9 +1,9 @@
 use crate::api::todo::components::{TodoList, TodoPage};
 use crate::api::todo::models::CreateTodo;
 use crate::domain::appstate::AppState;
-use crate::domain::components::{HtmlComponent, IntoHtmlComponent};
-use crate::domain::errors::InternalServerError;
-use crate::domain::models::AuthedResult;
+use crate::domain::components::IntoHtmlComponent;
+use crate::domain::errors::HttpError;
+use axum::response::Response;
 use axum::{
     Form,
     extract::{Path, State},
@@ -16,82 +16,54 @@ use uuid::Uuid;
 pub async fn get_index(
     State(state): State<AppState>,
     session: Session,
-) -> Result<AuthedResult<HtmlComponent<TodoPage>>, InternalServerError> {
+) -> Result<Response, HttpError> {
     let user_id = extract_user_id(session).await?;
-    let Some(user_id) = user_id else {
-        return Ok(AuthedResult::NotAuthed);
-    };
+    let todos = state.todo_service.list_for_user(&user_id).await?;
+    let email = state.user_service.get_email_by_id(&user_id).await?;
 
-    let todos = state.todo_service.list_for_user(user_id).await?;
-    let email = state.user_service.get_email_by_id(user_id).await?;
     let Some(email) = email else {
-        return Ok(AuthedResult::NotAuthed);
+        return Err(HttpError::InternalServerError("Failed to get email".into()));
     };
-
-    let component = TodoPage::new(todos, email);
-    Ok(AuthedResult::Authed(component.into_html_component()))
+    let component = TodoPage::new(todos, email).into_html_component();
+    Ok(component.into_response())
 }
 
 pub async fn list_todos(
     State(state): State<AppState>,
     session: Session,
-) -> Result<AuthedResult<HtmlComponent<TodoList>>, InternalServerError> {
+) -> Result<Response, HttpError> {
     let user_id = extract_user_id(session).await?;
-
-    match user_id {
-        Some(user_id) => {
-            let todos = state.todo_service.list_for_user(user_id).await?;
-            let component = TodoList(todos);
-            Ok(AuthedResult::Authed(component.into_html_component()))
-        }
-        None => Ok(AuthedResult::NotAuthed),
-    }
+    return_todos(&state, &user_id).await
 }
 
 pub async fn create_todo(
     state: State<AppState>,
     session: Session,
     Form(payload): Form<CreateTodo>,
-) -> Result<AuthedResult<HtmlComponent<TodoList>>, InternalServerError> {
+) -> Result<Response, HttpError> {
     let user_id = extract_user_id(session).await?;
-
-    match user_id {
-        Some(user_id) => {
-            let _ = state.todo_service.create(user_id, payload.title).await?;
-            let todos = state.todo_service.list_for_user(user_id).await?;
-            let component = TodoList(todos);
-            Ok(AuthedResult::Authed(component.into_html_component()))
-        }
-        None => Ok(AuthedResult::NotAuthed),
-    }
+    let _ = state.todo_service.create(&user_id, payload.title).await?;
+    return_todos(&state, &user_id).await
 }
 
 pub async fn mark_done(
     state: State<AppState>,
     session: Session,
     Path(id): Path<Uuid>,
-) -> impl IntoResponse {
-    let _ = state
-        .todo_service
-        .mark_done(id)
-        .await
-        .inspect_err(|e| error!("{:#?}", e));
-
-    list_todos(state, session).await
+) -> Result<Response, HttpError> {
+    let user_id = extract_user_id(session).await?;
+    let _ = state.todo_service.mark_done(&id).await?;
+    return_todos(&state, &user_id).await
 }
 
 pub async fn mark_undone(
     state: State<AppState>,
     session: Session,
     Path(id): Path<Uuid>,
-) -> impl IntoResponse {
-    let _ = state
-        .todo_service
-        .mark_undone(id)
-        .await
-        .inspect_err(|e| error!("{:#?}", e));
-
-    list_todos(state, session).await
+) -> Result<Response, HttpError> {
+    let user_id = extract_user_id(session).await?;
+    let _ = state.todo_service.mark_undone(&id).await?;
+    return_todos(&state, &user_id).await
 }
 
 pub async fn delete_todo(
@@ -101,17 +73,23 @@ pub async fn delete_todo(
 ) -> impl IntoResponse {
     let _ = state
         .todo_service
-        .delete(id)
+        .delete(&id)
         .await
-        .inspect_err(|e| error!("{:#?}", e));
+        .inspect_err(|e| error!("{:#?}", e))?;
     list_todos(state, session).await
 }
-async fn extract_user_id(session: Session) -> Result<Option<Uuid>, InternalServerError> {
-    let user_id = session.get::<Uuid>("user").await.map_err(|e| {
-        error!("Failed to get user session: {}", e);
-        InternalServerError {
-            message: "Failed to get user session".into(),
-        }
-    })?;
+
+async fn extract_user_id(session: Session) -> Result<Uuid, HttpError> {
+    let user_id = session
+        .get::<Uuid>("user")
+        .await
+        .map_err(|e| HttpError::InternalServerError(e.to_string()))?
+        .ok_or_else(|| HttpError::Unauthorized)?;
     Ok(user_id)
+}
+
+async fn return_todos(state: &AppState, user_id: &Uuid) -> Result<Response, HttpError> {
+    let todos = state.todo_service.list_for_user(&user_id).await?;
+    let component = TodoList(todos).into_html_component();
+    Ok(component.into_response())
 }

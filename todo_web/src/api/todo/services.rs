@@ -1,11 +1,9 @@
+use sqlx::Error;
 use uuid::Uuid;
 
-use crate::{
-    api::todo::{
-        models::{CreateTodo, Todo},
-        repository::TodoRepository,
-    },
-    domain::errors::InternalServerError,
+use crate::api::todo::{
+    models::{CreateTodo, Todo},
+    repository::TodoRepository,
 };
 
 #[derive(Clone)]
@@ -18,39 +16,24 @@ impl TodoService {
         Self { repo }
     }
 
-    pub async fn list_for_user(&self, user_id: Uuid) -> Result<Vec<Todo>, InternalServerError> {
-        self.repo.list_for_user(user_id).await.map_err(|e| {
-            tracing::error!("Failed to list todos for user {}: {}", user_id, e);
-            InternalServerError::from(e)
-        })
+    pub async fn list_for_user(&self, user_id: &Uuid) -> Result<Vec<Todo>, sqlx::Error> {
+        self.repo.list_for_user(user_id).await
     }
 
-    pub async fn create(&self, user_id: Uuid, title: String) -> Result<Todo, InternalServerError> {
+    pub async fn create(&self, user_id: &Uuid, title: String) -> Result<Todo, Error> {
         let payload = CreateTodo { title };
-        self.repo.create(user_id, payload).await.map_err(|e| {
-            tracing::error!("Failed to create todo: {}", e);
-            InternalServerError::from(e)
-        })
+        self.repo.create(user_id, payload).await
     }
 
-    pub async fn mark_done(&self, id: Uuid) -> Result<Todo, InternalServerError> {
-        self.repo.mark_done(id).await.map_err(|e| {
-            tracing::error!("Failed to mark todo {} as done: {}", id, e);
-            InternalServerError::from(e)
-        })
+    pub async fn mark_done(&self, id: &Uuid) -> Result<Todo, Error> {
+        self.repo.mark_done(id).await
     }
 
-    pub async fn mark_undone(&self, id: Uuid) -> Result<u64, InternalServerError> {
-        self.repo.mark_undone(id).await.map_err(|e| {
-            tracing::error!("Failed to mark todo {} as undone: {}", id, e);
-            InternalServerError::from(e)
-        })
+    pub async fn mark_undone(&self, id: &Uuid) -> Result<Todo, Error> {
+        self.repo.mark_undone(id).await
     }
 
-    pub async fn delete(&self, id: Uuid) -> Result<u64, InternalServerError> {
-        self.repo.delete(id).await.map_err(|e| {
-            tracing::error!("Failed to delete todo {}: {}", id, e);
-            InternalServerError::from(e)
-        })
+    pub async fn delete(&self, id: &Uuid) -> Result<u64, Error> {
+        self.repo.delete(id).await
     }
 }
