@@ -3,10 +3,7 @@ use tower_sessions::Session;
 use tracing::info;
 use uuid::Uuid;
 
-use crate::domain::{
-    appstate::AppState,
-    models::{HttpResponse, Never},
-};
+use crate::domain::{appstate::AppState, models::HttpError};
 
 const USER_KEY: &str = "user";
 
@@ -15,7 +12,7 @@ pub async fn require_auth(
     State(state): State<AppState>,
     req: Request<Body>,
     next: Next,
-) -> Result<Response, HttpResponse<Never>> {
+) -> Result<Response, HttpError> {
     // Check session
     let user_id = session.get::<Uuid>(USER_KEY).await.ok().flatten();
 
@@ -36,11 +33,11 @@ pub async fn require_auth(
         if let Ok(_) = result {
             Ok(next.run(req).await)
         } else {
-            Err(HttpResponse::Redirect("/users".to_string()))
+            Err(HttpError::UnauthorizedRedirect)
         }
     } else {
         // No session, no Cloudflare header: redirect to login
-        Err(HttpResponse::Redirect("/users".to_string()))
+        Err(HttpError::UnauthorizedRedirect)
     }
 }
 

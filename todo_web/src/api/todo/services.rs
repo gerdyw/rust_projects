@@ -30,24 +30,24 @@ impl TodoService {
         Ok(todos)
     }
 
-    pub async fn mark_done(&self, id: Uuid) -> Result<Vec<Todo>, ServiceError> {
+    pub async fn mark_done(&self, user_id: Uuid, id: Uuid) -> Result<Vec<Todo>, ServiceError> {
         self.repo.mark_done(id).await?;
 
-        let todos = self.repo.list_for_user(id).await?;
+        let todos = self.repo.list_for_user(user_id).await?;
         Ok(todos)
     }
 
-    pub async fn mark_undone(&self, id: Uuid) -> Result<Vec<Todo>, ServiceError> {
+    pub async fn mark_undone(&self, user_id: Uuid, id: Uuid) -> Result<Vec<Todo>, ServiceError> {
         self.repo.mark_undone(id).await?;
 
-        let todos = self.repo.list_for_user(id).await?;
+        let todos = self.repo.list_for_user(user_id).await?;
         Ok(todos)
     }
 
-    pub async fn delete(&self, id: Uuid) -> Result<Vec<Todo>, ServiceError> {
+    pub async fn delete(&self, user_id: Uuid, id: Uuid) -> Result<Vec<Todo>, ServiceError> {
         self.repo.delete(id).await?;
 
-        let todos = self.repo.list_for_user(id).await?;
+        let todos = self.repo.list_for_user(user_id).await?;
         Ok(todos)
     }
 }
