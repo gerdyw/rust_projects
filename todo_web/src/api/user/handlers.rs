@@ -15,8 +15,7 @@ use crate::{
     domain::{
         appstate::AppState,
         components::IntoHtmlComponent,
-        errors::ServiceError,
-        models::{HttpResponse, Never},
+        models::{HttpError, HttpSuccess, Never},
     },
 };
 
@@ -29,18 +28,19 @@ pub async fn get_index(
     state: State<AppState>,
     mut session: Session,
     Query(query): Query<LoginQuery>,
-) -> HttpResponse<UserPage> {
+) -> Result<HttpSuccess<UserPage>, HttpError> {
     let Some(email) = query.user_email else {
         // No email provided: show login form
-        return HttpResponse::Html(UserPage::sign_in(None).into_html_component());
+        return Ok(HttpSuccess::Html(
+            UserPage::sign_in(None).into_html_component(),
+        ));
     };
 
     match state.user_service.sign_in(&mut session, &email).await {
-        Ok(_) => HttpResponse::Redirect("/todos".to_string()),
-        Err(ServiceError::NotFound) => {
-            HttpResponse::Html(UserPage::sign_up(None).into_html_component())
-        }
-        Err(_) => HttpResponse::Html(UserPage::sign_up(None).into_html_component()),
+        Ok(_) => Ok(HttpSuccess::Redirect("/todos".to_string())),
+        Err(_) => Ok(HttpSuccess::Html(
+            UserPage::sign_up(None).into_html_component(),
+        )),
     }
 }
 
@@ -52,7 +52,7 @@ pub async fn post_sign_in(
     state: State<AppState>,
     mut session: Session,
     Form(payload): Form<SignupUser>,
-) -> HttpResponse<Never> {
+) -> Result<HttpSuccess<Never>, HttpError> {
     let result = state
         .user_service
         .sign_in(&mut session, &payload.email)
@@ -60,13 +60,10 @@ pub async fn post_sign_in(
         .inspect_err(|e| error!("Error signing in user: {:#?}", e));
 
     match result {
-        Ok(_) => HttpResponse::HxRedirect("/todos".to_string()),
-        Err(ServiceError::NotFound) => {
-            HttpResponse::NotFound(format!("User with email {} not found", payload.email))
-        }
+        Ok(_) => Ok(HttpSuccess::HxRedirect("/todos".to_string())),
         Err(e) => {
             error!("Error signing in user: {:#?}", e);
-            HttpResponse::InternalServerError
+            Err(e.into())
         }
     }
 }
@@ -80,7 +77,7 @@ pub async fn post_sign_up(
     state: State<AppState>,
     mut session: Session,
     Form(payload): Form<SignupUser>,
-) -> HttpResponse<Never> {
+) -> Result<HttpSuccess<Never>, HttpError> {
     let result = state
         .user_service
         .sign_up(&mut session, &payload.email)
@@ -88,20 +85,13 @@ pub async fn post_sign_up(
         .inspect_err(|e| error!("Error signing in user: {:#?}", e));
 
     match result {
-        Ok(_) => HttpResponse::HxRedirect("/todos".into()),
-        Err(ServiceError::Conflict) => HttpResponse::Conflict(format!(
-            "User {} already exists, try signing in",
-            payload.email
-        )),
-        Err(_) => HttpResponse::InternalServerError,
+        Ok(_) => Ok(HttpSuccess::HxRedirect("/todos".into())),
+        Err(e) => Err(e.into()),
     }
 }
 
-pub async fn post_sign_out(session: Session) -> HttpResponse<Never> {
-    let delete_result = session.delete().await;
-    let save_result = session.save().await;
-    match (delete_result, save_result) {
-        (Ok(_), Ok(_)) => HttpResponse::HxRedirect("/users".into()),
-        _ => HttpResponse::InternalServerError,
-    }
+pub async fn post_sign_out(session: Session) -> Result<HttpSuccess<Never>, HttpError> {
+    session.delete().await?;
+    session.save().await?;
+    Ok(HttpSuccess::HxRedirect("/users".into()))
 }

@@ -5,12 +5,12 @@ use tracing::debug;
 
 use crate::domain::{
     components::{IntoHtmlComponent, Page},
-    models::{HttpResponse, Never},
+    models::{HttpError, HttpSuccess, Never},
 };
 
-pub async fn get_index() -> HttpResponse<Never> {
+pub async fn get_index() -> Result<HttpSuccess<Never>, HttpError> {
     debug!("GET / redirecting to /todos");
-    HttpResponse::Redirect("/todos".into())
+    Ok(HttpSuccess::Redirect("/todos".into()))
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
