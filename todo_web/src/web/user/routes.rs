@@ -5,10 +5,10 @@ use axum::{
 };
 
 use crate::{
-    api::user::handlers::{
+    domain::{appstate::AppState, middleware::log_cookie_outbound},
+    web::user::handlers::{
         get_index, get_sign_in, get_sign_up, post_sign_in, post_sign_out, post_sign_up,
     },
-    domain::{appstate::AppState, middleware::log_cookie_outbound},
 };
 
 pub fn create_router(state: AppState) -> Router {

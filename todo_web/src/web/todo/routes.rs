@@ -1,8 +1,5 @@
-use super::handlers::{create_todo, delete_todo, get_index, mark_undone};
-use crate::{
-    api::todo::handlers::mark_done,
-    domain::{appstate::AppState, middleware::require_auth},
-};
+use super::handlers::{create_todo, delete_todo, get_index, mark_done, mark_undone};
+use crate::domain::{appstate::AppState, middleware::require_auth};
 
 use axum::{
     Router, middleware,

@@ -1,7 +1,7 @@
 use axum::serve;
 use std::net::SocketAddr;
 use todo_web::{
-    api::routes::create_router,
+    web::app_routes::create_router,
     db::init_db,
     domain::{appstate::AppState, session_store::create_store, settings::load_settings},
 };

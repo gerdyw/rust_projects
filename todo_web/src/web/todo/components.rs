@@ -1,5 +1,5 @@
 use crate::domain::components::{HtmlComponent, IntoHtmlComponent};
-use crate::{api::todo::models::Todo, domain::components::Page};
+use crate::{data::todo::models::Todo, domain::components::Page};
 use maud::{Markup, Render, html};
 use uuid::Uuid;
 

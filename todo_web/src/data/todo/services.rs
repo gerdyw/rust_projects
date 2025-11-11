@@ -1,7 +1,7 @@
 use uuid::Uuid;
 
 use crate::{
-    api::todo::{
+    data::todo::{
         models::{CreateTodo, Todo},
         repository::TodoRepository,
     },

@@ -3,7 +3,7 @@ use tracing::error;
 use uuid::Uuid;
 
 use crate::{
-    api::user::{models::User, repository::UserRepository},
+    data::user::{models::User, repository::UserRepository},
     domain::errors::ServiceError,
 };
 
