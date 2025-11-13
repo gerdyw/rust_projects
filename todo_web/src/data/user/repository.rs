@@ -2,7 +2,7 @@ use sqlx::{Pool, Postgres};
 use tracing::debug;
 use uuid::Uuid;
 
-use crate::{api::user::models::User, db::errors::RepoError};
+use crate::{data::user::models::User, db::errors::RepoError};
 
 #[derive(Clone)]
 pub struct UserRepository {

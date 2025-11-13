@@ -1,6 +1,6 @@
 use sqlx::{Pool, Postgres};
 
-use crate::api::{
+use crate::data::{
     todo::{repository::TodoRepository, services::TodoService},
     user::{repository::UserRepository, services::UserService},
 };

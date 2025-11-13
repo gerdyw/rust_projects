@@ -8,15 +8,13 @@ use tower_sessions::Session;
 use tracing::error;
 
 use crate::{
-    api::user::{
-        components::{SigninForm, SignupForm, UserPage},
-        models::{ErrorQuery, SignupUser},
-    },
+    data::user::models::{ErrorQuery, SignupUser},
     domain::{
         appstate::AppState,
         components::IntoHtmlComponent,
         models::{HttpError, HttpSuccess, Never},
     },
+    web::user::components::{SigninForm, SignupForm, UserPage},
 };
 
 #[derive(Debug, Clone, Deserialize)]

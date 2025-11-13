@@ -1,8 +1,8 @@
-use crate::api::todo::components::{TodoList, TodoPage};
-use crate::api::todo::models::CreateTodo;
+use crate::data::todo::models::CreateTodo;
 use crate::domain::appstate::AppState;
 use crate::domain::components::IntoHtmlComponent;
 use crate::domain::models::{HttpError, HttpSuccess};
+use crate::web::todo::components::{TodoList, TodoPage};
 use axum::{
     Form,
     extract::{Path, State},
