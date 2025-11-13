@@ -11,11 +11,11 @@ use tower_sessions::SessionManagerLayer;
 use tower_sessions_redis_store::{RedisStore, fred::prelude::Pool};
 
 use crate::{
+    domain::{appstate::AppState, middleware::log_headers},
     web::{
         app_handlers::{get_error, get_index},
         todo, user,
     },
-    domain::{appstate::AppState, middleware::log_headers},
 };
 
 pub fn create_router(
