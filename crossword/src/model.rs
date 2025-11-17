@@ -52,15 +52,13 @@ impl Model {
                 continue;
             };
 
-            loop {
-                let (new_model, message_opt) = self.handle_key(key);
-                self = new_model;
-                if let Some(message) = message_opt {
-                    let (updated_model, _) = self.update(message);
-                    self = updated_model;
-                } else {
-                    break;
-                }
+            let (new_model, message_opt) = self.handle_key(key);
+            self = new_model;
+
+            // Process any follow-up message once
+            if let Some(message) = message_opt {
+                let (updated_model, _) = self.update(message);
+                self = updated_model;
             }
 
             terminal
@@ -159,23 +157,30 @@ impl Model {
     }
 
     fn handle_delete_char(self) -> (Self, Option<Message>) {
-        let board = if self.player_board.grid.get(self.player_board.pos) == &Tile::Empty {
-            self.player_board.move_backward()
+        if self.player_board.grid.get(self.player_board.pos) == &Tile::Empty {
+            // If current cell is empty, move backward and delete that cell
+            let board = self.player_board.move_backward();
+            (
+                Model {
+                    player_board: board.delete_char(),
+                    ..self
+                },
+                None, // Don't move again - we already moved backward
+            )
         } else {
-            self.player_board
-        };
-        let direction = board.direction;
-        let result = (
-            Model {
-                player_board: board.delete_char(),
-                ..self
-            },
-            Some(Message::MoveCursor(match direction {
-                BoardDirection::Across => MoveDirection::Left,
-                BoardDirection::Down => MoveDirection::Up,
-            })),
-        );
-        result
+            // If current cell is filled, delete it and move backward
+            let direction = self.player_board.direction;
+            (
+                Model {
+                    player_board: self.player_board.delete_char(),
+                    ..self
+                },
+                Some(Message::MoveCursor(match direction {
+                    BoardDirection::Across => MoveDirection::Left,
+                    BoardDirection::Down => MoveDirection::Up,
+                })),
+            )
+        }
     }
 }
 

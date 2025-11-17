@@ -53,28 +53,52 @@ impl Coordinate {
     pub fn move_right(self) -> Self {
         match self.col + 1 {
             new_x if new_x < self.size => Coordinate::new(new_x, self.row, self.size),
-            _ => Coordinate::new(0, self.row, self.size).move_down(),
+            _ => {
+                // Wrap to start of next row
+                let next_row = (self.row + 1) % self.size;
+                Coordinate::new(0, next_row, self.size)
+            }
         }
     }
 
     pub fn move_down(self) -> Self {
         match self.row + 1 {
             new_y if new_y < self.size => Coordinate::new(self.col, new_y, self.size),
-            _ => Coordinate::new(self.col, 0, self.size).move_right(),
+            _ => {
+                // Wrap to top of next column
+                let next_col = (self.col + 1) % self.size;
+                Coordinate::new(next_col, 0, self.size)
+            }
         }
     }
 
     pub fn move_left(self) -> Self {
         match self.col.checked_sub(1) {
             Some(new_x) => Coordinate::new(new_x, self.row, self.size),
-            None => Coordinate::new(self.size - 1, self.row, self.size).move_up(),
+            None => {
+                // Wrap to end of previous row
+                let prev_row = if self.row == 0 {
+                    self.size - 1
+                } else {
+                    self.row - 1
+                };
+                Coordinate::new(self.size - 1, prev_row, self.size)
+            }
         }
     }
 
     pub fn move_up(self) -> Self {
         match self.row.checked_sub(1) {
             Some(new_y) => Coordinate::new(self.col, new_y, self.size),
-            None => Coordinate::new(self.col, self.size - 1, self.size).move_left(),
+            None => {
+                // Wrap to bottom of previous column
+                let prev_col = if self.col == 0 {
+                    self.size - 1
+                } else {
+                    self.col - 1
+                };
+                Coordinate::new(prev_col, self.size - 1, self.size)
+            }
         }
     }
 }

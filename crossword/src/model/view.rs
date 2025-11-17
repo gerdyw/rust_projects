@@ -1,4 +1,4 @@
-use crate::model::{board::Tile, common::Grid};
+use crate::model::common::Grid;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum CellView {
