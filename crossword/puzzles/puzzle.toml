@@ -1,0 +1,13 @@
+size = 5
+
+grid = """
+START
+P R O
+APPLE
+N E A
+STEEP
+"""
+
+across = ["Begin", "Fruit with seeds"]
+
+down = ["Cookware", "Beverage made from leaves"]
