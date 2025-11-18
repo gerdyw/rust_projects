@@ -5,6 +5,8 @@ use crate::model::{
     puzzle::Puzzle,
 };
 
+use super::common::Edge;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Tile {
     Filled(char),
@@ -39,16 +41,70 @@ impl Board {
 
         Board {
             size,
-            grid: Grid::from_vec(grid),
-            pos: Coordinate::new(0, 0, size),
+            grid: Grid::from_vec(grid, size),
+            pos: Coordinate::new(0, 0),
             direction: BoardDirection::default(),
+        }
+    }
+
+    pub fn is_start_of_word(&self) -> bool {
+        match self.direction {
+            BoardDirection::Across => {
+                // Check if at the start of a row or the previous tile is blocked
+                // Also ensure the next tile exists and is not blocked (no single-letter words)
+                let on_left = self.pos.is_on_edge(Edge::Left);
+                let left_blocked = self
+                    .grid
+                    .is_val(self.pos.move_direction_wrapped(MoveDirection::Left), Tile::Blocked);
+                let next_exists = self.grid.is_on_edge(coord, edge)
+            }
+            BoardDirection::Down => {
+                // Check if at the top of a column or the tile above is blocked
+                // Also ensure the tile below exists and is not blocked (no single-letter words)
+                let at_start = self.pos.row == 0
+                    || *self.grid.get(Coordinate::new(
+                        self.pos.col,
+                        self.pos.row - 1,
+                        self.pos.size,
+                    )) == Tile::Blocked;
+
+                let next_exists = self.pos.row + 1 < self.size
+                    && *self.grid.get(Coordinate::new(
+                        self.pos.col,
+                        self.pos.row + 1,
+                        self.pos.size,
+                    )) != Tile::Blocked;
+
+                at_start && next_exists
+            }
+        }
+    }
+
+    pub fn is_end_of_word(&self) -> bool {
+        match self.direction {
+            BoardDirection::Across => {
+                // Check if at the end of a row or the next tile is blocked
+                if self.pos.col + 1 >= self.size {
+                    return true;
+                }
+                let right_coord = Coordinate::new(self.pos.col + 1, self.pos.row, self.pos.size);
+                *self.grid.get(right_coord) == Tile::Blocked
+            }
+            BoardDirection::Down => {
+                // Check if at the bottom of a column or the tile below is blocked
+                if self.pos.row + 1 >= self.size {
+                    return true;
+                }
+                let below_coord = Coordinate::new(self.pos.col, self.pos.row + 1, self.pos.size);
+                *self.grid.get(below_coord) == Tile::Blocked
+            }
         }
     }
 
     pub fn move_cursor(self, direction: MoveDirection) -> Self {
         let mut new_pos = self.pos;
         loop {
-            new_pos = new_pos.move_direction(direction);
+            new_pos = new_pos.move_direction_wrapped(direction);
             if *self.grid.get(new_pos) != Tile::Blocked {
                 break;
             }
@@ -56,9 +112,7 @@ impl Board {
 
         Board {
             pos: new_pos,
-            grid: self.grid,
-            size: self.size,
-            direction: self.direction,
+            ..self
         }
     }
 
@@ -69,30 +123,39 @@ impl Board {
         }
     }
 
+    pub fn move_forward(self) -> Self {
+        match self.direction {
+            BoardDirection::Across => self.move_cursor(MoveDirection::Right),
+            BoardDirection::Down => self.move_cursor(MoveDirection::Down),
+        }
+    }
+
+    pub fn move_to_next_word_start(self) -> Self {
+        let mut new_board = self;
+        while !new_board.is_start_of_word() {
+            new_board = new_board.move_forward();
+        }
+        new_board
+    }
+
     pub fn swap_direction(self) -> Self {
         Board {
             direction: self.direction.swap(),
-            grid: self.grid,
-            size: self.size,
-            pos: self.pos,
+            ..self
         }
     }
 
     pub fn enter_char(self, ch: char) -> Self {
         Board {
             grid: self.grid.set(self.pos, Tile::Filled(ch)),
-            size: self.size,
-            pos: self.pos,
-            direction: self.direction,
+            ..self
         }
     }
 
     pub fn delete_char(self) -> Self {
         Board {
             grid: self.grid.set(self.pos, Tile::Empty),
-            size: self.size,
-            pos: self.pos,
-            direction: self.direction,
+            ..self
         }
     }
 }

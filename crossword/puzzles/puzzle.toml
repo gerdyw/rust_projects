@@ -1,13 +1,25 @@
 size = 5
 
 grid = """
-START
-P R O
-APPLE
-N E A
-STEEP
+.HERO
+GAVIN
+ITALY
+FEDEX
+TREY.
 """
 
-across = ["Begin", "Fruit with seeds"]
+across = [
+    "Main character",
+    "Men's name",
+    "Boot-shaped country",
+    "Shipping company",
+    "Card game",
+]
 
-down = ["Cookware", "Beverage made from leaves"]
+down = [
+    "One who dislikes intensely",
+    "Escape or avoid",
+    "Common surname or first name",
+    "Black gemstone",
+    "Present",
+]

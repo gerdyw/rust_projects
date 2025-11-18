@@ -1,8 +1,10 @@
 use crate::model::common::MoveDirection;
 
 pub enum Message {
-    MoveCursor(MoveDirection),
+    MoveInDirection(MoveDirection),
+    MoveForward,
     SwapDirection,
+    MoveToNextWord,
     EnterChar(char),
     DeleteChar,
     ResetPuzzle,

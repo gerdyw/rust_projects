@@ -46,7 +46,7 @@ impl Model {
                                 } else {
                                     Style::default().fg(Color::White)
                                 };
-                                (format!(" {} ", c.to_uppercase()), style)
+                                (format!("{}", c.to_uppercase()), style)
                             }
                             Tile::Empty => {
                                 let style = if is_selected {
@@ -54,10 +54,10 @@ impl Model {
                                 } else {
                                     Style::default()
                                 };
-                                (String::from("   "), style)
+                                (String::from(" "), style)
                             }
                             Tile::Blocked => {
-                                (String::from(" █ "), Style::default().fg(Color::DarkGray))
+                                (String::from("█"), Style::default().fg(Color::DarkGray))
                             }
                         };
 
