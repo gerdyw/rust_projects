@@ -9,7 +9,7 @@ mod tests {
     #[test]
     fn test_from_puzzle() {
         let puzzle = create_test_puzzle();
-        let board = PlayerBoard::from_puzzle(&puzzle);
+        let board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Should start with cursor at origin
         assert_eq!(board.cursor, Coordinate::new(0, 0));
@@ -20,7 +20,7 @@ mod tests {
     #[test]
     fn test_get() {
         let puzzle = create_test_puzzle();
-        let board = PlayerBoard::from_puzzle(&puzzle);
+        let board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // All cells should start empty (or blocked)
         let coord = Coordinate::new(0, 0);
@@ -33,7 +33,7 @@ mod tests {
     #[test]
     fn test_swap_direction() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         assert_eq!(board.get_direction(), BoardDirection::Across);
 
@@ -47,7 +47,7 @@ mod tests {
     #[test]
     fn test_write_to_cell() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable cell
         while !board.is_playable(board.get_cursor()) {
@@ -63,7 +63,7 @@ mod tests {
     #[test]
     fn test_clear_cell() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable cell, fill it, then clear it
         while !board.is_playable(board.get_cursor()) {
@@ -82,7 +82,7 @@ mod tests {
     #[should_panic(expected = "Only alphanumeric characters can be entered")]
     fn test_write_to_cell_invalid_char() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable cell
         while !board.is_playable(board.get_cursor()) {
@@ -95,7 +95,7 @@ mod tests {
     #[test]
     fn test_move_cursor_right() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
         let original_cursor = board.get_cursor();
 
         board.move_cursor(MoveDirection::Right);
@@ -108,7 +108,7 @@ mod tests {
     #[test]
     fn test_move_cursor_down() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
         let original_cursor = board.get_cursor();
 
         board.move_cursor(MoveDirection::Down);
@@ -121,7 +121,7 @@ mod tests {
     #[test]
     fn test_move_forward_across() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         assert_eq!(board.get_direction(), BoardDirection::Across);
         let original_cursor = board.get_cursor();
@@ -135,7 +135,7 @@ mod tests {
     #[test]
     fn test_move_forward_down() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
         board.swap_direction();
 
         assert_eq!(board.get_direction(), BoardDirection::Down);
@@ -151,7 +151,7 @@ mod tests {
     #[test]
     fn test_is_playable() {
         let puzzle = create_test_puzzle();
-        let board = PlayerBoard::from_puzzle(&puzzle);
+        let board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Test various coordinates
         let coord = Coordinate::new(0, 0);
@@ -162,7 +162,7 @@ mod tests {
     #[test]
     fn test_move_cursor_skips_blocked() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move cursor and verify we don't land on a blocked cell
         board.move_cursor(MoveDirection::Right);
@@ -177,7 +177,7 @@ mod tests {
     #[test]
     fn test_fill_and_move_forward() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Find a playable cell
         while !board.is_playable(board.get_cursor()) {
@@ -201,7 +201,7 @@ mod tests {
     #[test]
     fn test_mutability() {
         let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(&puzzle);
+        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Initial state
         assert_eq!(board.get_cursor(), Coordinate::new(0, 0));

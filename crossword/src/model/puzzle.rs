@@ -2,7 +2,7 @@ use crate::model::{BoardDirection, MoveDirection, PuzzleCell, Word};
 
 use super::{Coordinate, Grid};
 use serde::{Deserialize, Serialize};
-use std::fmt::Display;
+use std::{error::Error, fmt::Display, fs};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct PuzzleFile {
@@ -26,9 +26,24 @@ pub struct Puzzle {
 }
 
 impl Puzzle {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        let contents = std::fs::read_to_string(path)?;
-        let puzzle_file: PuzzleFile = toml::from_str(&contents)?;
+    pub fn new(
+        grid: Grid<PuzzleCell>,
+        words: PuzzleWords,
+        clue_numbers: Vec<(Coordinate, usize)>,
+    ) -> Self {
+        Puzzle {
+            grid,
+            words,
+            clue_numbers,
+        }
+    }
+    pub fn from_file(path: &str) -> Result<Self, Box<dyn Error>> {
+        let contents = fs::read_to_string(path)?;
+        Self::from_string(contents)
+    }
+
+    pub fn from_string(puzzle_data: String) -> Result<Self, Box<dyn Error>> {
+        let puzzle_file: PuzzleFile = toml::from_str(&puzzle_data)?;
         let mut grid_vec = Vec::new();
 
         for line in puzzle_file.grid.lines() {
@@ -38,12 +53,8 @@ impl Puzzle {
                     .chars()
                     .filter(|c| !c.is_whitespace())
                     .map(|ch| match ch {
-                        '.' => None, // Use '.' for blocked cells in file
-                        c => Some(c),
-                    })
-                    .map(|opt_char| match opt_char {
-                        Some(c) => PuzzleCell::Fillable(c),
-                        None => PuzzleCell::Blocked,
+                        '.' => PuzzleCell::Blocked,
+                        c => PuzzleCell::Fillable(c),
                     })
                     .collect();
                 grid_vec.push(row);

@@ -35,9 +35,8 @@ fn render_congratulations(frame: &mut Frame, area: Rect, _board: &PlayerBoard) {
     let text = "Winner!";
 
     // Compute popup dimensions (leave some padding)
-    // Target a popup that is about half the screen or smaller
-    let popup_width = area.width - 4;
-    let popup_height = std::cmp::min(area.height.saturating_sub(6), area.height / 2);
+    let popup_width = area.width.saturating_sub(4).max(10);
+    let popup_height = std::cmp::min(area.height.saturating_sub(6), area.height / 2).max(3);
 
     // Center the popup
     let popup_x = area.x + (area.width.saturating_sub(popup_width)) / 2;
@@ -50,16 +49,10 @@ fn render_congratulations(frame: &mut Frame, area: Rect, _board: &PlayerBoard) {
         height: popup_height,
     };
 
-    let title = Span::styled(
-        "Winner!",
-        Style::default().fg(Color::White).bg(Color::Green).bold(),
-    );
-
     // Draw the popup border
     let border_block = Block::default()
-        .title(title)
         .borders(Borders::ALL)
-        .border_style(Style::default().fg(Color::Green));
+        .border_style(Style::default().fg(Color::Yellow));
 
     frame.render_widget(border_block, popup_area);
 
@@ -68,11 +61,10 @@ fn render_congratulations(frame: &mut Frame, area: Rect, _board: &PlayerBoard) {
         let inner = Rect {
             x: popup_area.x + 1,
             y: popup_area.y + 1,
-            width: popup_area.width - 2,
-            height: popup_area.height - 2,
+            width: popup_area.width.saturating_sub(2),
+            height: popup_area.height.saturating_sub(2),
         };
 
-        // Create the BigText widget via its builder and render it into the inner area.
         let big = BigText::builder()
             .pixel_size(PixelSize::Full)
             .centered()
@@ -148,42 +140,69 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     // Create column constraints (3 chars per cell)
     let widths = vec![Constraint::Length(3); size];
 
-    let title = format!(
-        "Crossword Puzzle {} {}",
-        match direction {
-            BoardDirection::Across => "→",
-            BoardDirection::Down => "↓",
-        },
-        match direction {
-            BoardDirection::Across => "Across",
-            BoardDirection::Down => "Down",
-        }
-    );
-
     let table = Table::new(rows, widths)
         .block(
             Block::default()
-                .title(title)
                 .borders(Borders::ALL)
                 .border_style(Style::default().fg(Color::White)),
         )
         .column_spacing(0);
 
-    frame.render_widget(table, area);
+    // Compute a tight area for the table so the borders fit around the grid
+    let cell_width: u16 = 3;
+    let content_width = cell_width.saturating_mul(size as u16);
+    // +2 for left/right borders
+    let mut table_width = content_width.saturating_add(2);
+    if table_width > area.width {
+        table_width = area.width;
+    }
+
+    // Height: rows + 2 for top/bottom borders
+    let mut table_height = (size as u16).saturating_add(2);
+    if table_height > area.height {
+        table_height = area.height;
+    }
+
+    // Center the table inside the given area
+    let table_x = area.x + (area.width.saturating_sub(table_width)) / 2;
+    let table_y = area.y + (area.height.saturating_sub(table_height)) / 2;
+
+    let table_area = Rect {
+        x: table_x,
+        y: table_y,
+        width: table_width,
+        height: table_height,
+    };
+
+    frame.render_widget(table, table_area);
 }
 
 fn render_footer(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     let cursor = board.get_cursor();
 
-    // Build the footer text
-    let text = if let Some(word) = board.get_current_word() {
+    // Get current word once
+    let maybe_word = board.get_current_word();
+
+    // Build the footer text: first line is the clue (with number styled yellow and length in brackets),
+    // second line contains position and key hints.
+    let text = if let Some(word) = maybe_word.as_ref() {
         vec![
+            // Line::from(vec![Span::raw(format!(
+            //     "{} ({})",
+            //     word.clue,
+            //     word.length()
+            // ))]),
             Line::from(vec![
+                // Span::styled(
+                //     format!("{}. ", word.clue_number),
+                //     Style::default().fg(Color::Yellow).bold(),
+                // ),
+                // Span::raw(format!("{} [{}]", word.clue, word.length())),
+                Span::raw(word.clue.clone()),
                 Span::styled(
-                    format!("{}. ", word.clue_number),
+                    format!(" ({})", word.length()),
                     Style::default().fg(Color::Yellow).bold(),
                 ),
-                Span::raw(&word.clue),
             ]),
             Line::from(vec![
                 Span::styled("Position: ", Style::default().fg(Color::Gray)),
@@ -216,8 +235,27 @@ fn render_footer(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
         ]
     };
 
+    // Compute direction arrow and label and put them into the footer block title
+    let dir = board.get_direction();
+    let dir_arrow = match dir {
+        BoardDirection::Across => "→",
+        BoardDirection::Down => "↓",
+    };
+    let dir_label = match dir {
+        BoardDirection::Across => "Across",
+        BoardDirection::Down => "Down",
+    };
+
+    // Footer title: show the clue number and direction (number is not styled here; only the
+    // in-content number will be yellow). If no current word, show only the direction.
+    let footer_title = if let Some(word) = maybe_word.as_ref() {
+        format!("{} {}", word.clue_number, dir_label)
+    } else {
+        format!("Current Clue {} {}", dir_arrow, dir_label)
+    };
+
     let paragraph = Paragraph::new(text)
-        .block(Block::default().borders(Borders::ALL).title("Current Clue"))
+        .block(Block::default().borders(Borders::ALL).title(footer_title))
         .wrap(Wrap { trim: true });
 
     frame.render_widget(paragraph, area);

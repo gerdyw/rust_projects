@@ -1,27 +1,67 @@
 #[cfg(test)]
 mod tests {
-    use super::super::{Coordinate, Grid, Puzzle};
+    use crate::model::{BoardDirection, PuzzleCell::*, Word};
+
+    use super::super::{Coordinate, Grid, Puzzle, PuzzleWords};
 
     fn create_simple_puzzle() -> Puzzle {
         let grid_vec = vec![
-            vec![Some('C'), Some('A'), Some('T')],
-            vec![Some('A'), None, Some('O')],
-            vec![Some('R'), Some('A'), Some('T')],
+            vec![Fillable('C'), Fillable('A'), Fillable('T')],
+            vec![Fillable('A'), Blocked, Fillable('O')],
+            vec![Fillable('R'), Fillable('A'), Fillable('T')],
         ];
         let grid = Grid::from_vec(grid_vec, 3);
 
         let across_clues = vec!["Feline".to_string(), "Rodent".to_string()];
-        let down_clues = vec![
-            "Automobile".to_string(),
-            "Past tense of eat".to_string(),
-            "Rodent".to_string(),
+        let down_clues = vec!["Automobile".to_string(), "Child".to_string()];
+        let clue_numbers = vec![
+            (Coordinate::new(0, 0), 1),
+            (Coordinate::new(2, 0), 2),
+            (Coordinate::new(0, 2), 3),
         ];
 
-        let (across, down) = Puzzle::find_words(&grid, across_clues, down_clues);
+        let across = vec![
+            Word::new(
+                "CAT".to_string(),
+                1,
+                BoardDirection::Across,
+                Coordinate::new(0, 0),
+                Coordinate::new(2, 0),
+                across_clues[0].clone(),
+            ),
+            Word::new(
+                "RAT".to_string(),
+                2,
+                BoardDirection::Across,
+                Coordinate::new(0, 2),
+                Coordinate::new(2, 2),
+                across_clues[1].clone(),
+            ),
+        ];
+
+        let down = vec![
+            Word::new(
+                "CAR".to_string(),
+                1,
+                BoardDirection::Down,
+                Coordinate::new(0, 0),
+                Coordinate::new(0, 2),
+                down_clues[0].clone(),
+            ),
+            Word::new(
+                "TOT".to_string(),
+                2,
+                BoardDirection::Down,
+                Coordinate::new(2, 0),
+                Coordinate::new(2, 2),
+                down_clues[1].clone(),
+            ),
+        ];
 
         Puzzle {
             grid,
-            words: super::super::PuzzleWords { across, down },
+            words: PuzzleWords { across, down },
+            clue_numbers,
         }
     }
 
@@ -35,18 +75,18 @@ mod tests {
     fn test_get() {
         let puzzle = create_simple_puzzle();
 
-        assert_eq!(puzzle.get(Coordinate::new(0, 0)), Some('C'));
-        assert_eq!(puzzle.get(Coordinate::new(1, 0)), Some('A'));
-        assert_eq!(puzzle.get(Coordinate::new(2, 0)), Some('T'));
-        assert_eq!(puzzle.get(Coordinate::new(1, 1)), None); // Blocked
+        assert_eq!(puzzle.get(Coordinate::new(0, 0)), Fillable('C'));
+        assert_eq!(puzzle.get(Coordinate::new(1, 0)), Fillable('A'));
+        assert_eq!(puzzle.get(Coordinate::new(2, 0)), Fillable('T'));
+        assert_eq!(puzzle.get(Coordinate::new(1, 1)), Blocked); // Blocked
     }
 
     #[test]
     fn test_get_out_of_bounds() {
         let puzzle = create_simple_puzzle();
 
-        assert_eq!(puzzle.get(Coordinate::new(-1, 0)), None);
-        assert_eq!(puzzle.get(Coordinate::new(3, 0)), None);
+        assert_eq!(puzzle.get(Coordinate::new(-1, 0)), Blocked);
+        assert_eq!(puzzle.get(Coordinate::new(3, 0)), Blocked);
     }
 
     #[test]
