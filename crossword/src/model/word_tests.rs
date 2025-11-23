@@ -1,11 +1,12 @@
 #[cfg(test)]
 mod tests {
-    use super::super::{Coordinate, Word};
+    use super::super::{BoardDirection, Coordinate, Word};
 
     #[test]
     fn test_new() {
         let word = Word::new(
             1,
+            BoardDirection::Across,
             Coordinate::new(0, 0),
             Coordinate::new(4, 0),
             "Test clue".to_string(),
@@ -21,6 +22,7 @@ mod tests {
     fn test_length_across() {
         let word = Word::new(
             1,
+            BoardDirection::Across,
             Coordinate::new(0, 0),
             Coordinate::new(4, 0),
             "Test".to_string(),
@@ -33,6 +35,7 @@ mod tests {
     fn test_length_down() {
         let word = Word::new(
             1,
+            BoardDirection::Down,
             Coordinate::new(2, 1),
             Coordinate::new(2, 5),
             "Test".to_string(),
@@ -45,6 +48,7 @@ mod tests {
     fn test_length_single_cell() {
         let word = Word::new(
             1,
+            BoardDirection::Across,
             Coordinate::new(3, 3),
             Coordinate::new(3, 3),
             "I".to_string(),
@@ -57,6 +61,7 @@ mod tests {
     fn test_is_across() {
         let word = Word::new(
             1,
+            BoardDirection::Across,
             Coordinate::new(0, 2),
             Coordinate::new(4, 2),
             "Across".to_string(),
@@ -70,6 +75,7 @@ mod tests {
     fn test_is_down() {
         let word = Word::new(
             1,
+            BoardDirection::Down,
             Coordinate::new(3, 0),
             Coordinate::new(3, 4),
             "Down".to_string(),
@@ -83,6 +89,7 @@ mod tests {
     fn test_contains_across() {
         let word = Word::new(
             1,
+            BoardDirection::Across,
             Coordinate::new(1, 2),
             Coordinate::new(5, 2),
             "Test".to_string(),
@@ -100,6 +107,7 @@ mod tests {
     fn test_contains_down() {
         let word = Word::new(
             1,
+            BoardDirection::Down,
             Coordinate::new(2, 1),
             Coordinate::new(2, 5),
             "Test".to_string(),
@@ -117,6 +125,7 @@ mod tests {
     fn test_display() {
         let word = Word::new(
             5,
+            BoardDirection::Across,
             Coordinate::new(2, 3),
             Coordinate::new(6, 3),
             "Famous painting".to_string(),

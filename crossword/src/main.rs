@@ -1,13 +1,15 @@
-use crossword::model::Puzzle;
+use crossword::execution::{CommandExecutor, KeyParser, Runner};
+use crossword::model::{PlayerBoard, Puzzle};
 
-fn main() {
-    // Example usage
-    // let model = Model::from_file("puzzles/puzzle.toml").expect("Failed to load puzzle");
-    // let terminal = ratatui::init();
-    // model.run(terminal);
-    // ratatui::restore();
-
+fn main() -> std::io::Result<()> {
     let puzzle = Puzzle::from_file("puzzles/puzzle.toml").expect("Failed to load puzzle");
-    println!("Loaded puzzle of size {}", puzzle.size());
-    println!("{}", puzzle);
+    let board = PlayerBoard::from_puzzle(puzzle);
+
+    let parser = KeyParser::new();
+    let executor = CommandExecutor::new(board);
+    let mut runner = Runner::new(parser, executor);
+
+    runner.run()?;
+
+    Ok(())
 }

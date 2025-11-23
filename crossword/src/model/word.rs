@@ -1,8 +1,12 @@
+use crate::model::BoardDirection;
+
 use super::Coordinate;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Word {
+    pub text: String,
     pub clue_number: usize,
+    pub direction: BoardDirection,
     pub start_pos: Coordinate,
     pub end_pos: Coordinate,
     pub clue: String,
@@ -10,13 +14,17 @@ pub struct Word {
 
 impl Word {
     pub fn new(
+        text: String,
         clue_number: usize,
+        direction: BoardDirection,
         start_pos: Coordinate,
         end_pos: Coordinate,
         clue: String,
     ) -> Self {
         Word {
+            text,
             clue_number,
+            direction,
             start_pos,
             end_pos,
             clue,

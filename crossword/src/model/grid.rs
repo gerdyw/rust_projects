@@ -1,22 +1,19 @@
-use super::Coordinate;
+use super::{Coordinate, grid_iterator::GridIterator};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Grid<T> {
+pub struct Grid<T: Copy> {
     vec: Vec<Vec<T>>,
     size: usize,
 }
 
-impl<T> Grid<T> {
+impl<T: Copy> Grid<T> {
     pub fn from_vec(vec: Vec<Vec<T>>, size: usize) -> Self {
         let grid = Grid { size, vec };
         assert!(grid.validate(), "Grid is not square of the specified size");
         grid
     }
 
-    pub fn new(size: usize, default: T) -> Self
-    where
-        T: Clone,
-    {
+    pub fn new(size: usize, default: T) -> Self {
         let vec = vec![vec![default; size]; size];
         Grid { vec, size }
     }
@@ -41,7 +38,7 @@ impl<T> Grid<T> {
         self.size
     }
 
-    pub fn get(&self, coord: Coordinate) -> Option<&T> {
+    pub fn get(&self, coord: Coordinate) -> Option<T> {
         if !coord.is_valid(self.size, self.size) {
             return None;
         }
@@ -49,17 +46,15 @@ impl<T> Grid<T> {
         self.vec
             .get(coord.row as usize)
             .and_then(|row| row.get(coord.col as usize))
+            .copied()
     }
 
-    pub fn set(mut self, coord: Coordinate, value: T) -> Self {
-        if coord.is_valid(self.size, self.size) {
-            if let Some(row) = self.vec.get_mut(coord.row as usize) {
-                if let Some(cell) = row.get_mut(coord.col as usize) {
-                    *cell = value;
-                }
-            }
-        }
-        self
+    pub fn set(&mut self, coord: Coordinate, value: T) {
+        self.vec
+            .get_mut(coord.row as usize)
+            .and_then(|row| row.get_mut(coord.col as usize))
+            .map(|cell| *cell = value)
+            .expect("Coordinate out of bounds");
     }
 
     pub fn contains(&self, coord: Coordinate) -> bool {
@@ -67,13 +62,28 @@ impl<T> Grid<T> {
     }
 
     // Optional: iterate over all cells with coordinates
-    pub fn iter(&self) -> impl Iterator<Item = (Coordinate, &T)> {
+    pub fn iter(&self) -> impl Iterator<Item = (Coordinate, T)> {
         self.vec.iter().enumerate().flat_map(|(row, cells)| {
             cells
                 .iter()
+                .copied()
                 .enumerate()
                 .map(move |(col, cell)| (Coordinate::new(col as isize, row as isize), cell))
         })
+    }
+
+    pub fn coord_iter(&self) -> impl Iterator<Item = Coordinate> {
+        (0..self.size).flat_map(move |row| {
+            (0..self.size).map(move |col| Coordinate::new(col as isize, row as isize))
+        })
+    }
+
+    pub fn directional_iter(
+        &self,
+        start_pos: Coordinate,
+        direction: super::MoveDirection,
+    ) -> GridIterator<'_, T> {
+        GridIterator::new(self, start_pos, direction)
     }
 }
 

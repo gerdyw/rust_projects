@@ -2,18 +2,22 @@ pub mod board_cell;
 pub mod board_direction;
 pub mod coordinate;
 pub mod grid;
+pub mod grid_iterator;
 pub mod move_direction;
-
 pub mod player_board;
 pub mod puzzle;
+pub mod puzzle_cell;
 pub mod word;
+
 pub use board_cell::BoardCell;
 pub use board_direction::BoardDirection;
 pub use coordinate::Coordinate;
 pub use grid::Grid;
+pub use grid_iterator::GridIterator;
 pub use move_direction::MoveDirection;
 pub use player_board::PlayerBoard;
 pub use puzzle::Puzzle;
+pub use puzzle_cell::PuzzleCell;
 pub use word::Word;
 // pub mod board;
 // pub mod common;

@@ -1,12 +1,12 @@
-use crate::model::common::MoveDirection;
+use crate::model::MoveDirection;
 
-pub enum Message {
+pub enum GameCommand {
     MoveInDirection(MoveDirection),
     MoveForward,
     SwapDirection,
+    MoveToNextEmptyCell,
     MoveToNextWord,
     EnterChar(char),
     DeleteChar,
-    ResetPuzzle,
     Quit,
 }

@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use crate::model::{BoardDirection, MoveDirection};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -54,6 +56,48 @@ impl Coordinate {
             MoveDirection::Down => self.down(),
             MoveDirection::Left => self.left(),
             MoveDirection::Up => self.up(),
+        }
+    }
+
+    pub fn order_board_dir(&self, other: &Coordinate, direction: BoardDirection) -> Ordering {
+        // compare self and other based on the specified board direction
+        // using row and col values
+        let orth_compare = match direction {
+            BoardDirection::Across => self.row.cmp(&other.row),
+            BoardDirection::Down => self.col.cmp(&other.col),
+        };
+
+        if orth_compare != Ordering::Equal {
+            return orth_compare;
+        }
+
+        match direction {
+            BoardDirection::Across => self.col.cmp(&other.col),
+            BoardDirection::Down => self.row.cmp(&other.row),
+        }
+    }
+
+    pub fn order_in_move_dir(&self, other: &Coordinate, direction: MoveDirection) -> Ordering {
+        let board_dir_compare = self.order_board_dir(other, direction.into_board_direction());
+        if direction.is_backwards() {
+            board_dir_compare.reverse()
+        } else {
+            board_dir_compare
+        }
+    }
+}
+
+impl PartialOrd for Coordinate {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Coordinate {
+    fn cmp(&self, other: &Self) -> Ordering {
+        match self.row.cmp(&other.row) {
+            Ordering::Equal => self.col.cmp(&other.col),
+            other => other,
         }
     }
 }

@@ -13,6 +13,13 @@ impl BoardDirection {
             BoardDirection::Down => BoardDirection::Across,
         }
     }
+
+    pub fn to_move_direction(&self) -> MoveDirection {
+        match self {
+            BoardDirection::Across => MoveDirection::Right,
+            BoardDirection::Down => MoveDirection::Down,
+        }
+    }
 }
 
 impl From<MoveDirection> for BoardDirection {
@@ -20,6 +27,15 @@ impl From<MoveDirection> for BoardDirection {
         match direction {
             MoveDirection::Left | MoveDirection::Right => BoardDirection::Across,
             MoveDirection::Up | MoveDirection::Down => BoardDirection::Down,
+        }
+    }
+}
+
+impl Into<MoveDirection> for BoardDirection {
+    fn into(self) -> MoveDirection {
+        match self {
+            BoardDirection::Across => MoveDirection::Right,
+            BoardDirection::Down => MoveDirection::Down,
         }
     }
 }

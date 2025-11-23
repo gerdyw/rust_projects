@@ -1,4 +1,6 @@
-#[derive(Debug, Clone, PartialEq, Eq)]
+use crate::model::PuzzleCell;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BoardCell {
     Filled(char),
     Empty,
@@ -10,6 +12,15 @@ impl From<Option<char>> for BoardCell {
         match opt {
             Some(_) => BoardCell::Empty,
             None => BoardCell::Blocked,
+        }
+    }
+}
+
+impl From<PuzzleCell> for BoardCell {
+    fn from(cell: PuzzleCell) -> Self {
+        match cell {
+            PuzzleCell::Fillable(_) => BoardCell::Empty,
+            PuzzleCell::Blocked => BoardCell::Blocked,
         }
     }
 }

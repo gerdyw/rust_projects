@@ -1,3 +1,5 @@
+use crate::model::BoardDirection;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MoveDirection {
     Left,
@@ -7,7 +9,7 @@ pub enum MoveDirection {
 }
 
 impl MoveDirection {
-    pub fn opposite(&self) -> Self {
+    pub fn reverse(&self) -> Self {
         match self {
             MoveDirection::Left => MoveDirection::Right,
             MoveDirection::Right => MoveDirection::Left,
@@ -23,5 +25,16 @@ impl MoveDirection {
             MoveDirection::Up => MoveDirection::Left,
             MoveDirection::Down => MoveDirection::Right,
         }
+    }
+
+    pub fn into_board_direction(&self) -> BoardDirection {
+        match self {
+            MoveDirection::Left | MoveDirection::Right => BoardDirection::Across,
+            MoveDirection::Up | MoveDirection::Down => BoardDirection::Down,
+        }
+    }
+
+    pub fn is_backwards(&self) -> bool {
+        matches!(self, MoveDirection::Left | MoveDirection::Up)
     }
 }
