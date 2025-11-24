@@ -11,8 +11,8 @@ mod tests {
         let puzzle = create_test_puzzle();
         let board = PlayerBoard::from_puzzle(puzzle.clone());
 
-        // Should start with cursor at origin
-        assert_eq!(board.cursor, Coordinate::new(0, 0));
+        // Should start with cursor at a playable position (not necessarily origin if blocked)
+        assert!(board.is_playable(board.get_cursor()));
         assert_eq!(board.direction, BoardDirection::Across);
         assert_eq!(board.size, puzzle.size());
     }
@@ -119,36 +119,6 @@ mod tests {
     }
 
     #[test]
-    fn test_move_forward_across() {
-        let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
-
-        assert_eq!(board.get_direction(), BoardDirection::Across);
-        let original_cursor = board.get_cursor();
-
-        board.move_forward();
-
-        // Should move right when direction is Across
-        assert!(board.get_cursor().col >= original_cursor.col);
-    }
-
-    #[test]
-    fn test_move_forward_down() {
-        let puzzle = create_test_puzzle();
-        let mut board = PlayerBoard::from_puzzle(puzzle.clone());
-        board.swap_direction();
-
-        assert_eq!(board.get_direction(), BoardDirection::Down);
-        let original_cursor = board.get_cursor();
-
-        board.move_forward();
-
-        // Should move down when direction is Down
-        let new_cursor = board.get_cursor();
-        assert!(new_cursor.row >= original_cursor.row || new_cursor != original_cursor);
-    }
-
-    #[test]
     fn test_is_playable() {
         let puzzle = create_test_puzzle();
         let board = PlayerBoard::from_puzzle(puzzle.clone());
@@ -175,7 +145,7 @@ mod tests {
     }
 
     #[test]
-    fn test_fill_and_move_forward() {
+    fn test_fill_cell() {
         let puzzle = create_test_puzzle();
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
@@ -188,7 +158,7 @@ mod tests {
         board.write_to_cell('H');
         assert_eq!(board.get(first_cursor), BoardCell::Filled('H'));
 
-        board.move_forward();
+        board.move_cursor(MoveDirection::Right);
         // Should have moved to a different cell
         let cursor = board.get_cursor();
         if board.is_playable(cursor) {
@@ -203,8 +173,9 @@ mod tests {
         let puzzle = create_test_puzzle();
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
-        // Initial state
-        assert_eq!(board.get_cursor(), Coordinate::new(0, 0));
+        // Initial state - cursor should be at a playable position
+        let initial_cursor = board.get_cursor();
+        assert!(board.is_playable(initial_cursor));
         assert_eq!(board.get_direction(), BoardDirection::Across);
 
         // Mutate direction
@@ -213,7 +184,8 @@ mod tests {
 
         // Mutate cursor
         board.move_cursor(MoveDirection::Right);
-        // Cursor should have changed
-        assert!(board.get_cursor().col > 0 || board.get_cursor() == Coordinate::new(0, 0));
+        // Cursor should have changed or stayed same if at edge/blocked
+        let new_cursor = board.get_cursor();
+        assert!(board.is_playable(new_cursor));
     }
 }

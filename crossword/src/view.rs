@@ -7,7 +7,6 @@ use ratatui::{
     text::{Line, Span},
     widgets::{Block, Borders, Cell, Paragraph, Row, Table, Wrap},
 };
-use tui_big_text::{BigText, PixelSize};
 
 use crate::model::{BoardCell, BoardDirection, Coordinate, PlayerBoard};
 

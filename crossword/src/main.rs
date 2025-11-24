@@ -1,5 +1,3 @@
-use std::io;
-
 use crossword::execution::{CommandExecutor, KeyParser, Runner};
 use crossword::model::{PlayerBoard, Puzzle};
 

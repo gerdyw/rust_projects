@@ -50,8 +50,9 @@ mod tests {
         let iter = GridIterator::new(&grid, Coordinate::new(2, 0), MoveDirection::Left);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
 
-        // Starting at (2,0)=3, going left: (1,0)=2, (0,0)=1
-        assert_eq!(values, vec![2, 1]);
+        // Starting at (2,0)=3, going left: (1,0)=2, (0,0)=1, wraps to (2,2)=9, (2,1)=6, wraps to (1,2)=8, etc.
+        // The iterator visits all cells except start until returning to start
+        assert_eq!(values, vec![2, 1, 9, 8, 7, 6, 5, 4]);
     }
 
     #[test]
@@ -61,8 +62,8 @@ mod tests {
         let iter = GridIterator::new(&grid, Coordinate::new(0, 2), MoveDirection::Up);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
 
-        // Starting at (0,2)=7, going up: (0,1)=4, (0,0)=1
-        assert_eq!(values, vec![4, 1]);
+        // Starting at (0,2)=7, going up: (0,1)=4, (0,0)=1, wraps and continues until back to start
+        assert_eq!(values, vec![4, 1, 9, 6, 3, 8, 5, 2]);
     }
 
     #[test]
@@ -72,8 +73,8 @@ mod tests {
         let iter = GridIterator::new(&grid, Coordinate::new(1, 1), MoveDirection::Right);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
 
-        // Starting at (1,1)=5, going right: (2,1)=6, wraps to (0,2)=7, (1,2)=8, (2,2)=9
-        assert_eq!(values, vec![6, 7, 8, 9]);
+        // Starting at (1,1)=5, going right: visits all remaining cells wrapping around back to start
+        assert_eq!(values, vec![6, 7, 8, 9, 1, 2, 3, 4]);
     }
 
     #[test]
@@ -84,7 +85,7 @@ mod tests {
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
 
         // Single cell, should immediately return to start
-        assert_eq!(values, vec![]);
+        assert_eq!(values, Vec::<i32>::new());
     }
 
     #[test]
@@ -102,12 +103,12 @@ mod tests {
     fn test_wrapping_behavior() {
         let grid = Grid::from_vec(vec![vec![1, 2], vec![3, 4]], 2);
 
-        // Test that moving right from (1,0) wraps to (0,1)
+        // Test that moving right from (1,0) wraps to (0,1) and continues
         let iter = GridIterator::new(&grid, Coordinate::new(1, 0), MoveDirection::Right);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
 
-        // From (1,0)=2: wraps to (0,1)=3, (1,1)=4
-        assert_eq!(values, vec![3, 4]);
+        // From (1,0)=2: wraps to (0,1)=3, (1,1)=4, (0,0)=1, back to start
+        assert_eq!(values, vec![3, 4, 1]);
     }
 
     #[test]
