@@ -164,3 +164,7 @@ fn log_command(command: &GameCommand) {
         let _ = writeln!(f, "{} {:?}", ts, command);
     }
 }
+
+#[cfg(test)]
+#[path = "executor_tests.rs"]
+mod executor_tests;
