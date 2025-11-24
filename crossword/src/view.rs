@@ -1,6 +1,8 @@
+use std::time::Duration;
+
 use ratatui::{
     Frame,
-    layout::{Constraint, Direction, Layout, Rect},
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
     style::{Color, Style, Stylize},
     text::{Line, Span},
     widgets::{Block, Borders, Cell, Paragraph, Row, Table, Wrap},
@@ -30,10 +32,6 @@ pub fn render(frame: &mut Frame, board: &PlayerBoard) {
 }
 
 fn render_congratulations(frame: &mut Frame, area: Rect, _board: &PlayerBoard) {
-    // Use `tui-big-text` to render a large congratulations string
-    // We'll render the big text inside a bordered popup and center it.
-    let text = "Winner!";
-
     // Compute popup dimensions (leave some padding)
     let popup_width = area.width.saturating_sub(4).max(10);
     let popup_height = std::cmp::min(area.height.saturating_sub(6), area.height / 2).max(3);
@@ -65,21 +63,25 @@ fn render_congratulations(frame: &mut Frame, area: Rect, _board: &PlayerBoard) {
             height: popup_area.height.saturating_sub(2),
         };
 
-        let big = BigText::builder()
-            .pixel_size(PixelSize::Full)
-            .centered()
-            .style(Style::default().fg(Color::Yellow).bold())
-            .lines(vec![text.into()])
-            .build();
+        let text = format!(
+            "Winner! Time: {:.2?}",
+            _board.get_total_time().unwrap_or(Duration::ZERO)
+        );
 
-        frame.render_widget(big, inner);
+        let paragraph = Paragraph::new(Span::styled(
+            text,
+            Style::default().fg(Color::Yellow).bold(),
+        ))
+        .alignment(Alignment::Center);
+
+        frame.render_widget(paragraph, inner);
     }
 }
 
 fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     let cursor = board.get_cursor();
-    let direction = board.get_direction();
-    let size = board.size();
+    let size: usize = board.size();
+    let elapsed_time = board.get_elapsed_time();
 
     // Get the current word to highlight
     let current_word = board.get_current_word();
@@ -143,6 +145,11 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     let table = Table::new(rows, widths)
         .block(
             Block::default()
+                .title(format!(
+                    "{:02}:{:02} ",
+                    elapsed_time.as_secs() / 60,
+                    elapsed_time.as_secs() % 60
+                ))
                 .borders(Borders::ALL)
                 .border_style(Style::default().fg(Color::White)),
         )

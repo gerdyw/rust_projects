@@ -1,11 +1,29 @@
-use crate::model::MoveDirection;
+use crate::model::{Coordinate, MoveDirection};
 
+#[derive(Debug)]
+pub enum CellCondition {
+    IsEmpty,
+    IsFilled,
+    IsPlayable,
+}
+
+#[derive(Debug)]
+pub enum MoveCondition {
+    ToCellThat(CellCondition),
+    ToNextWord,
+    ToSameWordCellThat(CellCondition),
+}
+
+#[derive(Debug)]
 pub enum GameCommand {
     MoveInDirection(MoveDirection),
+    MoveTo(Coordinate),
     MoveForward,
     SwapDirection,
     MoveToNextEmptyCell,
     MoveToNextWord,
+    MoveToNextPlayableCell,
+    // MoveToCellThat(CellCondition),
     EnterChar(char),
     DeleteChar,
     Quit,

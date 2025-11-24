@@ -1,4 +1,6 @@
-use crate::model::BoardDirection;
+use std::fmt::Display;
+
+use crate::model::{BoardDirection, CoordinateIter, WordIter};
 
 use super::Coordinate;
 
@@ -58,9 +60,17 @@ impl Word {
                 && coord.row <= self.end_pos.row
         }
     }
+
+    pub fn cell_iter(&self) -> CoordinateIter {
+        CoordinateIter::new(self.start_pos, self.end_pos)
+    }
+
+    pub fn word_iter(&self, start: Option<Coordinate>) -> WordIter {
+        WordIter::new(self, start)
+    }
 }
 
-impl std::fmt::Display for Word {
+impl Display for Word {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,

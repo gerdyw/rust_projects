@@ -2,6 +2,7 @@ use crate::model::{BoardDirection, MoveDirection, PuzzleCell, Word};
 
 use super::{Coordinate, Grid};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::{error::Error, fmt::Display, fs};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,12 +38,156 @@ impl Puzzle {
             clue_numbers,
         }
     }
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn Error>> {
-        let contents = fs::read_to_string(path)?;
-        Self::from_string(contents)
+
+    /// Parse an IPUZ JSON string and return a `Puzzle` ready to use by the app.
+    pub fn parse_ipuz_to_puzzle(input: &str) -> Result<Puzzle, Box<dyn Error>> {
+        let v: Value = serde_json::from_str(input)?;
+
+        // get dimensions
+        let width = v
+            .get("dimensions")
+            .and_then(|d| d.get("width"))
+            .and_then(|w| w.as_u64())
+            .map(|n| n as usize)
+            .or_else(|| v.get("width").and_then(|w| w.as_u64()).map(|n| n as usize))
+            .ok_or("missing width in IPUZ")?;
+
+        // block character (default '#')
+        let block_char = v
+            .get("block")
+            .and_then(|b| b.as_str())
+            .and_then(|s| s.chars().next())
+            .unwrap_or('#');
+
+        // choose source for letters: prefer "solution", then "puzzle"
+        let grid_source = v
+            .get("solution")
+            .or_else(|| v.get("puzzle"))
+            .ok_or("no 'solution' or 'puzzle' array found in IPUZ")?;
+
+        // Build Vec<Vec<PuzzleCell>>
+        let mut rows: Vec<Vec<PuzzleCell>> = Vec::new();
+
+        if let Some(arr) = grid_source.as_array() {
+            for row_val in arr {
+                // Each row might be an array of strings/objects or a string.
+                if let Some(row_arr) = row_val.as_array() {
+                    let mut row_cells = Vec::with_capacity(width);
+                    for cell_val in row_arr {
+                        let cell = if let Some(s) = cell_val.as_str() {
+                            // string element like "A" or "#"
+                            let ch = s.chars().next().unwrap_or(' ');
+                            if ch == block_char {
+                                PuzzleCell::Blocked
+                            } else {
+                                PuzzleCell::Fillable(ch)
+                            }
+                        } else if let Some(_) = cell_val.as_object() {
+                            // object variant: prefer a "solution" string, otherwise treat as blocked
+                            if let Some(sol) = cell_val.get("solution").and_then(|x| x.as_str()) {
+                                let ch = sol.chars().next().unwrap_or(' ');
+                                if ch == block_char {
+                                    PuzzleCell::Blocked
+                                } else {
+                                    PuzzleCell::Fillable(ch)
+                                }
+                            } else {
+                                // no explicit solution -> treat as blocked (safer than inventing letters)
+                                PuzzleCell::Blocked
+                            }
+                        } else {
+                            // unexpected cell format -> blocked
+                            PuzzleCell::Blocked
+                        };
+                        row_cells.push(cell);
+                    }
+                    rows.push(row_cells);
+                } else if let Some(s) = row_val.as_str() {
+                    // a single string row, interpret characters and spaces; ignore whitespace
+                    let mut row_cells = Vec::with_capacity(width);
+                    for ch in s.chars().filter(|c| !c.is_whitespace()) {
+                        if ch == block_char {
+                            row_cells.push(PuzzleCell::Blocked);
+                        } else {
+                            row_cells.push(PuzzleCell::Fillable(ch));
+                        }
+                    }
+                    // pad/truncate to width
+                    row_cells.resize_with(width, || PuzzleCell::Blocked);
+                    rows.push(row_cells);
+                } else {
+                    return Err("unsupported row format in IPUZ".into());
+                }
+            }
+        } else {
+            return Err("expected solution/puzzle to be an array of rows".into());
+        }
+
+        // convert rows into Grid<PuzzleCell>
+        let grid = Grid::from_vec(rows, width as usize);
+
+        // Extract clues: IPUZ example stores clues under "clues" -> "Across"/"Down" as arrays of [number, text]
+        let extract = |dir: &str| -> Vec<String> {
+            v.get("clues")
+                .and_then(|c| c.get(dir))
+                .and_then(|a| a.as_array())
+                .map(|arr| {
+                    arr.iter()
+                        .map(|item| {
+                            if let Some(s) = item
+                                .as_array()
+                                .and_then(|a| a.get(1))
+                                .and_then(|x| x.as_str())
+                            {
+                                s.to_string()
+                            } else if let Some(s) = item.as_str() {
+                                s.to_string()
+                            } else {
+                                item.to_string()
+                            }
+                        })
+                        .collect()
+                })
+                .unwrap_or_default()
+        };
+
+        let across = extract("Across");
+        let down = extract("Down");
+
+        // Build words & clue numbers using existing helper
+        let all_words = Self::find_words(&grid, across.clone(), down.clone());
+
+        let mut across_words = Vec::new();
+        let mut down_words = Vec::new();
+        let mut clue_numbers = Vec::new();
+
+        for w in all_words {
+            clue_numbers.push((w.start_pos, w.clue_number));
+            match w.direction {
+                BoardDirection::Across => across_words.push(w),
+                BoardDirection::Down => down_words.push(w),
+            }
+        }
+
+        clue_numbers.sort_by(|a, b| a.1.cmp(&b.1));
+        clue_numbers.dedup_by(|a, b| a.1 == b.1);
+
+        Ok(Puzzle::new(
+            grid,
+            PuzzleWords {
+                across: across_words,
+                down: down_words,
+            },
+            clue_numbers,
+        ))
     }
 
-    pub fn from_string(puzzle_data: String) -> Result<Self, Box<dyn Error>> {
+    pub fn from_toml_file(path: &str) -> Result<Self, Box<dyn Error>> {
+        let contents = fs::read_to_string(path)?;
+        Self::from_toml_string(contents)
+    }
+
+    pub fn from_toml_string(puzzle_data: String) -> Result<Self, Box<dyn Error>> {
         let puzzle_file: PuzzleFile = toml::from_str(&puzzle_data)?;
         let mut grid_vec = Vec::new();
 

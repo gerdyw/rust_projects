@@ -155,7 +155,7 @@ mod tests {
     fn test_from_file() {
         // This would test loading from an actual file
         // For now, just test that it doesn't panic with valid structure
-        let result = Puzzle::from_file("puzzles/puzzle.toml");
+        let result = Puzzle::from_toml_file("puzzles/puzzle.toml");
         assert!(result.is_ok());
     }
 

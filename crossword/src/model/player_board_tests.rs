@@ -3,7 +3,7 @@ mod tests {
     use super::super::{BoardCell, BoardDirection, Coordinate, MoveDirection, PlayerBoard, Puzzle};
 
     fn create_test_puzzle() -> Puzzle {
-        Puzzle::from_file("puzzles/puzzle.toml").expect("Failed to load test puzzle")
+        Puzzle::from_toml_file("puzzles/puzzle.toml").expect("Failed to load test puzzle")
     }
 
     #[test]

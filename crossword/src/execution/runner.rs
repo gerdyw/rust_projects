@@ -33,6 +33,8 @@ impl Runner {
             if let Some(command) = self.parser.parse_key() {
                 self.executor.execute(command);
             }
+
+            self.executor.check_has_won();
         }
 
         // Restore terminal
@@ -40,7 +42,7 @@ impl Runner {
         stdout().execute(LeaveAlternateScreen)?;
         ratatui::restore();
 
-        if self.executor.has_won() {
+        if self.executor.check_has_won() {
             println!("Congratulations! You've completed the crossword puzzle!");
         }
 

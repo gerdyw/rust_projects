@@ -1,5 +1,7 @@
+use std::time::{Duration, Instant};
+
 use crate::model::{
-    BoardCell, BoardDirection, Coordinate, Grid, MoveDirection, Puzzle, PuzzleCell, Word,
+    BoardCell, BoardDirection, Coordinate, Grid, MoveDirection, Puzzle, PuzzleCell, Word, WordIter,
 };
 
 pub struct PlayerBoard {
@@ -9,6 +11,8 @@ pub struct PlayerBoard {
     cursor: Coordinate,
     direction: BoardDirection,
     empty_cells: usize,
+    start_time: Instant,
+    end_time: Option<Instant>,
 }
 
 impl PlayerBoard {
@@ -30,6 +34,8 @@ impl PlayerBoard {
             .filter(|&&cell| matches!(cell, PuzzleCell::Fillable(_)))
             .count();
 
+        let start_time = Instant::now();
+
         let mut board = PlayerBoard {
             puzzle: puzzle,
             size,
@@ -37,9 +43,14 @@ impl PlayerBoard {
             cursor: Coordinate::new(0, 0),
             direction: BoardDirection::Across,
             empty_cells,
+            start_time,
+            end_time: None,
         };
 
-        board.move_to_next_empty_cell();
+        if !board.is_playable(board.cursor) {
+            board.move_to_next_empty_cell();
+        }
+
         board
     }
 
@@ -63,6 +74,14 @@ impl PlayerBoard {
         self.direction
     }
 
+    pub fn get_elapsed_time(&self) -> Duration {
+        self.start_time.elapsed()
+    }
+
+    pub fn get_total_time(&self) -> Option<Duration> {
+        self.end_time.map(|end| end.duration_since(self.start_time))
+    }
+
     pub fn size(&self) -> usize {
         self.size
     }
@@ -78,6 +97,20 @@ impl PlayerBoard {
         self.puzzle.get_word_at(self.cursor, self.direction)
     }
 
+    pub fn current_word_iter(&self) -> Option<WordIter> {
+        self.get_current_word()
+            .map(|word| WordIter::new(word, Some(self.cursor)))
+    }
+
+    pub fn is_current_word_completed(&self) -> bool {
+        if let Some(word) = self.get_current_word() {
+            word.cell_iter()
+                .all(|coord| matches!(self.get(coord), BoardCell::Filled(_)))
+        } else {
+            false
+        }
+    }
+
     pub fn swap_direction(&mut self) {
         self.direction = self.direction.swap();
     }
@@ -91,16 +124,6 @@ impl PlayerBoard {
             .unwrap_or(self.cursor);
 
         self.cursor = new_pos;
-    }
-
-    pub fn move_forward(&mut self) {
-        let move_direction = self.direction.into();
-        self.move_cursor(move_direction);
-    }
-
-    pub fn move_backward(&mut self) {
-        let move_direction = self.direction.to_move_direction().reverse();
-        self.move_cursor(move_direction);
     }
 
     pub fn move_to_next_empty_cell(&mut self) {
@@ -165,6 +188,21 @@ impl PlayerBoard {
 
     pub fn has_won(&self) -> bool {
         self.grid.coord_iter().all(|coord| self.cell_correct(coord))
+    }
+
+    pub fn mark_as_won(&mut self) {
+        if self.end_time.is_none() {
+            self.end_time = Some(Instant::now());
+        }
+    }
+
+    pub fn move_to(&mut self, coord: Coordinate) -> Result<(), String> {
+        if self.is_playable(coord) {
+            self.cursor = coord;
+            Ok(())
+        } else {
+            Err(format!("Cannot move to blocked cell at {:?}", coord))
+        }
     }
 
     fn move_to_cell_that<F>(&mut self, condition: F, move_direction: MoveDirection)
