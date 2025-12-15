@@ -28,6 +28,7 @@ impl KeyParser {
                 KeyCode::Right => Some(GameCommand::MoveInDirection(MoveDirection::Right)),
                 KeyCode::Backspace => Some(GameCommand::DeleteChar),
                 KeyCode::Tab => Some(GameCommand::SwapDirection),
+                KeyCode::BackTab => Some(GameCommand::MoveToPreviousOpenWord),
                 KeyCode::Enter => Some(GameCommand::MoveToNextOpenWord),
                 KeyCode::Esc => Some(GameCommand::Quit),
                 _ => None,

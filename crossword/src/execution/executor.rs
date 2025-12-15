@@ -52,6 +52,7 @@ impl CommandExecutor {
             GameCommand::EnterChar(c) => self.enter_char(c),
             GameCommand::MoveForward => self.move_forward(),
             GameCommand::MoveToNextOpenWord => self.move_to_next_open_word(),
+            GameCommand::MoveToPreviousOpenWord => self.move_to_previous_open_word(),
             GameCommand::MoveToNextEmptyCell => self.move_to_next_empty_cell(),
             GameCommand::DeleteChar => self.delete_char(),
             GameCommand::Quit => self.quit(),
@@ -124,6 +125,11 @@ impl CommandExecutor {
 
     fn move_to_next_open_word(&mut self) -> Option<GameCommand> {
         self.game_state.move_to_next_open_word();
+        None
+    }
+
+    fn move_to_previous_open_word(&mut self) -> Option<GameCommand> {
+        self.game_state.move_to_previous_open_word();
         None
     }
 

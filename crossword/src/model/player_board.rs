@@ -159,6 +159,25 @@ impl PlayerBoard {
         }
     }
 
+    pub(crate) fn move_to_previous_open_word(&mut self) {
+        let word_info = self.words_iter().rev().find_map(|word| {
+            word.word_iter()
+                .find(|coord| self.get(*coord).is_empty())
+                .map(|coord| (coord, word.direction))
+        });
+
+        debug_log::debug_log(format!(
+            "move_to_previous_open_word found word_info: {:?}",
+            word_info
+        ));
+
+        if let Some((coord, direction)) = word_info {
+            self.move_to(coord)
+                .expect("move_to_next_open_word outside bounds");
+            self.direction = direction;
+        }
+    }
+
     pub fn move_to_previous_cell(&mut self) {
         if let Some(word) = self.get_current_word()
             && self.cursor == word.start_pos

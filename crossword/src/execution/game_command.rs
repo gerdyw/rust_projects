@@ -22,6 +22,7 @@ pub enum GameCommand {
     SwapDirection,
     MoveToNextEmptyCell,
     MoveToNextOpenWord,
+    MoveToPreviousOpenWord,
     // MoveToNextPlayableCell,
     // MoveToCellThat(CellCondition),
     EnterChar(char),
