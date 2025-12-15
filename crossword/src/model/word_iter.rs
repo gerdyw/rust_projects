@@ -1,4 +1,7 @@
-use crate::model::{BoardDirection, Coordinate, CoordinateIter, Word};
+use crate::{
+    debug_log,
+    model::{BoardDirection, Coordinate, CoordinateIter, Word},
+};
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct WordIter {
@@ -11,11 +14,10 @@ pub struct WordIter {
 }
 
 impl WordIter {
-    pub fn new(word: &Word, start: Option<Coordinate>) -> Self {
-        let start_pos = start.unwrap_or(word.start_pos);
+    pub fn new(word: &Word) -> Self {
         WordIter {
-            start_pos,
-            current_pos: start_pos,
+            start_pos: word.start_pos,
+            current_pos: word.start_pos,
             word_start: word.start_pos,
             word_end: word.end_pos,
             direction: word.direction,
@@ -23,8 +25,17 @@ impl WordIter {
         }
     }
 
-    pub fn rest(&self) -> CoordinateIter {
-        CoordinateIter::new(self.current_pos, self.word_end)
+    pub fn start_at(&mut self, coord: Coordinate) -> Self {
+        self.start_pos = coord;
+        self.current_pos = coord;
+        self.running = true;
+
+        *self
+    }
+
+    pub fn from_start(&mut self) -> Self {
+        self.current_pos = self.word_start;
+        *self
     }
 }
 
@@ -38,6 +49,11 @@ impl Iterator for WordIter {
         }
 
         let result = self.current_pos;
+
+        debug_log::debug_log(format!(
+            "WordIter next: current_pos={:?}, word_end={:?}, start_pos={:?}",
+            self.current_pos, self.word_end, self.start_pos
+        ));
 
         self.current_pos = match self.direction {
             BoardDirection::Across => self.current_pos.right(),

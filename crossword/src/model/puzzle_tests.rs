@@ -58,11 +58,7 @@ mod tests {
             ),
         ];
 
-        Puzzle {
-            grid,
-            words: PuzzleWords { across, down },
-            clue_numbers,
-        }
+        Puzzle::new(grid, PuzzleWords { across, down }, clue_numbers)
     }
 
     #[test]

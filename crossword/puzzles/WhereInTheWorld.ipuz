@@ -1,0 +1,2338 @@
+{
+    "showenumerations": false,
+    "notes": "",
+    "puzzle": [
+        [
+            null,
+            null,
+            null,
+            null,
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 1
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 2
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 3
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 4
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 5
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 6
+            },
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 7
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 8
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 9
+            },
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 10
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 11
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 12
+            },
+            null,
+            null
+        ],
+        [
+            null,
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 13
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 14
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 15
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 16
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 17
+            },
+            null
+        ],
+        [
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 18
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 19
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 20
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 21
+            }
+        ],
+        [
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 22
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 23
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 24
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            }
+        ],
+        [
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 25
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 26
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 27
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 28
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            }
+        ],
+        [
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 29
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 30
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 31
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 32
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 33
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            }
+        ],
+        [
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 34
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 35
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            }
+        ],
+        [
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 36
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 37
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 38
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 39
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 40
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 41
+            }
+        ],
+        [
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 42
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 43
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 44
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 45
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 46
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            }
+        ],
+        [
+            null,
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 47
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 48
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": 49
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            null
+        ],
+        [
+            null,
+            null,
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 50
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 51
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 52
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 53
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": 54
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "7CE8FE"
+                },
+                "cell": ":"
+            },
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": 55
+            },
+            {
+                "style": {
+                    "color": "02A5C8"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "4BDFFE"
+                },
+                "cell": ":"
+            },
+            null,
+            null,
+            null,
+            null
+        ]
+    ],
+    "copyright": "© 2023 Crossword Nexus. CC BY 4.0 License.",
+    "intro": "",
+    "version": "http://ipuz.org/v2",
+    "origin": "Crossword Compiler 9.11",
+    "empty": ":",
+    "title": "Where In The World?",
+    "kind": [
+        "http://ipuz.org/crossword#1"
+    ],
+    "clues": {
+        "Across": [
+            {
+                "number": 1,
+                "clue": "Erstwhile radio show hosted by Tom and Ray Magliozzi"
+            },
+            {
+                "number": 7,
+                "clue": "TV, in America, or subway, in the UK"
+            },
+            {
+                "number": 8,
+                "clue": "Put on"
+            },
+            {
+                "number": 10,
+                "clue": "&quot;I called it!&quot;"
+            },
+            {
+                "number": 11,
+                "clue": "Elementary school quintet"
+            },
+            {
+                "number": 13,
+                "clue": "&quot;Who Can It Be Now?&quot; singers"
+            },
+            {
+                "number": 16,
+                "clue": "Org. which gives out the Larry O'Brien Championship Trophy"
+            },
+            {
+                "number": 18,
+                "clue": "Westernmost Mexican state, familiarly"
+            },
+            {
+                "number": 19,
+                "clue": "Ayn who said of Native Americans &quot;They had no right to a country merely because they were born here and then acted like savages.&quot;"
+            },
+            {
+                "number": 20,
+                "clue": "Team that has probably flamed out of the Women's World Cup by the time you read this"
+            },
+            {
+                "number": 22,
+                "clue": "Świątek who won the 2023 French Open"
+            },
+            {
+                "number": 23,
+                "clue": "God played by Ray Winstone in <i>Percy Jackson &amp; the Olympians: The Lightning Thief</i>"
+            },
+            {
+                "number": 24,
+                "clue": "Prefix with &quot;war&quot; or &quot;hero&quot;"
+            },
+            {
+                "number": 25,
+                "clue": "&quot;I __ the Walrus&quot;"
+            },
+            {
+                "number": 26,
+                "clue": "Org. that merged with the AFL in 1955"
+            },
+            {
+                "number": 27,
+                "clue": "Whirlybird"
+            },
+            {
+                "number": 29,
+                "clue": "Victor Wembanyama's team"
+            },
+            {
+                "number": 34,
+                "clue": "Reddit Q&amp;A sessions"
+            },
+            {
+                "number": 35,
+                "clue": "Eat dirt"
+            },
+            {
+                "number": 36,
+                "clue": "&quot;Start the music!&quot;"
+            },
+            {
+                "number": 38,
+                "clue": "Compel, as your friends to do one of your crosswords"
+            },
+            {
+                "number": 42,
+                "clue": "Graphic novel series revolving around a young girl and a magical object"
+            },
+            {
+                "number": 44,
+                "clue": "<i>Pokémon</i> protagonist"
+            },
+            {
+                "number": 46,
+                "clue": "Exhibits some verbal diarrhea"
+            },
+            {
+                "number": 47,
+                "clue": "Luxury house that owns the &quot;Miu Miu&quot; brand"
+            },
+            {
+                "number": 48,
+                "clue": "1988 film whose starring role was turned down by Arnold Schwarzenegger and Sylvester Stallone"
+            },
+            {
+                "number": 50,
+                "clue": "School in Berkshire, England"
+            },
+            {
+                "number": 51,
+                "clue": "Wipe out"
+            },
+            {
+                "number": 52,
+                "clue": "___ bread (alternate name for French toast)"
+            },
+            {
+                "number": 54,
+                "clue": "TV show that starred Jane Lynch"
+            },
+            {
+                "number": 55,
+                "clue": "&quot;After you!&quot;"
+            }
+        ],
+        "Down": [
+            {
+                "number": 1,
+                "clue": "Second-most populous Caribbean country (after Haiti, believe it or not)"
+            },
+            {
+                "number": 2,
+                "clue": "Thesis summaries"
+            },
+            {
+                "number": 3,
+                "clue": "&quot;__: Your Brains&quot; (Jonathan Coulton song about an office worker in the zombie apocalypse)"
+            },
+            {
+                "number": 4,
+                "clue": "The Calder Trophy and the Vezina Trophy, for two"
+            },
+            {
+                "number": 5,
+                "clue": "Vichyssoise ingredient"
+            },
+            {
+                "number": 6,
+                "clue": "<i>Cobra ___</i> (Netflix show starring Ralph Macchio)"
+            },
+            {
+                "number": 7,
+                "clue": "2018 jukebox musical with songs &quot;The Best&quot; and &quot;Private Dancer&quot;"
+            },
+            {
+                "number": 9,
+                "clue": "Senator Wyden from Oregon"
+            },
+            {
+                "number": 10,
+                "clue": "___ vu"
+            },
+            {
+                "number": 12,
+                "clue": "Linux distribution named for a Nguni philosophy"
+            },
+            {
+                "number": 13,
+                "clue": "&quot;Liquid hot ___&quot; (over-enunciated Dr. Evil line)"
+            },
+            {
+                "number": 14,
+                "clue": "Character in <i>Super Smash Bros. Ultimate</i> whose special move is a fart"
+            },
+            {
+                "number": 15,
+                "clue": "Result of a leadoff walk"
+            },
+            {
+                "number": 17,
+                "clue": "Flower whose name comes from the Greek for &quot;star&quot;"
+            },
+            {
+                "number": 18,
+                "clue": "Slant"
+            },
+            {
+                "number": 21,
+                "clue": "Shows on a broadcast"
+            },
+            {
+                "number": 24,
+                "clue": "Actress Christina who is a big crossword fan"
+            },
+            {
+                "number": 27,
+                "clue": "Music festival which once featured a hologram of Tupac"
+            },
+            {
+                "number": 28,
+                "clue": "Capital city in which you'd find the Vikbjørshøgskår, if that was a real thing and not something I just made up"
+            },
+            {
+                "number": 30,
+                "clue": "Naughty by ___"
+            },
+            {
+                "number": 31,
+                "clue": "&quot;Is there still time?&quot;"
+            },
+            {
+                "number": 32,
+                "clue": "Singer known as the &quot;King of Hooks&quot;"
+            },
+            {
+                "number": 33,
+                "clue": "Programming keyword often paired with &quot;else&quot;"
+            },
+            {
+                "number": 36,
+                "clue": "LOL"
+            },
+            {
+                "number": 37,
+                "clue": "Little rascal"
+            },
+            {
+                "number": 39,
+                "clue": "Like the best hamburgers"
+            },
+            {
+                "number": 40,
+                "clue": "Compound you can now find in everything from hand sanitizer to coffee"
+            },
+            {
+                "number": 41,
+                "clue": "&quot;¿Qué hora __?&quot;"
+            },
+            {
+                "number": 43,
+                "clue": "Letter between Sierra and Uniform"
+            },
+            {
+                "number": 44,
+                "clue": "Do some light arithmetic"
+            },
+            {
+                "number": 45,
+                "clue": "Military tactic those name comes from the French for &quot;seat&quot;"
+            },
+            {
+                "number": 49,
+                "clue": "Pay attention to"
+            },
+            {
+                "number": 53,
+                "clue": "Genre for <i>Divergent</i> and <i>The Maze Runner</i>"
+            }
+        ]
+    },
+    "dimensions": {
+        "width": 15,
+        "height": 15
+    },
+    "author": "Alex Boisvert",
+    "solution": [
+        [
+            null,
+            null,
+            null,
+            null,
+            {
+                "value": "C",
+                "cell": 1
+            },
+            {
+                "value": "A",
+                "cell": 2
+            },
+            {
+                "value": "R",
+                "cell": 3
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": 4
+            },
+            {
+                "value": "L",
+                "cell": 5
+            },
+            {
+                "value": "K",
+                "cell": 6
+            },
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            {
+                "value": "T",
+                "cell": 7
+            },
+            {
+                "value": "U",
+                "cell": ":"
+            },
+            {
+                "value": "B",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "W",
+                "cell": 8
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "R",
+                "cell": 9
+            },
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            {
+                "value": "D",
+                "cell": 10
+            },
+            {
+                "value": "I",
+                "cell": ":"
+            },
+            {
+                "value": "B",
+                "cell": ":"
+            },
+            {
+                "value": "S",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "A",
+                "cell": 11
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "I",
+                "cell": ":"
+            },
+            {
+                "value": "O",
+                "cell": ":"
+            },
+            {
+                "value": "U",
+                "cell": 12
+            },
+            null,
+            null
+        ],
+        [
+            null,
+            {
+                "value": "M",
+                "cell": 13
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "N",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "W",
+                "cell": 14
+            },
+            {
+                "value": "O",
+                "cell": 15
+            },
+            {
+                "value": "R",
+                "cell": ":"
+            },
+            {
+                "value": "K",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "N",
+                "cell": 16
+            },
+            {
+                "value": "B",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": 17
+            },
+            null
+        ],
+        [
+            {
+                "value": "B",
+                "cell": 18
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "J",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "R",
+                "cell": 19
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "N",
+                "cell": ":"
+            },
+            {
+                "value": "D",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "U",
+                "cell": 20
+            },
+            {
+                "value": "S",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": 21
+            }
+        ],
+        [
+            {
+                "value": "I",
+                "cell": 22
+            },
+            {
+                "value": "G",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "A",
+                "cell": 23
+            },
+            {
+                "value": "R",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "S",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "A",
+                "cell": 24
+            },
+            {
+                "value": "N",
+                "cell": ":"
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "I",
+                "cell": ":"
+            }
+        ],
+        [
+            {
+                "value": "A",
+                "cell": 25
+            },
+            {
+                "value": "M",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "C",
+                "cell": 26
+            },
+            {
+                "value": "I",
+                "cell": ":"
+            },
+            {
+                "value": "O",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "C",
+                "cell": 27
+            },
+            {
+                "value": "O",
+                "cell": 28
+            },
+            {
+                "value": "P",
+                "cell": ":"
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "R",
+                "cell": ":"
+            }
+        ],
+        [
+            {
+                "value": "S",
+                "cell": 29
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "N",
+                "cell": 30
+            },
+            {
+                "value": "A",
+                "cell": 31
+            },
+            {
+                "value": "N",
+                "cell": 32
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "O",
+                "cell": ":"
+            },
+            {
+                "value": "N",
+                "cell": ":"
+            },
+            {
+                "value": "I",
+                "cell": 33
+            },
+            {
+                "value": "O",
+                "cell": ":"
+            },
+            {
+                "value": "S",
+                "cell": ":"
+            },
+            {
+                "value": "P",
+                "cell": ":"
+            },
+            {
+                "value": "U",
+                "cell": ":"
+            },
+            {
+                "value": "R",
+                "cell": ":"
+            },
+            {
+                "value": "S",
+                "cell": ":"
+            }
+        ],
+        [
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "A",
+                "cell": 34
+            },
+            {
+                "value": "M",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "S",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "F",
+                "cell": 35
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "L",
+                "cell": ":"
+            },
+            {
+                "value": "L",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            }
+        ],
+        [
+            {
+                "value": "H",
+                "cell": 36
+            },
+            {
+                "value": "I",
+                "cell": 37
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "I",
+                "cell": ":"
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "C",
+                "cell": 38
+            },
+            {
+                "value": "O",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "R",
+                "cell": 39
+            },
+            {
+                "value": "C",
+                "cell": 40
+            },
+            {
+                "value": "E",
+                "cell": 41
+            }
+        ],
+        [
+            {
+                "value": "A",
+                "cell": 42
+            },
+            {
+                "value": "M",
+                "cell": ":"
+            },
+            {
+                "value": "U",
+                "cell": ":"
+            },
+            {
+                "value": "L",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "T",
+                "cell": 43
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "A",
+                "cell": 44
+            },
+            {
+                "value": "S",
+                "cell": 45
+            },
+            {
+                "value": "H",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "G",
+                "cell": 46
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "B",
+                "cell": ":"
+            },
+            {
+                "value": "S",
+                "cell": ":"
+            }
+        ],
+        [
+            null,
+            {
+                "value": "P",
+                "cell": 47
+            },
+            {
+                "value": "R",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "D",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "D",
+                "cell": 48
+            },
+            {
+                "value": "I",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "H",
+                "cell": 49
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "R",
+                "cell": ":"
+            },
+            {
+                "value": "D",
+                "cell": ":"
+            },
+            null
+        ],
+        [
+            null,
+            null,
+            {
+                "value": "E",
+                "cell": 50
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "O",
+                "cell": ":"
+            },
+            {
+                "value": "N",
+                "cell": ":"
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "D",
+                "cell": 51
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "L",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "T",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            {
+                "value": "E",
+                "cell": 52
+            },
+            {
+                "value": "G",
+                "cell": ":"
+            },
+            {
+                "value": "G",
+                "cell": ":"
+            },
+            {
+                "value": "Y",
+                "cell": 53
+            },
+            {
+                "style": {
+                    "color": "008000"
+                },
+                "cell": "#"
+            },
+            {
+                "value": "G",
+                "cell": 54
+            },
+            {
+                "value": "L",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            {
+                "value": "G",
+                "cell": 55
+            },
+            {
+                "value": "O",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "H",
+                "cell": ":"
+            },
+            {
+                "value": "E",
+                "cell": ":"
+            },
+            {
+                "value": "A",
+                "cell": ":"
+            },
+            {
+                "value": "D",
+                "cell": ":"
+            },
+            null,
+            null,
+            null,
+            null
+        ]
+    ]
+}

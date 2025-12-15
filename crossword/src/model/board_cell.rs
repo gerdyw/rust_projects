@@ -6,6 +6,19 @@ pub enum BoardCell {
     Empty,
     Blocked,
 }
+impl BoardCell {
+    pub(crate) fn is_filled(&self) -> bool {
+        matches!(self, BoardCell::Filled(_))
+    }
+
+    pub(crate) fn is_empty(&self) -> bool {
+        matches!(self, BoardCell::Empty)
+    }
+
+    pub(crate) fn is_blocked(&self) -> bool {
+        matches!(self, BoardCell::Blocked)
+    }
+}
 
 impl From<Option<char>> for BoardCell {
     fn from(opt: Option<char>) -> Self {

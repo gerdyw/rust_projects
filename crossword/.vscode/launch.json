@@ -6,7 +6,9 @@
             "request": "launch",
             "name": "Debug executable 'crossword'",
             "program": "${workspaceFolder}/target/debug/crossword",
-            "args": [],
+            "args": [
+                "puzzles/Arent_We_a_Pair.ipuz"
+            ],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cargo build",
             "env": {

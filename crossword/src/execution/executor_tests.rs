@@ -43,7 +43,7 @@ mod tests {
         // Find a playable position
         while !executor
             .get_board()
-            .is_playable(executor.get_board().get_cursor())
+            .cell_playable(executor.get_board().get_cursor())
         {
             executor.execute(GameCommand::MoveInDirection(MoveDirection::Right));
         }
@@ -64,7 +64,7 @@ mod tests {
         // Find a playable position and fill it
         while !executor
             .get_board()
-            .is_playable(executor.get_board().get_cursor())
+            .cell_playable(executor.get_board().get_cursor())
         {
             executor.execute(GameCommand::MoveInDirection(MoveDirection::Right));
         }
@@ -91,7 +91,7 @@ mod tests {
         let new_cursor = executor.get_board().get_cursor();
 
         // Cursor should have moved or stayed at a valid position
-        assert!(executor.get_board().is_playable(new_cursor));
+        assert!(executor.get_board().cell_playable(new_cursor));
     }
 
     #[test]
@@ -127,7 +127,7 @@ mod tests {
         // Fill current cell
         if executor
             .get_board()
-            .is_playable(executor.get_board().get_cursor())
+            .cell_playable(executor.get_board().get_cursor())
         {
             executor.execute(GameCommand::EnterChar('X'));
         }
@@ -136,20 +136,20 @@ mod tests {
 
         // Should be at an empty playable cell
         let cursor = executor.get_board().get_cursor();
-        assert!(executor.get_board().is_playable(cursor));
+        assert!(executor.get_board().cell_playable(cursor));
     }
 
     #[test]
     fn test_move_to_next_word_command() {
         let mut executor = create_test_executor();
 
-        executor.execute(GameCommand::MoveToNextWord);
+        executor.execute(GameCommand::MoveToNextOpenWord);
 
         // Just verify we're still at a valid position
         assert!(
             executor
                 .get_board()
-                .is_playable(executor.get_board().get_cursor())
+                .cell_playable(executor.get_board().get_cursor())
         );
     }
 
@@ -163,7 +163,7 @@ mod tests {
         assert!(
             executor
                 .get_board()
-                .is_playable(executor.get_board().get_cursor())
+                .cell_playable(executor.get_board().get_cursor())
         );
     }
 
@@ -173,7 +173,7 @@ mod tests {
 
         // Find a playable position
         let target = Coordinate::new(1, 1);
-        if executor.get_board().is_playable(target) {
+        if executor.get_board().cell_playable(target) {
             executor.execute(GameCommand::MoveTo(target));
 
             assert_eq!(executor.get_board().get_cursor(), target);
@@ -214,7 +214,7 @@ mod tests {
         // Find a playable position
         while !executor
             .get_board()
-            .is_playable(executor.get_board().get_cursor())
+            .cell_playable(executor.get_board().get_cursor())
         {
             executor.execute(GameCommand::MoveInDirection(MoveDirection::Right));
         }
@@ -247,7 +247,7 @@ mod tests {
         // Ensure we're at an empty cell
         while !executor
             .get_board()
-            .is_playable(executor.get_board().get_cursor())
+            .cell_playable(executor.get_board().get_cursor())
         {
             executor.execute(GameCommand::MoveInDirection(MoveDirection::Right));
         }
@@ -258,7 +258,7 @@ mod tests {
         let new_cursor = executor.get_board().get_cursor();
 
         // Cursor should have moved or stayed
-        assert!(executor.get_board().is_playable(new_cursor));
+        assert!(executor.get_board().cell_playable(new_cursor));
     }
 
     #[test]

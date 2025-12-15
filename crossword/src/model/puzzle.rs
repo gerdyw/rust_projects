@@ -1,9 +1,12 @@
-use crate::model::{BoardDirection, MoveDirection, PuzzleCell, Word};
+use crate::{
+    debug_log::{self, debug_log},
+    model::{BoardDirection, MoveDirection, PuzzleCell, Word},
+};
 
 use super::{Coordinate, Grid};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::{error::Error, fmt::Display, fs};
+use std::{cmp::Ordering, error::Error, fmt::Display, fs, slice::Iter};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct PuzzleFile {
@@ -23,6 +26,7 @@ pub struct PuzzleWords {
 pub struct Puzzle {
     pub grid: Grid<PuzzleCell>,
     pub words: PuzzleWords,
+    all_words: Vec<Word>,
     pub clue_numbers: Vec<(Coordinate, usize)>,
 }
 
@@ -32,10 +36,21 @@ impl Puzzle {
         words: PuzzleWords,
         clue_numbers: Vec<(Coordinate, usize)>,
     ) -> Self {
+        let mut all_words = words.across.clone();
+
+        all_words.extend(words.down.clone());
+        // sort acrosses always before downs, then by clue number
+        all_words.sort_by(|a, b| match (a.direction, b.direction) {
+            (BoardDirection::Down, BoardDirection::Across) => Ordering::Greater,
+            (BoardDirection::Across, BoardDirection::Down) => Ordering::Less,
+            _ => a.clue_number.cmp(&b.clue_number),
+        });
+
         Puzzle {
             grid,
             words,
             clue_numbers,
+            all_words,
         }
     }
 
@@ -212,9 +227,12 @@ impl Puzzle {
         let mut across = Vec::new();
         let mut down = Vec::new();
         let mut clue_numbers = Vec::new();
+        let mut all_words = Vec::new();
 
         for word in words {
             clue_numbers.push((word.start_pos, word.clue_number));
+
+            all_words.push(word.clone());
 
             match word.direction {
                 BoardDirection::Across => across.push(word),
@@ -229,6 +247,7 @@ impl Puzzle {
             grid,
             words: PuzzleWords { across, down },
             clue_numbers,
+            all_words,
         })
     }
 
@@ -285,79 +304,44 @@ impl Puzzle {
 
         for (start_pos, _) in grid.iter() {
             let clue_number = prev_clue_number + 1;
-            if Self::is_across_word_start(&grid, &start_pos)
-                && let Some(end_pos) = Self::find_across_word_end(&grid, &start_pos)
-            {
-                let clue = across_iter
-                    .next()
-                    .expect("Not enough across clues")
-                    .to_owned();
-
-                let text = grid
-                    .directional_iter(start_pos, MoveDirection::Right)
-                    .take_while(|(coord, _)| coord <= &end_pos)
-                    .map(|(_, cell)| match cell {
-                        PuzzleCell::Fillable(ch) => ch,
-                        PuzzleCell::Blocked => ' ', // Should not happen in a valid word
-                    })
-                    .collect::<String>();
-
-                let word = Word::new(
-                    text,
-                    clue_number,
-                    BoardDirection::Across,
-                    start_pos,
-                    end_pos,
-                    clue,
-                );
-                words.push(word);
+            if let Some(across_word) = Self::find_word(
+                grid,
+                &mut across_iter,
+                start_pos,
+                clue_number,
+                BoardDirection::Across,
+            ) {
+                words.push(across_word);
                 prev_clue_number = clue_number;
             }
 
-            if Self::is_down_word_start(&grid, &start_pos)
-                && let Some(end_pos) = Self::find_down_word_end(&grid, &start_pos)
-            {
-                let clue = down_iter.next().expect("Not enough down clues").to_owned();
-
-                let text = grid
-                    .directional_iter(start_pos, MoveDirection::Right)
-                    .take_while(|(coord, _)| coord <= &end_pos)
-                    .map(|(_, cell)| match cell {
-                        PuzzleCell::Fillable(ch) => ch,
-                        PuzzleCell::Blocked => ' ', // Should not happen in a valid word
-                    })
-                    .collect();
-
-                let word = Word::new(
-                    text,
-                    clue_number,
-                    BoardDirection::Down,
-                    start_pos,
-                    end_pos,
-                    clue,
-                );
-
-                words.push(word);
+            if let Some(down_word) = Self::find_word(
+                grid,
+                &mut down_iter,
+                start_pos,
+                clue_number,
+                BoardDirection::Down,
+            ) {
+                words.push(down_word);
                 prev_clue_number = clue_number;
             }
+        }
+
+        for word in &words {
+            debug_log(format!(
+                "{} word # {} \"{}\" at ({}-{})",
+                word.direction, word.clue_number, word.text, word.start_pos, word.end_pos
+            ));
         }
         words
     }
 
-    fn is_across_word_start(grid: &Grid<PuzzleCell>, coord: &Coordinate) -> bool {
-        let coord = *coord;
+    fn is_across_word_start(grid: &Grid<PuzzleCell>, coord: Coordinate) -> bool {
         let left = coord.left();
         let right = coord.right();
-        // Helper to get char from grid
-        let get = |c: Coordinate| {
-            grid.get(c).and_then(|cell| match cell {
-                PuzzleCell::Fillable(ch) => Some(ch),
-                PuzzleCell::Blocked => None,
-            })
-        };
+        let get = |c| grid.get(c).unwrap_or(PuzzleCell::Blocked);
 
-        // Current cell is fillable, left is blocked/edge, right is fillable
-        get(coord).is_some() && get(left).is_none() && get(right).is_some()
+        get(coord).is_fillable() && get(left).is_blocked() && get(right).is_fillable()
     }
 
     fn is_down_word_start(grid: &Grid<PuzzleCell>, coord: &Coordinate) -> bool {
@@ -376,40 +360,72 @@ impl Puzzle {
         get(coord).is_some() && get(up).is_none() && get(down).is_some()
     }
 
-    fn find_across_word_end(grid: &Grid<PuzzleCell>, start: &Coordinate) -> Option<Coordinate> {
-        if !Self::is_across_word_start(grid, start) {
-            return None;
+    fn is_word_start(
+        grid: &Grid<PuzzleCell>,
+        coord: Coordinate,
+        direction: BoardDirection,
+    ) -> bool {
+        match direction {
+            BoardDirection::Across => Self::is_across_word_start(grid, coord),
+            BoardDirection::Down => Self::is_down_word_start(grid, &coord),
         }
-        let get = |c: Coordinate| {
-            grid.get(c).and_then(|cell| match cell {
-                PuzzleCell::Fillable(ch) => Some(ch),
-                PuzzleCell::Blocked => None,
-            })
-        };
-
-        let mut end = *start;
-        while get(end.right()).is_some() {
-            end = end.right();
-        }
-        Some(end)
     }
 
-    fn find_down_word_end(grid: &Grid<PuzzleCell>, start: &Coordinate) -> Option<Coordinate> {
-        if !Self::is_down_word_start(grid, start) {
+    fn find_word(
+        grid: &Grid<PuzzleCell>,
+        clue_iter: &mut Iter<'_, String>,
+        start_pos: Coordinate,
+        clue_number: usize,
+        direction: BoardDirection,
+    ) -> Option<Word> {
+        if !Self::is_word_start(grid, start_pos, direction) {
             return None;
         }
-        let get = |c: Coordinate| {
-            grid.get(c).and_then(|cell| match cell {
-                PuzzleCell::Fillable(ch) => Some(ch),
-                PuzzleCell::Blocked => None,
-            })
+
+        let clue = clue_iter.next().map(|s| s.to_owned());
+
+        let Some(clue) = clue else {
+            debug_log(format!(
+                "No clue found for word starting at {:?} in direction {:?}",
+                start_pos, direction
+            ));
+            return None;
         };
 
-        let mut end = *start;
-        while get(end.down()).is_some() {
-            end = end.down();
-        }
-        Some(end)
+        let (cells, text) = grid
+            .directional_iter(start_pos, direction.into(), false)
+            .take_while(|(coord, cell)| {
+                cell.is_fillable() && coord.on_same_line(start_pos, direction)
+            })
+            .fold(
+                (Vec::new(), String::new()),
+                |(mut vec, mut s), (coord, cell)| {
+                    vec.push((coord, cell));
+                    if let PuzzleCell::Fillable(ch) = cell {
+                        s.push(ch);
+                    } else {
+                        panic!("Blocked cell encountered in word");
+                    }
+                    (vec, s)
+                },
+            );
+
+        let coords = cells
+            .iter()
+            .map(|(coord, _)| *coord)
+            .collect::<Vec<Coordinate>>();
+
+        let end_pos = start_pos.add_to_axis(direction, text.len() as isize - 1);
+
+        Some(Word::new(
+            text,
+            clue_number,
+            direction,
+            start_pos,
+            end_pos,
+            clue,
+            coords,
+        ))
     }
 }
 

@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::model::MoveDirection;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
@@ -36,6 +38,15 @@ impl Into<MoveDirection> for BoardDirection {
         match self {
             BoardDirection::Across => MoveDirection::Right,
             BoardDirection::Down => MoveDirection::Down,
+        }
+    }
+}
+
+impl Display for BoardDirection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            BoardDirection::Across => write!(f, "Across"),
+            BoardDirection::Down => write!(f, "Down"),
         }
     }
 }

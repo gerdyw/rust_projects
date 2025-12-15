@@ -1,4 +1,4 @@
-use std::cmp::Ordering;
+use std::{cmp::Ordering, fmt::Display};
 
 use crate::model::{BoardDirection, MoveDirection};
 
@@ -25,6 +25,13 @@ impl Coordinate {
         match direction {
             BoardDirection::Across => self.set_col(value),
             BoardDirection::Down => self.set_row(value),
+        }
+    }
+
+    pub fn add_to_axis(&self, direction: BoardDirection, delta: isize) -> Self {
+        match direction {
+            BoardDirection::Across => self.set_col(self.col + delta),
+            BoardDirection::Down => self.set_row(self.row + delta),
         }
     }
 
@@ -84,6 +91,19 @@ impl Coordinate {
         } else {
             board_dir_compare
         }
+    }
+
+    pub fn on_same_line(&self, other: Coordinate, direction: BoardDirection) -> bool {
+        match direction {
+            BoardDirection::Across => self.row == other.row,
+            BoardDirection::Down => self.col == other.col,
+        }
+    }
+}
+
+impl Display for Coordinate {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.col, self.row)
     }
 }
 

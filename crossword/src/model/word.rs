@@ -12,6 +12,7 @@ pub struct Word {
     pub start_pos: Coordinate,
     pub end_pos: Coordinate,
     pub clue: String,
+    pub coords: Vec<Coordinate>,
 }
 
 impl Word {
@@ -22,6 +23,7 @@ impl Word {
         start_pos: Coordinate,
         end_pos: Coordinate,
         clue: String,
+        coords: Vec<Coordinate>,
     ) -> Self {
         Word {
             text,
@@ -30,6 +32,7 @@ impl Word {
             start_pos,
             end_pos,
             clue,
+            coords,
         }
     }
 
@@ -65,8 +68,8 @@ impl Word {
         CoordinateIter::new(self.start_pos, self.end_pos)
     }
 
-    pub fn word_iter(&self, start: Option<Coordinate>) -> WordIter {
-        WordIter::new(self, start)
+    pub fn word_iter(&self) -> WordIter {
+        WordIter::new(self)
     }
 }
 

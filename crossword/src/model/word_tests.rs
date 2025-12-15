@@ -193,7 +193,9 @@ mod tests {
             "Test clue".to_string(),
         );
 
-        let cells: Vec<Coordinate> = word.word_iter(Some(Coordinate::new(0, 0))).collect();
+        let cells: Vec<Coordinate> = word
+            .current_word_iter(Some(Coordinate::new(0, 0)))
+            .collect();
         assert_eq!(cells.len(), 4);
         assert_eq!(cells[0], Coordinate::new(0, 0));
     }
@@ -209,7 +211,9 @@ mod tests {
             "Test clue".to_string(),
         );
 
-        let cells: Vec<Coordinate> = word.word_iter(Some(Coordinate::new(2, 0))).collect();
+        let cells: Vec<Coordinate> = word
+            .current_word_iter(Some(Coordinate::new(2, 0)))
+            .collect();
         // Should start from position 2 and continue to end, then wrap to beginning
         assert!(cells.len() > 0);
         assert_eq!(cells[0], Coordinate::new(2, 0));
@@ -226,7 +230,7 @@ mod tests {
             "Test clue".to_string(),
         );
 
-        let cells: Vec<Coordinate> = word.word_iter(None).collect();
+        let cells: Vec<Coordinate> = word.current_word_iter(None).collect();
         // Should start from beginning
         assert_eq!(cells.len(), 4);
         assert_eq!(cells[0], Coordinate::new(0, 0));

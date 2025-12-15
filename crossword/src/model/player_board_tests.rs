@@ -12,7 +12,7 @@ mod tests {
         let board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Should start with cursor at a playable position (not necessarily origin if blocked)
-        assert!(board.is_playable(board.get_cursor()));
+        assert!(board.cell_playable(board.get_cursor()));
         assert_eq!(board.direction, BoardDirection::Across);
         assert_eq!(board.size, puzzle.size());
     }
@@ -50,7 +50,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable cell
-        while !board.is_playable(board.get_cursor()) {
+        while !board.cell_playable(board.get_cursor()) {
             board.move_cursor(MoveDirection::Right);
         }
 
@@ -66,7 +66,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable cell, fill it, then clear it
-        while !board.is_playable(board.get_cursor()) {
+        while !board.cell_playable(board.get_cursor()) {
             board.move_cursor(MoveDirection::Right);
         }
 
@@ -85,7 +85,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable cell
-        while !board.is_playable(board.get_cursor()) {
+        while !board.cell_playable(board.get_cursor()) {
             board.move_cursor(MoveDirection::Right);
         }
 
@@ -126,7 +126,7 @@ mod tests {
         // Test various coordinates
         let coord = Coordinate::new(0, 0);
         // Just verify it doesn't panic - the actual playability depends on the puzzle
-        let _ = board.is_playable(coord);
+        let _ = board.cell_playable(coord);
     }
 
     #[test]
@@ -140,7 +140,7 @@ mod tests {
         // The cursor should either be on a playable cell or back at start
         let cursor = board.get_cursor();
         if cursor != Coordinate::new(0, 0) {
-            assert!(board.is_playable(cursor));
+            assert!(board.cell_playable(cursor));
         }
     }
 
@@ -150,7 +150,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Find a playable cell
-        while !board.is_playable(board.get_cursor()) {
+        while !board.cell_playable(board.get_cursor()) {
             board.move_cursor(MoveDirection::Right);
         }
 
@@ -161,7 +161,7 @@ mod tests {
         board.move_cursor(MoveDirection::Right);
         // Should have moved to a different cell
         let cursor = board.get_cursor();
-        if board.is_playable(cursor) {
+        if board.cell_playable(cursor) {
             board.write_to_cell('E');
             // Should be able to fill the second cell
             assert_eq!(board.get(cursor), BoardCell::Filled('E'));
@@ -175,7 +175,7 @@ mod tests {
 
         // Initial state - cursor should be at a playable position
         let initial_cursor = board.get_cursor();
-        assert!(board.is_playable(initial_cursor));
+        assert!(board.cell_playable(initial_cursor));
         assert_eq!(board.get_direction(), BoardDirection::Across);
 
         // Mutate direction
@@ -186,7 +186,7 @@ mod tests {
         board.move_cursor(MoveDirection::Right);
         // Cursor should have changed or stayed same if at edge/blocked
         let new_cursor = board.get_cursor();
-        assert!(board.is_playable(new_cursor));
+        assert!(board.cell_playable(new_cursor));
     }
 
     #[test]
@@ -285,7 +285,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a position that's definitely in a word
-        while !board.is_playable(board.get_cursor()) {
+        while !board.cell_playable(board.get_cursor()) {
             board.move_cursor(MoveDirection::Right);
         }
 
@@ -299,7 +299,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable position
-        while !board.is_playable(board.get_cursor()) {
+        while !board.cell_playable(board.get_cursor()) {
             board.move_cursor(MoveDirection::Right);
         }
 
@@ -317,7 +317,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Move to a playable position
-        while !board.is_playable(board.get_cursor()) {
+        while !board.cell_playable(board.get_cursor()) {
             board.move_cursor(MoveDirection::Right);
         }
 
@@ -334,7 +334,7 @@ mod tests {
 
         // Cursor should have moved or stayed if already at an empty cell
         let new_cursor = board.get_cursor();
-        assert!(board.is_playable(new_cursor));
+        assert!(board.cell_playable(new_cursor));
     }
 
     #[test]
@@ -343,7 +343,7 @@ mod tests {
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
         // Fill current cell first
-        if board.is_playable(board.get_cursor()) {
+        if board.cell_playable(board.get_cursor()) {
             board.write_to_cell('A');
         }
 
@@ -351,7 +351,7 @@ mod tests {
 
         // Should move to previous empty cell
         let cursor = board.get_cursor();
-        assert!(board.is_playable(cursor));
+        assert!(board.cell_playable(cursor));
     }
 
     #[test]
@@ -363,7 +363,7 @@ mod tests {
 
         // Cursor should have moved (or stayed if only one word)
         let new_cursor = board.get_cursor();
-        assert!(board.is_playable(new_cursor));
+        assert!(board.cell_playable(new_cursor));
     }
 
     #[test]
@@ -414,7 +414,7 @@ mod tests {
         for row in 0..board.size() {
             for col in 0..board.size() {
                 let coord = Coordinate::new(col as isize, row as isize);
-                if board.is_playable(coord) {
+                if board.cell_playable(coord) {
                     target = coord;
                     break;
                 }
@@ -436,7 +436,7 @@ mod tests {
         for row in 0..board.size() {
             for col in 0..board.size() {
                 let coord = Coordinate::new(col as isize, row as isize);
-                if !board.is_playable(coord) {
+                if !board.cell_playable(coord) {
                     blocked = Some(coord);
                     break;
                 }

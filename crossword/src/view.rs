@@ -81,6 +81,15 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     let cursor = board.get_cursor();
     let size: usize = board.size();
     let elapsed_time = board.get_elapsed_time();
+    let dir = board.get_direction();
+    let dir_arrow = match dir {
+        BoardDirection::Across => "→",
+        BoardDirection::Down => "↓",
+    };
+    let dir_label = match dir {
+        BoardDirection::Across => "Across",
+        BoardDirection::Down => "Down",
+    };
 
     // Get the current word to highlight
     let current_word = board.get_current_word();
@@ -145,9 +154,13 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
         .block(
             Block::default()
                 .title(format!(
-                    "{:02}:{:02} ",
+                    "{:02}:{:02} | Cursor: ({}, {}) | Dir: {} {}",
                     elapsed_time.as_secs() / 60,
-                    elapsed_time.as_secs() % 60
+                    elapsed_time.as_secs() % 60,
+                    cursor.col,
+                    cursor.row,
+                    dir_arrow,
+                    dir_label
                 ))
                 .borders(Borders::ALL)
                 .border_style(Style::default().fg(Color::White)),

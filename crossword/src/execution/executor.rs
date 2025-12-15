@@ -3,6 +3,7 @@ use std::fs::OpenOptions;
 use std::io::Write;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+use crate::debug_log::debug_log;
 use crate::model::Coordinate;
 use crate::{
     execution::game_command::GameCommand,
@@ -42,6 +43,7 @@ impl CommandExecutor {
             command = next_command;
         }
     }
+
     pub fn execute_command(&mut self, command: GameCommand) -> Option<GameCommand> {
         log_command(&command);
         match command {
@@ -49,11 +51,10 @@ impl CommandExecutor {
             GameCommand::SwapDirection => self.swap_direction(),
             GameCommand::EnterChar(c) => self.enter_char(c),
             GameCommand::MoveForward => self.move_forward(),
-            GameCommand::MoveToNextWord => self.move_to_next_open_word(),
+            GameCommand::MoveToNextOpenWord => self.move_to_next_open_word(),
             GameCommand::MoveToNextEmptyCell => self.move_to_next_empty_cell(),
             GameCommand::DeleteChar => self.delete_char(),
             GameCommand::Quit => self.quit(),
-            GameCommand::MoveToNextPlayableCell => self.move_to_next_playable_cell(),
             GameCommand::MoveTo(coordinate) => self.move_to(coordinate),
         }
     }
@@ -67,8 +68,13 @@ impl CommandExecutor {
     }
 
     fn move_direction(&mut self, direction: MoveDirection) -> Option<GameCommand> {
+        debug_log(format!("Moving in direction: {:?}", direction));
         let current_pos = self.game_state.get_cursor();
         self.game_state.move_cursor(direction);
+        debug_log(format!(
+            "New cursor position: {:?}",
+            self.game_state.get_cursor()
+        ));
         match current_pos.order_in_move_dir(&self.game_state.get_cursor(), direction) {
             Ordering::Greater => Some(GameCommand::SwapDirection),
             _ => None,
@@ -81,9 +87,8 @@ impl CommandExecutor {
     }
 
     fn move_forward(&mut self) -> Option<GameCommand> {
-        Some(GameCommand::MoveInDirection(
-            self.game_state.get_direction().into(),
-        ))
+        self.game_state.move_forward();
+        None
     }
 
     fn swap_direction(&mut self) -> Option<GameCommand> {
@@ -103,14 +108,13 @@ impl CommandExecutor {
             return Some(GameCommand::MoveToNextEmptyCell);
         };
 
-        let empty_cell =
-            word_iter.find(|coord| matches!(self.game_state.get(*coord), BoardCell::Empty));
+        let empty_cell = word_iter.find(|coord| self.game_state.get(*coord).is_empty());
 
         if let Some(cell) = empty_cell {
             return Some(GameCommand::MoveTo(cell));
         }
 
-        Some(GameCommand::MoveToNextEmptyCell)
+        Some(GameCommand::MoveToNextOpenWord)
     }
 
     fn move_to_next_empty_cell(&mut self) -> Option<GameCommand> {
@@ -125,12 +129,7 @@ impl CommandExecutor {
 
     fn delete_char(&mut self) -> Option<GameCommand> {
         if self.game_state.get_current() == BoardCell::Empty {
-            self.game_state.move_cursor(
-                self.game_state
-                    .get_direction()
-                    .to_move_direction()
-                    .reverse(),
-            );
+            self.game_state.move_to_previous_cell();
         }
 
         self.game_state.clear_cell();
@@ -139,11 +138,6 @@ impl CommandExecutor {
 
     fn quit(&mut self) -> Option<GameCommand> {
         self.running = false;
-        None
-    }
-
-    fn move_to_next_playable_cell(&mut self) -> Option<GameCommand> {
-        self.game_state.move_to_next_open_word();
         None
     }
 }

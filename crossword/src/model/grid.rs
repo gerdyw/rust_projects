@@ -82,8 +82,9 @@ impl<T: Copy> Grid<T> {
         &self,
         start_pos: Coordinate,
         direction: super::MoveDirection,
+        should_loop: bool,
     ) -> GridIterator<'_, T> {
-        GridIterator::new(self, start_pos, direction)
+        GridIterator::new(self, start_pos, direction, should_loop)
     }
 }
 
