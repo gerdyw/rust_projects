@@ -28,6 +28,7 @@ mod tests {
                 Coordinate::new(0, 0),
                 Coordinate::new(2, 0),
                 across_clues[0].clone(),
+                vec![],
             ),
             Word::new(
                 "RAT".to_string(),
@@ -36,6 +37,7 @@ mod tests {
                 Coordinate::new(0, 2),
                 Coordinate::new(2, 2),
                 across_clues[1].clone(),
+                vec![],
             ),
         ];
 
@@ -47,6 +49,7 @@ mod tests {
                 Coordinate::new(0, 0),
                 Coordinate::new(0, 2),
                 down_clues[0].clone(),
+                vec![],
             ),
             Word::new(
                 "TOT".to_string(),
@@ -55,6 +58,7 @@ mod tests {
                 Coordinate::new(2, 0),
                 Coordinate::new(2, 2),
                 down_clues[1].clone(),
+                vec![],
             ),
         ];
 
