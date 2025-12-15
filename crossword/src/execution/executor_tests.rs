@@ -154,20 +154,6 @@ mod tests {
     }
 
     #[test]
-    fn test_move_to_next_playable_cell_command() {
-        let mut executor = create_test_executor();
-
-        executor.execute(GameCommand::MoveToNextPlayableCell);
-
-        // Should be at a playable cell
-        assert!(
-            executor
-                .get_board()
-                .cell_playable(executor.get_board().get_cursor())
-        );
-    }
-
-    #[test]
     fn test_move_to_command() {
         let mut executor = create_test_executor();
 

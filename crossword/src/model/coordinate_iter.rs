@@ -46,3 +46,7 @@ impl Iterator for CoordinateIter {
         Some(result)
     }
 }
+
+#[cfg(test)]
+#[path = "coordinate_iter_tests.rs"]
+mod coordinate_iter_tests;

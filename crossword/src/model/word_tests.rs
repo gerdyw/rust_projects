@@ -11,6 +11,7 @@ mod tests {
             Coordinate::new(0, 0),
             Coordinate::new(4, 0),
             "Test clue".to_string(),
+            vec![],
         );
 
         assert_eq!(word.text, "Test");
@@ -29,6 +30,7 @@ mod tests {
             Coordinate::new(0, 0),
             Coordinate::new(4, 0),
             "Test".to_string(),
+            vec![],
         );
 
         assert_eq!(word.length(), 5);
@@ -43,6 +45,7 @@ mod tests {
             Coordinate::new(2, 1),
             Coordinate::new(2, 5),
             "Test".to_string(),
+            vec![],
         );
 
         assert_eq!(word.length(), 5);
@@ -57,6 +60,7 @@ mod tests {
             Coordinate::new(3, 3),
             Coordinate::new(3, 3),
             "I".to_string(),
+            vec![],
         );
 
         assert_eq!(word.length(), 1);
@@ -71,6 +75,7 @@ mod tests {
             Coordinate::new(0, 2),
             Coordinate::new(4, 2),
             "Across".to_string(),
+            vec![],
         );
 
         assert!(word.is_across());
@@ -86,6 +91,7 @@ mod tests {
             Coordinate::new(3, 0),
             Coordinate::new(3, 4),
             "Down".to_string(),
+            vec![],
         );
 
         assert!(word.is_down());
@@ -101,6 +107,7 @@ mod tests {
             Coordinate::new(1, 2),
             Coordinate::new(5, 2),
             "Test".to_string(),
+            vec![],
         );
 
         assert!(word.contains(&Coordinate::new(1, 2))); // Start
@@ -120,6 +127,7 @@ mod tests {
             Coordinate::new(2, 1),
             Coordinate::new(2, 5),
             "Test".to_string(),
+            vec![],
         );
 
         assert!(word.contains(&Coordinate::new(2, 1))); // Start
@@ -139,6 +147,7 @@ mod tests {
             Coordinate::new(2, 3),
             Coordinate::new(6, 3),
             "Famous painting".to_string(),
+            vec![],
         );
 
         let display = format!("{}", word);
@@ -155,6 +164,7 @@ mod tests {
             Coordinate::new(1, 2),
             Coordinate::new(3, 2),
             "Feline".to_string(),
+            vec![],
         );
 
         let cells: Vec<Coordinate> = word.cell_iter().collect();
@@ -173,6 +183,7 @@ mod tests {
             Coordinate::new(3, 1),
             Coordinate::new(3, 3),
             "Canine".to_string(),
+            vec![],
         );
 
         let cells: Vec<Coordinate> = word.cell_iter().collect();
@@ -183,7 +194,7 @@ mod tests {
     }
 
     #[test]
-    fn test_word_iter_from_start() {
+    fn test_word_iter() {
         let word = Word::new(
             "TEST".to_string(),
             1,
@@ -191,47 +202,10 @@ mod tests {
             Coordinate::new(0, 0),
             Coordinate::new(3, 0),
             "Test clue".to_string(),
+            vec![],
         );
 
-        let cells: Vec<Coordinate> = word
-            .current_word_iter(Some(Coordinate::new(0, 0)))
-            .collect();
-        assert_eq!(cells.len(), 4);
-        assert_eq!(cells[0], Coordinate::new(0, 0));
-    }
-
-    #[test]
-    fn test_word_iter_from_middle() {
-        let word = Word::new(
-            "TEST".to_string(),
-            1,
-            BoardDirection::Across,
-            Coordinate::new(0, 0),
-            Coordinate::new(3, 0),
-            "Test clue".to_string(),
-        );
-
-        let cells: Vec<Coordinate> = word
-            .current_word_iter(Some(Coordinate::new(2, 0)))
-            .collect();
-        // Should start from position 2 and continue to end, then wrap to beginning
-        assert!(cells.len() > 0);
-        assert_eq!(cells[0], Coordinate::new(2, 0));
-    }
-
-    #[test]
-    fn test_word_iter_none_start() {
-        let word = Word::new(
-            "TEST".to_string(),
-            1,
-            BoardDirection::Across,
-            Coordinate::new(0, 0),
-            Coordinate::new(3, 0),
-            "Test clue".to_string(),
-        );
-
-        let cells: Vec<Coordinate> = word.current_word_iter(None).collect();
-        // Should start from beginning
+        let cells: Vec<Coordinate> = word.word_iter().collect();
         assert_eq!(cells.len(), 4);
         assert_eq!(cells[0], Coordinate::new(0, 0));
     }

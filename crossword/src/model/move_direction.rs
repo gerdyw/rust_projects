@@ -38,3 +38,7 @@ impl MoveDirection {
         matches!(self, MoveDirection::Left | MoveDirection::Up)
     }
 }
+
+#[cfg(test)]
+#[path = "move_direction_tests.rs"]
+mod move_direction_tests;

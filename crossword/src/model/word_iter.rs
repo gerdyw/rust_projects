@@ -71,3 +71,7 @@ impl Iterator for WordIter {
         Some(result)
     }
 }
+
+#[cfg(test)]
+#[path = "word_iter_tests.rs"]
+mod word_iter_tests;

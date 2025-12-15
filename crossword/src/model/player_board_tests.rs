@@ -338,7 +338,7 @@ mod tests {
     }
 
     #[test]
-    fn test_move_to_previous_empty_cell() {
+    fn test_move_to_previous_cell() {
         let puzzle = create_test_puzzle();
         let mut board = PlayerBoard::from_puzzle(puzzle.clone());
 
@@ -347,9 +347,9 @@ mod tests {
             board.write_to_cell('A');
         }
 
-        board.move_to_previous_empty_cell();
+        board.move_to_previous_cell();
 
-        // Should move to previous empty cell
+        // Should move to previous cell
         let cursor = board.get_cursor();
         assert!(board.cell_playable(cursor));
     }
