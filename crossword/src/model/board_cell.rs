@@ -37,3 +37,7 @@ impl From<PuzzleCell> for BoardCell {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "board_cell_tests.rs"]
+mod board_cell_tests;

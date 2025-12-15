@@ -50,3 +50,7 @@ impl Display for BoardDirection {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "board_direction_tests.rs"]
+mod board_direction_tests;

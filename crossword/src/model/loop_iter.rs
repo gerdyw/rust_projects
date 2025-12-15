@@ -87,3 +87,7 @@ impl<T: Clone> DoubleEndedIterator for LoopIter<T> {
         Some(self.elements[self.current_index].clone())
     }
 }
+
+#[cfg(test)]
+#[path = "loop_iter_tests.rs"]
+mod loop_iter_tests;
