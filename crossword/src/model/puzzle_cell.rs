@@ -20,3 +20,7 @@ impl PuzzleCell {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "puzzle_cell_tests.rs"]
+mod puzzle_cell_tests;
