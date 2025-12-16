@@ -17,8 +17,9 @@ pub fn render(frame: &mut Frame, board: &PlayerBoard) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Min(0),    // Main content
-            Constraint::Length(3), // Footer for clue
+            Constraint::Min(0), // Main content
+            // Footer: height 5 -> 3 lines of content after borders, enough for wrapped clue
+            Constraint::Length(5),
         ])
         .split(area);
 
@@ -275,7 +276,7 @@ fn render_footer(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
 
     let paragraph = Paragraph::new(text)
         .block(Block::default().borders(Borders::ALL).title(footer_title))
-        .wrap(Wrap { trim: true });
+        .wrap(Wrap { trim: false });
 
     frame.render_widget(paragraph, area);
 }

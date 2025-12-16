@@ -1,4 +1,5 @@
 use crossword::debug_log::debug_log;
+use crossword::execution::puzzle_parser::{from_toml_file, parse_ipuz_to_puzzle};
 use crossword::execution::{CommandExecutor, KeyParser, PuzzleType, Runner};
 use crossword::model::{PlayerBoard, Puzzle};
 
@@ -19,13 +20,10 @@ fn main() -> std::io::Result<()> {
     let puzzle_content = std::fs::read_to_string(puzzle_path)?;
 
     let puzzle = match puzzle_type {
-        PuzzleType::Ipuz => {
-            Puzzle::parse_ipuz_to_puzzle(&puzzle_content).expect("Failed to parse IPUZ puzzle")
-        }
-        PuzzleType::Toml => {
-            Puzzle::from_toml_file(&puzzle_path).expect("Failed to parse TOML puzzle")
-        }
-    };
+        PuzzleType::Ipuz => parse_ipuz_to_puzzle(&puzzle_content),
+        PuzzleType::Toml => from_toml_file(&puzzle_path),
+    }
+    .expect("error parsing puzzle");
 
     let board = PlayerBoard::from_puzzle(puzzle);
     let parser = KeyParser::new();

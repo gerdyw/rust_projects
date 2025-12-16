@@ -1,6 +1,7 @@
 pub mod executor;
 pub mod game_command;
 pub mod key_parser;
+pub mod puzzle_parser;
 pub mod puzzle_type;
 pub mod runner;
 

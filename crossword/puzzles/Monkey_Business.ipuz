@@ -1,0 +1,848 @@
+{
+    "title": "Monkey Business",
+    "author": "Kate Chin Park and Alex Boisvert",
+    "copyright": "© 2023 Crossword Nexus. CC BY 4.0 License.",
+    "notes": "",
+    "kind": [
+        "http://ipuz.org/crossword#1"
+    ],
+    "origin": "Collaborative Crossword Sheet",
+    "block": "#",
+    "version": "http://ipuz.org/v1",
+    "dimensions": {
+        "width": 15,
+        "height": 15
+    },
+    "clues": {
+        "Across": [
+            [
+                1,
+                "Pioneer of the \"what if no customer service?\" model of shoe-shopping"
+            ],
+            [
+                4,
+                "Wink awkwardly and punch in the shoulder, maybe? I have no idea how to do this"
+            ],
+            [
+                9,
+                "Alternative to \"person\" defense"
+            ],
+            [
+                13,
+                "Not AGE not ERA ok moving on"
+            ],
+            [
+                14,
+                "\"___! Donkey Kong!\" (title of my thesis about how <i>Donkey Kong 64</i> was the beginning of the downfall of that franchise)"
+            ],
+            [
+                15,
+                "This has got to be fake"
+            ],
+            [
+                16,
+                "Restaurant chain that's up to some monkey business?"
+            ],
+            [
+                19,
+                "Ice ___ (very dumb nickname for very annoying NBA player ___ Young)"
+            ],
+            [
+                20,
+                "Small green orb of indeterminate flavor"
+            ],
+            [
+                21,
+                "Son of Adam and Eve who lived to age 912 and notably, didn't murder a sibling or get murdered by a sibling"
+            ],
+            [
+                23,
+                "Acronym whose \"N\" stands for \"normal\" (no clue what the others stand for)"
+            ],
+            [
+                27,
+                "Type of shirt to wear when you're sky high drinking a mai tai playing jai alai"
+            ],
+            [
+                29,
+                "Adhesive company that's up to some monkey business?"
+            ],
+            [
+                33,
+                "College muckety-mucks"
+            ],
+            [
+                34,
+                "What a slipstream essentially provides the trailing car"
+            ],
+            [
+                35,
+                "What you can provide a trailing car to make it slip"
+            ],
+            [
+                36,
+                "Evil org. that WASN'T roasted alive in June 2023 for possibly the worst Pride tweet of all time"
+            ],
+            [
+                38,
+                "Answer to \"Do you want baked ziti or beef stroganoff?\""
+            ],
+            [
+                39,
+                "<i>Trinity</i> author Leon"
+            ],
+            [
+                41,
+                "Gastronomical capital of France"
+            ],
+            [
+                43,
+                "Sault ___ Marie"
+            ],
+            [
+                44,
+                "Plant that tastes similar to anise but is apparently unrelated"
+            ],
+            [
+                47,
+                "Unfastidious sort"
+            ],
+            [
+                49,
+                "Cookie brand that's up to some monkey business?"
+            ],
+            [
+                55,
+                "Character in a Spinderella story"
+            ],
+            [
+                56,
+                "Artist whose name rhymes with 57-Across's even though neither one looks like it will be pronounced that way"
+            ],
+            [
+                57,
+                "Artist whose name rhymes with 56-Across's even though neither one looks like it will be pronounced that way"
+            ],
+            [
+                60,
+                "___ up (greet)"
+            ],
+            [
+                63,
+                "Congrats on remembering the second letter of the NATO alphabet!"
+            ],
+            [
+                64,
+                "Beer brand that's up to some monkey business?"
+            ],
+            [
+                68,
+                "\"I like my eggs ___ easy\" (do not make this joke)"
+            ],
+            [
+                69,
+                "Grammatically questionable comeback"
+            ],
+            [
+                70,
+                "\"Take the ___, bro\" (request from a friend to pick up a magazine at the store)"
+            ],
+            [
+                71,
+                "Settle a 1-Down, e.g."
+            ],
+            [
+                72,
+                "Color family for Easter eggs"
+            ],
+            [
+                73,
+                "ℕ, ℝ, and the things you do in volleyball before spikes"
+            ]
+        ],
+        "Down": [
+            [
+                1,
+                "See 71-Across or 31-Down"
+            ],
+            [
+                2,
+                "Mixed with lemon juice, sugar, and egg white"
+            ],
+            [
+                3,
+                "Org. whose championship trophy is called ... the championship trophy (but they should consider naming it for Cynthia Cooper)"
+            ],
+            [
+                4,
+                "Gov't org. whose tweet \"On Friday, June 9th, the Peripheral and Central Nervous System Drugs Advisory Committee will meet virtually to discuss the confirmatory study for the supplemental biologics license application for Leqembi solution for the treatment of Alzheimer's disease\" somehow did not go viral"
+            ],
+            [
+                5,
+                "Tri cycle, e.g.?"
+            ],
+            [
+                6,
+                "Place for patients requiring close supervision"
+            ],
+            [
+                7,
+                "Increase rapidly"
+            ],
+            [
+                8,
+                "Pound away at the keyboard"
+            ],
+            [
+                9,
+                "Linux command interpreter named for Yale professor Zhong Shao"
+            ],
+            [
+                10,
+                "What to say, repeatedly, until the person trying to explain the MCU finally believes that you get it and leaves you blessedly alone"
+            ],
+            [
+                11,
+                "Important anniversaries for some trans people"
+            ],
+            [
+                12,
+                "Like many a late-game hockey goal"
+            ],
+            [
+                17,
+                "Victoria of <i>WordGirl</i> who doesn't like finishing in second place"
+            ],
+            [
+                18,
+                "\"4 Elaborate Scratching Posts to Get Your ___ to Stop Posting QAnon Theories\" (<i>New York Times</i> headline) (just kidding, it's <i>Reductress</i>)"
+            ],
+            [
+                22,
+                "Fine... I will read <i>Siddhartha</i>... someday..........."
+            ],
+            [
+                24,
+                "Many a <i>Band of Brothers</i> character, for short"
+            ],
+            [
+                25,
+                "Poke stuff"
+            ],
+            [
+                26,
+                "It's a trip"
+            ],
+            [
+                28,
+                "\"Dear mother ___, harken 45-Down I die\": Tennyson, \"Oenone\""
+            ],
+            [
+                29,
+                "\"Report: Double __ Oreos Could Raise Tolerance To ___\" (<i>The Onion</i> headline)"
+            ],
+            [
+                30,
+                "Heart (but not the part of your body where your heart is)"
+            ],
+            [
+                31,
+                "In 1-Down"
+            ],
+            [
+                32,
+                "Sister of Sherlock and Mycroft, in modern fiction"
+            ],
+            [
+                37,
+                "Sprinkle with flakes"
+            ],
+            [
+                40,
+                "Where to find \"Did an Elderly Woman Train 65 Cats to Steal from Her Neighbors?\" and \"What We Know About This Viral 'Snake Cat' Image\""
+            ],
+            [
+                42,
+                "Monogram along the lines of \"GG\" or \"TB\""
+            ],
+            [
+                45,
+                "\"Dear mother 28-Down, harken ___ I die\": Tennyson, \"Oenone\""
+            ],
+            [
+                46,
+                "Something bitten in a thirsty emoji"
+            ],
+            [
+                48,
+                "Character synonymous with innocence despite the inherited privilege and problematic implications of being the Crown Prince of the Forest"
+            ],
+            [
+                50,
+                "Soup spoons, but after eating a Super Mario mushroom"
+            ],
+            [
+                51,
+                "Steve whose quest for the 2000 Republican nomination for president was entirely defined by his fixation on a flat tax, which for the record is a terrible idea"
+            ],
+            [
+                52,
+                "Help, as a friend who needs you to tell them it's completely valid to have a jug of lemonade for dinner or buy all their jewelry at Costco or make a crossword instead of doing work"
+            ],
+            [
+                53,
+                "Rise up"
+            ],
+            [
+                54,
+                "Balls, metaphorically"
+            ],
+            [
+                57,
+                "Genre for 방탄소년단 and 블랙핑크 (or, as you may know them, BTS and Blackpink)"
+            ],
+            [
+                58,
+                "Nose : volcano :: snot : ___"
+            ],
+            [
+                59,
+                "Website whose name is Pig Latin for \"bee\""
+            ],
+            [
+                61,
+                "Word that I pronounced differently before I got weirded out making my mom's sisters sound like insects"
+            ],
+            [
+                62,
+                "The late great Postlethwaite"
+            ],
+            [
+                65,
+                "Prepare, as a keg for a toga party"
+            ],
+            [
+                66,
+                "Push-up aid"
+            ],
+            [
+                67,
+                "Good name for an ichthyologist?"
+            ]
+        ]
+    },
+    "solution": [
+        [
+            "D",
+            "S",
+            "W",
+            "#",
+            "F",
+            "L",
+            "I",
+            "R",
+            "T",
+            "#",
+            "Z",
+            "O",
+            "N",
+            "E",
+            "#"
+        ],
+        [
+            "E",
+            "O",
+            "N",
+            "#",
+            "D",
+            "E",
+            "C",
+            "A",
+            "Y",
+            "#",
+            "S",
+            "H",
+            "A",
+            "M",
+            "#"
+        ],
+        [
+            "B",
+            "U",
+            "B",
+            "B",
+            "A",
+            "G",
+            "U",
+            "M",
+            "P",
+            "C",
+            "H",
+            "I",
+            "M",
+            "P",
+            "#"
+        ],
+        [
+            "T",
+            "R",
+            "A",
+            "E",
+            "#",
+            "#",
+            "#",
+            "P",
+            "E",
+            "A",
+            "#",
+            "S",
+            "E",
+            "T",
+            "H"
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            "S",
+            "N",
+            "A",
+            "F",
+            "U",
+            "#",
+            "T",
+            "I",
+            "E",
+            "D",
+            "Y",
+            "E"
+        ],
+        [
+            "S",
+            "C",
+            "O",
+            "T",
+            "C",
+            "H",
+            "A",
+            "P",
+            "E",
+            "#",
+            "D",
+            "E",
+            "A",
+            "N",
+            "S"
+        ],
+        [
+            "T",
+            "O",
+            "W",
+            "#",
+            "O",
+            "I",
+            "L",
+            "#",
+            "N",
+            "S",
+            "A",
+            "#",
+            "Y",
+            "E",
+            "S"
+        ],
+        [
+            "U",
+            "R",
+            "I",
+            "S",
+            "#",
+            "#",
+            "L",
+            "Y",
+            "O",
+            "N",
+            "#",
+            "#",
+            "S",
+            "T",
+            "E"
+        ],
+        [
+            "F",
+            "E",
+            "N",
+            "N",
+            "E",
+            "L",
+            "#",
+            "S",
+            "L",
+            "O",
+            "B",
+            "#",
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            "#",
+            "#",
+            "G",
+            "O",
+            "R",
+            "I",
+            "L",
+            "L",
+            "A",
+            "W",
+            "A",
+            "F",
+            "E",
+            "R",
+            "S"
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            "P",
+            "E",
+            "P",
+            "A",
+            "#",
+            "#",
+            "#",
+            "M",
+            "O",
+            "N",
+            "E",
+            "T"
+        ],
+        [
+            "K",
+            "L",
+            "E",
+            "E",
+            "#",
+            "#",
+            "D",
+            "A",
+            "P",
+            "#",
+            "B",
+            "R",
+            "A",
+            "V",
+            "O"
+        ],
+        [
+            "P",
+            "A",
+            "B",
+            "S",
+            "T",
+            "B",
+            "L",
+            "U",
+            "E",
+            "G",
+            "I",
+            "B",
+            "B",
+            "O",
+            "N"
+        ],
+        [
+            "O",
+            "V",
+            "A",
+            "#",
+            "A",
+            "R",
+            "E",
+            "N",
+            "T",
+            "I",
+            "#",
+            "E",
+            "L",
+            "L",
+            "E"
+        ],
+        [
+            "P",
+            "A",
+            "Y",
+            "#",
+            "P",
+            "A",
+            "S",
+            "T",
+            "E",
+            "L",
+            "#",
+            "S",
+            "E",
+            "T",
+            "S"
+        ]
+    ],
+    "puzzle": [
+        [
+            1,
+            2,
+            3,
+            "#",
+            4,
+            5,
+            6,
+            7,
+            8,
+            "#",
+            9,
+            10,
+            11,
+            12,
+            "#"
+        ],
+        [
+            13,
+            0,
+            0,
+            "#",
+            14,
+            0,
+            0,
+            0,
+            0,
+            "#",
+            15,
+            0,
+            0,
+            0,
+            "#"
+        ],
+        [
+            16,
+            0,
+            0,
+            17,
+            0,
+            0,
+            0,
+            0,
+            0,
+            18,
+            0,
+            0,
+            0,
+            0,
+            "#"
+        ],
+        [
+            19,
+            0,
+            0,
+            0,
+            "#",
+            "#",
+            "#",
+            20,
+            0,
+            0,
+            "#",
+            21,
+            0,
+            0,
+            22
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            23,
+            24,
+            25,
+            26,
+            0,
+            "#",
+            27,
+            28,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            29,
+            30,
+            31,
+            0,
+            0,
+            0,
+            0,
+            0,
+            32,
+            "#",
+            33,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            34,
+            0,
+            0,
+            "#",
+            35,
+            0,
+            0,
+            "#",
+            36,
+            37,
+            0,
+            "#",
+            38,
+            0,
+            0
+        ],
+        [
+            39,
+            0,
+            0,
+            40,
+            "#",
+            "#",
+            41,
+            42,
+            0,
+            0,
+            "#",
+            "#",
+            43,
+            0,
+            0
+        ],
+        [
+            44,
+            0,
+            0,
+            0,
+            45,
+            46,
+            "#",
+            47,
+            0,
+            0,
+            48,
+            "#",
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            "#",
+            "#",
+            49,
+            0,
+            0,
+            0,
+            50,
+            0,
+            0,
+            0,
+            0,
+            51,
+            52,
+            53,
+            54
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            55,
+            0,
+            0,
+            0,
+            "#",
+            "#",
+            "#",
+            56,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            57,
+            58,
+            59,
+            0,
+            "#",
+            "#",
+            60,
+            61,
+            62,
+            "#",
+            63,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            64,
+            0,
+            0,
+            0,
+            65,
+            66,
+            0,
+            0,
+            0,
+            67,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            68,
+            0,
+            0,
+            "#",
+            69,
+            0,
+            0,
+            0,
+            0,
+            0,
+            "#",
+            70,
+            0,
+            0,
+            0
+        ],
+        [
+            71,
+            0,
+            0,
+            "#",
+            72,
+            0,
+            0,
+            0,
+            0,
+            0,
+            "#",
+            73,
+            0,
+            0,
+            0
+        ]
+    ]
+}

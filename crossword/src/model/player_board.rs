@@ -90,11 +90,8 @@ impl PlayerBoard {
         self.size
     }
 
-    pub fn get_words_in_current_direction(&self) -> &Vec<Word> {
-        match self.direction {
-            BoardDirection::Across => &self.puzzle.words.across,
-            BoardDirection::Down => &self.puzzle.words.down,
-        }
+    pub fn get_words_in_current_direction(&self) -> Vec<&Word> {
+        self.puzzle.words_in_direction(self.direction)
     }
 
     pub fn get_current_word(&self) -> Option<&Word> {
@@ -257,20 +254,14 @@ impl PlayerBoard {
         }
     }
 
-    pub fn words_iter(&self) -> LoopIter<&Word> {
+    pub fn words_iter(&self) -> LoopIter<Word> {
         let start_index = self.get_current_word_index().unwrap_or(0)
             + match self.direction {
                 BoardDirection::Across => 0,
-                BoardDirection::Down => self.puzzle.words.across.len(),
+                BoardDirection::Down => self.puzzle.across_words().len(),
             };
 
-        let words = self
-            .puzzle
-            .words
-            .across
-            .iter()
-            .chain(self.puzzle.words.down.iter())
-            .collect();
+        let words = self.puzzle.all_words().to_owned();
 
         LoopIter::new(words, start_index)
     }
@@ -321,11 +312,18 @@ impl PlayerBoard {
                 .skip(1)
                 .find(|word| word.word_iter().any(|coord| self.get(coord).is_empty()));
 
-            let coord =
-                word.and_then(|word| word.word_iter().find(|coord| self.get(*coord).is_empty()));
+            // let coord =
+            //     &word.and_then(|word| word.word_iter().find(|coord| self.get(*coord).is_empty()));
 
-            if let Some(coord) = coord {
-                self.direction = word.expect("word should exist if coord exists").direction;
+            // if let Some(coord) = coord {
+            //     self.direction = word.expect("word should exist if coord exists").direction;
+            //     self.move_to(*coord).expect("move_forward outside bounds");
+            // }
+
+            if let Some(word) = word
+                && let Some(coord) = word.word_iter().find(|coord| self.get(*coord).is_empty())
+            {
+                self.direction = word.direction;
                 self.move_to(coord).expect("move_forward outside bounds");
             }
         }
