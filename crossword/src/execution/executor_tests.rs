@@ -1,11 +1,13 @@
 #[cfg(test)]
 mod tests {
     use super::super::{CommandExecutor, GameCommand};
-    use crate::model::{BoardDirection, Coordinate, MoveDirection, PlayerBoard, Puzzle};
+    use crate::{
+        execution::puzzle_parser::from_toml_file,
+        model::{BoardDirection, Coordinate, MoveDirection, PlayerBoard},
+    };
 
     fn create_test_executor() -> CommandExecutor {
-        let puzzle =
-            Puzzle::from_toml_file("puzzles/puzzle.toml").expect("Failed to load test puzzle");
+        let puzzle = from_toml_file("puzzles/puzzle.toml").expect("Failed to load test puzzle");
         let board = PlayerBoard::from_puzzle(puzzle);
         CommandExecutor::new(board)
     }

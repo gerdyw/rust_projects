@@ -45,6 +45,14 @@ impl Puzzle {
         self.grid.size()
     }
 
+    pub fn width(&self) -> usize {
+        self.grid.width()
+    }
+
+    pub fn height(&self) -> usize {
+        self.grid.height()
+    }
+
     pub fn get(&self, coord: Coordinate) -> PuzzleCell {
         self.grid.get(coord).unwrap_or(PuzzleCell::Blocked)
     }
@@ -57,7 +65,8 @@ impl Puzzle {
     }
 
     pub fn is_blocked(&self, coord: Coordinate) -> bool {
-        matches!(self.get(coord), PuzzleCell::Blocked) && coord.is_valid(self.size(), self.size())
+        matches!(self.get(coord), PuzzleCell::Blocked)
+            && coord.is_valid(self.width(), self.height())
     }
 
     pub fn is_fillable(&self, coord: Coordinate) -> bool {

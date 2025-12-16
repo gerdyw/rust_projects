@@ -4,7 +4,7 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let grid = Grid::new(3, 0);
+        let grid = Grid::new(3, 3, 0);
         let iter = GridIterator::new(&grid, Coordinate::new(0, 0), MoveDirection::Right, true);
 
         assert_eq!(iter.start_pos, Coordinate::new(0, 0));
@@ -13,7 +13,7 @@ mod tests {
 
     #[test]
     fn test_iterate_right() {
-        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3);
+        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3, 3);
 
         let iter = GridIterator::new(&grid, Coordinate::new(0, 0), MoveDirection::Right, false);
         let results: Vec<(Coordinate, i32)> = iter.collect();
@@ -29,7 +29,7 @@ mod tests {
 
     #[test]
     fn test_iterate_down() {
-        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3);
+        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3, 3);
 
         let iter = GridIterator::new(&grid, Coordinate::new(0, 0), MoveDirection::Down, false);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
@@ -40,7 +40,7 @@ mod tests {
 
     #[test]
     fn test_iterate_left() {
-        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3);
+        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3, 3);
 
         let iter = GridIterator::new(&grid, Coordinate::new(2, 0), MoveDirection::Left, false);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
@@ -51,7 +51,7 @@ mod tests {
 
     #[test]
     fn test_iterate_up() {
-        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3);
+        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3, 3);
 
         let iter = GridIterator::new(&grid, Coordinate::new(0, 2), MoveDirection::Up, false);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
@@ -62,7 +62,7 @@ mod tests {
 
     #[test]
     fn test_iterate_from_middle() {
-        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3);
+        let grid = Grid::from_vec(vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]], 3, 3);
 
         let iter = GridIterator::new(&grid, Coordinate::new(1, 1), MoveDirection::Right, true);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
@@ -73,7 +73,7 @@ mod tests {
 
     #[test]
     fn test_iterate_single_cell_grid() {
-        let grid = Grid::new(1, 42);
+        let grid = Grid::new(1, 1, 42);
 
         let iter = GridIterator::new(&grid, Coordinate::new(0, 0), MoveDirection::Right, false);
         let values: Vec<i32> = iter.map(|(_, val)| val).collect();
@@ -84,7 +84,7 @@ mod tests {
 
     #[test]
     fn test_iterate_2x2_grid() {
-        let grid = Grid::from_vec(vec![vec!['A', 'B'], vec!['C', 'D']], 2);
+        let grid = Grid::from_vec(vec![vec!['A', 'B'], vec!['C', 'D']], 2, 2);
 
         let iter = GridIterator::new(&grid, Coordinate::new(0, 0), MoveDirection::Right, true);
         let values: Vec<char> = iter.map(|(_, val)| val).collect();
@@ -95,7 +95,7 @@ mod tests {
 
     #[test]
     fn test_wrapping_behavior() {
-        let grid = Grid::from_vec(vec![vec![1, 2], vec![3, 4]], 2);
+        let grid = Grid::from_vec(vec![vec![1, 2], vec![3, 4]], 2, 2);
 
         // Test that moving right from (1,0) wraps to (0,1) with looping
         let iter = GridIterator::new(&grid, Coordinate::new(1, 0), MoveDirection::Right, true);
@@ -108,7 +108,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "Start position is out of bounds")]
     fn test_panic_on_invalid_start() {
-        let grid = Grid::new(3, 0);
+        let grid = Grid::new(3, 3, 0);
         let mut iter = GridIterator::new(&grid, Coordinate::new(5, 5), MoveDirection::Right, true);
 
         // Should panic when calling next() with invalid start position
@@ -117,7 +117,7 @@ mod tests {
 
     #[test]
     fn test_returns_coordinate_and_value() {
-        let grid = Grid::from_vec(vec![vec![1, 2], vec![3, 4]], 2);
+        let grid = Grid::from_vec(vec![vec![1, 2], vec![3, 4]], 2, 2);
 
         let mut iter = GridIterator::new(&grid, Coordinate::new(0, 0), MoveDirection::Right, false);
 

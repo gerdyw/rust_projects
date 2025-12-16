@@ -1,9 +1,11 @@
 #[cfg(test)]
 mod tests {
+    use crate::execution::puzzle_parser::from_toml_file;
+
     use super::super::{BoardCell, BoardDirection, Coordinate, MoveDirection, PlayerBoard, Puzzle};
 
     fn create_test_puzzle() -> Puzzle {
-        Puzzle::from_toml_file("puzzles/puzzle.toml").expect("Failed to load test puzzle")
+        from_toml_file("puzzles/puzzle.toml").expect("Failed to load test puzzle")
     }
 
     #[test]
@@ -264,7 +266,7 @@ mod tests {
         assert!(words.len() > 0);
 
         // Compare with puzzle's across words
-        assert_eq!(words.len(), puzzle.words.across.len());
+        assert_eq!(words.len(), puzzle.across_words().len());
     }
 
     #[test]
@@ -276,7 +278,7 @@ mod tests {
 
         // Should return down words after swap
         let words = board.get_words_in_current_direction();
-        assert_eq!(words.len(), puzzle.words.down.len());
+        assert_eq!(words.len(), puzzle.down_words().len());
     }
 
     #[test]

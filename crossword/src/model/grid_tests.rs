@@ -5,27 +5,27 @@ mod tests {
     #[test]
     fn test_from_vec() {
         let vec = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let grid = Grid::from_vec(vec, 3);
+        let grid = Grid::from_vec(vec, 3, 3);
         assert_eq!(grid.size(), 3);
     }
 
     #[test]
-    #[should_panic(expected = "Grid is not square")]
+    #[should_panic(expected = "Grid dimensions")]
     fn test_from_vec_invalid_not_square() {
         let vec = vec![vec![1, 2], vec![3, 4, 5]];
-        Grid::from_vec(vec, 2);
+        Grid::from_vec(vec, 2, 2);
     }
 
     #[test]
-    #[should_panic(expected = "Grid is not square")]
+    #[should_panic(expected = "Grid dimensions")]
     fn test_from_vec_invalid_wrong_size() {
         let vec = vec![vec![1, 2, 3], vec![4, 5, 6]];
-        Grid::from_vec(vec, 3);
+        Grid::from_vec(vec, 3, 3);
     }
 
     #[test]
     fn test_new() {
-        let grid: Grid<i32> = Grid::new(5, 0);
+        let grid: Grid<i32> = Grid::new(5, 5, 0);
         assert_eq!(grid.size(), 5);
 
         for row in 0..5 {
@@ -39,7 +39,7 @@ mod tests {
     #[test]
     fn test_get_valid() {
         let vec = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let grid = Grid::from_vec(vec, 3);
+        let grid = Grid::from_vec(vec, 3, 3);
 
         assert_eq!(grid.get(Coordinate::new(0, 0)), Some(1));
         assert_eq!(grid.get(Coordinate::new(1, 0)), Some(2));
@@ -50,7 +50,7 @@ mod tests {
     #[test]
     fn test_get_out_of_bounds() {
         let vec = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let grid = Grid::from_vec(vec, 3);
+        let grid = Grid::from_vec(vec, 3, 3);
 
         assert_eq!(grid.get(Coordinate::new(-1, 0)), None);
         assert_eq!(grid.get(Coordinate::new(0, -1)), None);
@@ -61,7 +61,7 @@ mod tests {
     #[test]
     fn test_iter() {
         let vec = vec![vec![1, 2], vec![3, 4]];
-        let grid = Grid::from_vec(vec, 2);
+        let grid = Grid::from_vec(vec, 2, 2);
 
         let items: Vec<(Coordinate, i32)> = grid.iter().collect();
         assert_eq!(items.len(), 4);
@@ -75,7 +75,7 @@ mod tests {
     #[test]
     fn test_vec() {
         let vec = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
-        let grid = Grid::from_vec(vec.clone(), 3);
+        let grid = Grid::from_vec(vec.clone(), 3, 3);
 
         assert_eq!(grid.vec(), &vec);
     }

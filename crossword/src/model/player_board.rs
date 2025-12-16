@@ -21,7 +21,8 @@ pub struct PlayerBoard {
 
 impl PlayerBoard {
     pub fn from_puzzle(puzzle: Puzzle) -> Self {
-        let size = puzzle.size();
+        let width = puzzle.width();
+        let height = puzzle.height();
 
         let grid = puzzle
             .grid
@@ -42,8 +43,8 @@ impl PlayerBoard {
 
         let mut board = PlayerBoard {
             puzzle: puzzle,
-            size,
-            grid: Grid::from_vec(grid, size),
+            size: width.max(height), // For backward compatibility; prefer width/height
+            grid: Grid::from_vec(grid, width, height),
             cursor: Coordinate::new(0, 0),
             direction: BoardDirection::Across,
             empty_cells,
@@ -88,6 +89,14 @@ impl PlayerBoard {
 
     pub fn size(&self) -> usize {
         self.size
+    }
+
+    pub fn width(&self) -> usize {
+        self.grid.width()
+    }
+
+    pub fn height(&self) -> usize {
+        self.grid.height()
     }
 
     pub fn get_words_in_current_direction(&self) -> Vec<&Word> {
@@ -143,25 +152,42 @@ impl PlayerBoard {
     }
 
     pub fn move_to_next_open_word(&mut self) {
-        let word_info = self.words_iter().skip(1).find_map(|word| {
-            word.word_iter()
-                .find(|coord| self.get(*coord) == BoardCell::Empty)
-                .map(|coord| (coord, word.direction))
-        });
+        let word_info = self
+            .words_iter()
+            .skip(1)
+            .find_map(|word| {
+                word.word_iter()
+                    .find(|coord| self.get(*coord) == BoardCell::Empty)
+                    .map(|coord| (coord, word.direction))
+            })
+            .or_else(|| {
+                self.words_iter()
+                    .nth(1)
+                    .and_then(|word| Some((word.start_pos, word.direction)))
+            });
 
         if let Some((coord, direction)) = word_info {
             self.move_to(coord)
                 .expect("move_to_next_open_word outside bounds");
             self.direction = direction;
+            return;
         }
     }
 
     pub(crate) fn move_to_previous_open_word(&mut self) {
-        let word_info = self.words_iter().rev().find_map(|word| {
-            word.word_iter()
-                .find(|coord| self.get(*coord).is_empty())
-                .map(|coord| (coord, word.direction))
-        });
+        let word_info = self
+            .words_iter()
+            .rev()
+            .find_map(|word| {
+                word.word_iter()
+                    .find(|coord| self.get(*coord).is_empty())
+                    .map(|coord| (coord, word.direction))
+            })
+            .or_else(|| {
+                self.words_iter()
+                    .nth(1)
+                    .and_then(|word| Some((word.start_pos, word.direction)))
+            });
 
         debug_log::debug_log(format!(
             "move_to_previous_open_word found word_info: {:?}",
@@ -278,10 +304,6 @@ impl PlayerBoard {
             .unwrap_or(self.cursor);
 
         self.cursor = new_pos;
-    }
-
-    fn word_complete(&self, word: &Word) -> bool {
-        word.cell_iter().all(|coord| self.get(coord).is_filled())
     }
 
     fn cell_correct(&self, coord: Coordinate) -> bool {

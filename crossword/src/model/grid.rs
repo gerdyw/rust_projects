@@ -3,27 +3,28 @@ use super::{Coordinate, grid_iterator::GridIterator};
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Grid<T: Copy> {
     vec: Vec<Vec<T>>,
-    size: usize,
+    width: usize,
+    height: usize,
 }
 
 impl<T: Copy> Grid<T> {
-    pub fn from_vec(vec: Vec<Vec<T>>, size: usize) -> Self {
-        let grid = Grid { size, vec };
-        assert!(grid.validate(), "Grid is not square of the specified size");
+    pub fn from_vec(vec: Vec<Vec<T>>, width: usize, height: usize) -> Self {
+        let grid = Grid { width, height, vec };
+        assert!(grid.validate(), "Grid dimensions do not match the data");
         grid
     }
 
-    pub fn new(size: usize, default: T) -> Self {
-        let vec = vec![vec![default; size]; size];
-        Grid { vec, size }
+    pub fn new(width: usize, height: usize, default: T) -> Self {
+        let vec = vec![vec![default; width]; height];
+        Grid { vec, width, height }
     }
 
     pub fn validate(&self) -> bool {
-        if self.vec.len() != self.size {
+        if self.vec.len() != self.height {
             return false;
         }
         for row in &self.vec {
-            if row.len() != self.size {
+            if row.len() != self.width {
                 return false;
             }
         }
@@ -34,12 +35,23 @@ impl<T: Copy> Grid<T> {
         &self.vec
     }
 
+    pub fn width(&self) -> usize {
+        self.width
+    }
+
+    pub fn height(&self) -> usize {
+        self.height
+    }
+
+    // Deprecated: use width() or height() instead
     pub fn size(&self) -> usize {
-        self.size
+        // For backward compatibility with square grids, return width
+        // (assumes width == height for existing code)
+        self.width
     }
 
     pub fn get(&self, coord: Coordinate) -> Option<T> {
-        if !coord.is_valid(self.size, self.size) {
+        if !coord.is_valid(self.width, self.height) {
             return None;
         }
 
@@ -58,7 +70,7 @@ impl<T: Copy> Grid<T> {
     }
 
     pub fn contains(&self, coord: Coordinate) -> bool {
-        coord.is_valid(self.size, self.size)
+        coord.is_valid(self.width, self.height)
     }
 
     // Optional: iterate over all cells with coordinates
@@ -73,8 +85,9 @@ impl<T: Copy> Grid<T> {
     }
 
     pub fn coord_iter(&self) -> impl Iterator<Item = Coordinate> {
-        (0..self.size).flat_map(move |row| {
-            (0..self.size).map(move |col| Coordinate::new(col as isize, row as isize))
+        let width = self.width;
+        (0..self.height).flat_map(move |row| {
+            (0..width).map(move |col| Coordinate::new(col as isize, row as isize))
         })
     }
 

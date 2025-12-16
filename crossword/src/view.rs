@@ -80,7 +80,8 @@ fn render_congratulations(frame: &mut Frame, area: Rect, _board: &PlayerBoard) {
 
 fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     let cursor = board.get_cursor();
-    let size: usize = board.size();
+    let width = board.width();
+    let height = board.height();
     let elapsed_time = board.get_elapsed_time();
     let dir = board.get_direction();
     let dir_arrow = match dir {
@@ -96,9 +97,9 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     let current_word = board.get_current_word();
 
     // Build the table rows
-    let rows: Vec<Row> = (0..size)
+    let rows: Vec<Row> = (0..height)
         .map(|row| {
-            let cells: Vec<Cell> = (0..size)
+            let cells: Vec<Cell> = (0..width)
                 .map(|col| {
                     let coord = Coordinate::new(col as isize, row as isize);
                     let cell = board.get(coord);
@@ -149,7 +150,7 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
         .collect();
 
     // Create column constraints (3 chars per cell)
-    let widths = vec![Constraint::Length(3); size];
+    let widths = vec![Constraint::Length(3); width];
 
     let table = Table::new(rows, widths)
         .block(
@@ -170,7 +171,7 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
 
     // Compute a tight area for the table so the borders fit around the grid
     let cell_width: u16 = 3;
-    let content_width = cell_width.saturating_mul(size as u16);
+    let content_width = cell_width.saturating_mul(width as u16);
     // +2 for left/right borders
     let mut table_width = content_width.saturating_add(2);
     if table_width > area.width {
@@ -178,7 +179,7 @@ fn render_grid(frame: &mut Frame, area: Rect, board: &PlayerBoard) {
     }
 
     // Height: rows + 2 for top/bottom borders
-    let mut table_height = (size as u16).saturating_add(2);
+    let mut table_height = (height as u16).saturating_add(2);
     if table_height > area.height {
         table_height = area.height;
     }

@@ -28,6 +28,13 @@ pub fn parse_ipuz_to_puzzle(input: &str) -> Result<Puzzle, Box<dyn Error>> {
         .or_else(|| v.get("width").and_then(|w| w.as_u64()).map(|n| n as usize))
         .ok_or("missing width in IPUZ")?;
 
+    let height = v
+        .get("dimensions")
+        .and_then(|d| d.get("height"))
+        .and_then(|h| h.as_u64())
+        .map(|n| n as usize)
+        .or_else(|| v.get("height").and_then(|h| h.as_u64()).map(|n| n as usize));
+
     // block character (default '#')
     let block_char = v
         .get("block")
@@ -99,8 +106,11 @@ pub fn parse_ipuz_to_puzzle(input: &str) -> Result<Puzzle, Box<dyn Error>> {
         return Err("expected solution/puzzle to be an array of rows".into());
     }
 
+    // Determine actual height from rows if not specified
+    let height = height.unwrap_or(rows.len());
+
     // convert rows into Grid<PuzzleCell>
-    let grid = Grid::from_vec(rows, width as usize);
+    let grid = Grid::from_vec(rows, width, height);
 
     // Extract clues: IPUZ example stores clues under "clues" -> "Across"/"Down" as arrays of [number, text]
     let extract = |dir: &str| -> Vec<String> {
@@ -182,7 +192,10 @@ pub fn from_toml_string(puzzle_data: String) -> Result<Puzzle, Box<dyn Error>> {
         }
     }
 
-    let grid = Grid::from_vec(grid_vec, puzzle_file.size);
+    let height = grid_vec.len();
+    let width = grid_vec.get(0).map(|r| r.len()).unwrap_or(puzzle_file.size);
+
+    let grid = Grid::from_vec(grid_vec, width, height);
     let words = find_words(&grid, puzzle_file.across, puzzle_file.down);
 
     let mut across = Vec::new();

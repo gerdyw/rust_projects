@@ -66,11 +66,11 @@ impl<'a, T: Copy> Iterator for GridIterator<'a, T> {
                 }
                 MoveDirection::Left => {
                     self.current_pos =
-                        Coordinate::new((self.grid.size() - 1) as isize, self.current_pos.row);
+                        Coordinate::new((self.grid.width() - 1) as isize, self.current_pos.row);
                 }
                 MoveDirection::Up => {
                     self.current_pos =
-                        Coordinate::new(self.current_pos.col, (self.grid.size() - 1) as isize);
+                        Coordinate::new(self.current_pos.col, (self.grid.height() - 1) as isize);
                 }
             }
         }

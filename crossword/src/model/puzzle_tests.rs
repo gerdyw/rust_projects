@@ -1,6 +1,9 @@
 #[cfg(test)]
 mod tests {
-    use crate::model::{BoardDirection, PuzzleCell::*, Word};
+    use crate::{
+        execution::puzzle_parser::from_toml_file,
+        model::{BoardDirection, PuzzleCell::*, Word},
+    };
 
     use super::super::{Coordinate, Grid, Puzzle, PuzzleWords};
 
@@ -10,7 +13,7 @@ mod tests {
             vec![Fillable('A'), Blocked, Fillable('O')],
             vec![Fillable('R'), Fillable('A'), Fillable('T')],
         ];
-        let grid = Grid::from_vec(grid_vec, 3);
+        let grid = Grid::from_vec(grid_vec, 3, 3);
 
         let across_clues = vec!["Feline".to_string(), "Rodent".to_string()];
         let down_clues = vec!["Automobile".to_string(), "Child".to_string()];
@@ -155,7 +158,7 @@ mod tests {
     fn test_from_file() {
         // This would test loading from an actual file
         // For now, just test that it doesn't panic with valid structure
-        let result = Puzzle::from_toml_file("puzzles/puzzle.toml");
+        let result = from_toml_file("puzzles/puzzle.toml");
         assert!(result.is_ok());
     }
 
