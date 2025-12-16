@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::model::PuzzleCell;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

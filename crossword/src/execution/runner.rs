@@ -1,5 +1,6 @@
+use crate::view::renderer::Renderer;
+
 use super::{CommandExecutor, KeyParser};
-use crate::view;
 use ratatui::crossterm::ExecutableCommand;
 use ratatui::crossterm::terminal::{
     EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode,
@@ -9,11 +10,16 @@ use std::io::{self, stdout};
 pub struct Runner {
     pub parser: KeyParser,
     pub executor: CommandExecutor,
+    pub renderer: Renderer,
 }
 
 impl Runner {
-    pub fn new(parser: KeyParser, executor: CommandExecutor) -> Self {
-        Self { parser, executor }
+    pub fn new(parser: KeyParser, executor: CommandExecutor, renderer: Renderer) -> Self {
+        Self {
+            parser,
+            executor,
+            renderer,
+        }
     }
 
     pub fn run(&mut self) -> io::Result<()> {
@@ -26,7 +32,7 @@ impl Runner {
         while self.executor.is_running() {
             // Render
             terminal.draw(|frame| {
-                view::render(frame, self.executor.get_board());
+                self.renderer.render(frame, self.executor.get_board());
             })?;
 
             // Handle input

@@ -1,7 +1,7 @@
-use crossword::debug_log::debug_log;
 use crossword::execution::puzzle_parser::{from_toml_file, parse_ipuz_to_puzzle};
 use crossword::execution::{CommandExecutor, KeyParser, PuzzleType, Runner};
-use crossword::model::{PlayerBoard, Puzzle};
+use crossword::model::PlayerBoard;
+use crossword::view::renderer::Renderer;
 
 fn main() -> std::io::Result<()> {
     // Parse the puzzle file path from command line arguments
@@ -28,7 +28,8 @@ fn main() -> std::io::Result<()> {
     let board = PlayerBoard::from_puzzle(puzzle);
     let parser = KeyParser::new();
     let executor = CommandExecutor::new(board);
-    let mut runner = Runner::new(parser, executor);
+    let renderer = Renderer::new();
+    let mut runner = Runner::new(parser, executor, renderer);
 
     runner.run()?;
 
