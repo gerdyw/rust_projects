@@ -1,0 +1,144 @@
+# Justfile for project-name automation
+# See: https://github.com/casey/just
+
+set dotenv-load := true
+set dotenv-path := ".env"
+
+# Default recipe - show available commands
+default:
+    @just --list
+
+# Run the application locally
+run:
+    cargo run
+
+# Run tests
+test:
+    cargo test
+
+# Run tests with output
+test-verbose:
+    cargo test -- --nocapture
+
+# Check code without building
+check:
+    cargo check
+
+# Format code
+fmt:
+    cargo fmt
+
+# Run clippy linter
+lint:
+    cargo clippy -- -D warnings
+
+# Build release binary
+build:
+    cargo build --release
+
+# Docker commands - local development
+docker-build:
+    docker compose build
+
+docker-up:
+    docker compose up -d
+
+docker-down:
+    docker compose down
+
+docker-logs:
+    docker compose logs -f app
+
+docker-restart:
+    docker compose restart app
+
+# Rebuild from scratch (no cache)
+rebuild:
+    docker compose build --no-cache
+    docker compose up -d
+
+# Database commands
+db-up:
+    docker compose up -d db
+
+db-down:
+    docker compose down db
+
+db-logs:
+    docker compose logs -f db
+
+# SQLx migration commands (requires sqlx-cli: cargo install sqlx-cli)
+migrate-create NAME:
+    sqlx migrate add {{NAME}}
+
+migrate-run:
+    sqlx migrate run
+
+migrate-revert:
+    sqlx migrate revert
+
+# Clean up Docker resources
+clean-docker:
+    docker compose down -v
+    docker system prune -f
+
+# Clean Rust build artifacts
+clean-rust:
+    cargo clean
+
+# Full cleanup
+clean: clean-rust clean-docker
+
+# Development workflow - run everything needed for local dev (no auth)
+dev: db-up
+    @echo "Database started. Starting application without authentication..."
+    API_KEY_DISABLED=true cargo run
+
+# Production deployment (customize based on your deployment strategy)
+deploy:
+    @echo "Building for ARM64..."
+    docker compose build
+    @echo "Deploying to production..."
+    docker compose up -d
+
+# Health check
+health:
+    curl -s http://localhost:${SERVICE_PORT:-3000}/health | jq
+
+# Rename project from template placeholders (run this once when creating a new project)
+rename-project NEW_NAME:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    NEW_SNAKE=$(echo "{{NEW_NAME}}" | tr '-' '_')
+    echo "Renaming project-name to {{NEW_NAME}}..."
+    echo "Renaming project_name to $NEW_SNAKE..."
+    find . -type f \
+        ! -path "*/target/*" \
+        ! -path "*/.git/*" \
+        ! -name "Justfile" \
+        -exec sed -i '' 's/project-name/{{NEW_NAME}}/g' {} +
+    find . -type f \
+        ! -path "*/target/*" \
+        ! -path "*/.git/*" \
+        ! -name "Justfile" \
+        -exec sed -i '' "s/project_name/$NEW_SNAKE/g" {} +
+    sed -i '' 's/project-name/{{NEW_NAME}}/g' Justfile
+    sed -i '' "s/project_name/$NEW_SNAKE/g" Justfile
+    echo "✓ Renamed all instances to {{NEW_NAME}} / $NEW_SNAKE"
+    echo "Next steps:"
+    echo "  1. Update README.md with your project description"
+    echo "  2. Replace src/data/example/ with your domain models"
+    echo "  3. Update migrations/ with your schema"
+    echo "  4. Run 'just check' to verify everything compiles"
+
+# Update dependencies (within constraints)
+update:
+    cargo update
+
+# Upgrade dependencies to latest versions
+upgrade:
+    cargo upgrade
+
+# Check for outdated dependencies
+outdated:
+    cargo outdated
