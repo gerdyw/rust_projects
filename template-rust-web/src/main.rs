@@ -1,3 +1,4 @@
+use project_name::data::example::{ExampleRepository, ExampleService};
 use project_name::db::{init_pool, run_migrations};
 use project_name::domain::{AppState, Settings};
 use project_name::web::create_router;
@@ -32,11 +33,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     run_migrations(&pool).await?;
     tracing::info!("Database migrations completed");
 
+    // Initialize services
+    let example_repository = ExampleRepository::new(pool.clone());
+    let example_service = ExampleService::new(example_repository);
+
     // Create application state
-    let app_state = AppState::new(pool);
+    let app_state = AppState::new(pool, example_service);
 
     // Build router with middleware
-    let app = create_router(app_state);
+    let app = create_router(app_state, settings.api_key.key);
 
     // Start server
     let addr = SocketAddr::from(([0, 0, 0, 0], settings.service_port));

@@ -1,9 +1,10 @@
+use super::models::{CreateExampleEntity, ExampleEntity, UpdateExampleEntity};
 use crate::db::RepositoryError;
 use sqlx::PgPool;
 use uuid::Uuid;
-use super::models::{ExampleEntity, CreateExampleEntity, UpdateExampleEntity};
 
 /// Repository for database operations on ExampleEntity
+#[derive(Clone)]
 pub struct ExampleRepository {
     pool: PgPool,
 }
@@ -18,7 +19,7 @@ impl ExampleRepository {
         let entity = sqlx::query_as::<_, ExampleEntity>(
             "SELECT id, created_at, updated_at, name, description 
              FROM example_entities 
-             WHERE id = $1"
+             WHERE id = $1",
         )
         .bind(id)
         .fetch_one(&self.pool)
@@ -32,7 +33,7 @@ impl ExampleRepository {
         let entities = sqlx::query_as::<_, ExampleEntity>(
             "SELECT id, created_at, updated_at, name, description 
              FROM example_entities 
-             ORDER BY created_at DESC"
+             ORDER BY created_at DESC",
         )
         .fetch_all(&self.pool)
         .await?;
@@ -41,11 +42,14 @@ impl ExampleRepository {
     }
 
     /// Create a new entity
-    pub async fn create(&self, data: CreateExampleEntity) -> Result<ExampleEntity, RepositoryError> {
+    pub async fn create(
+        &self,
+        data: CreateExampleEntity,
+    ) -> Result<ExampleEntity, RepositoryError> {
         let entity = sqlx::query_as::<_, ExampleEntity>(
             "INSERT INTO example_entities (id, created_at, updated_at, name, description)
              VALUES ($1, NOW(), NOW(), $2, $3)
-             RETURNING id, created_at, updated_at, name, description"
+             RETURNING id, created_at, updated_at, name, description",
         )
         .bind(Uuid::new_v4())
         .bind(&data.name)
@@ -57,14 +61,18 @@ impl ExampleRepository {
     }
 
     /// Update an existing entity
-    pub async fn update(&self, id: Uuid, data: UpdateExampleEntity) -> Result<ExampleEntity, RepositoryError> {
+    pub async fn update(
+        &self,
+        id: Uuid,
+        data: UpdateExampleEntity,
+    ) -> Result<ExampleEntity, RepositoryError> {
         let entity = sqlx::query_as::<_, ExampleEntity>(
             "UPDATE example_entities 
              SET name = COALESCE($2, name),
                  description = COALESCE($3, description),
                  updated_at = NOW()
              WHERE id = $1
-             RETURNING id, created_at, updated_at, name, description"
+             RETURNING id, created_at, updated_at, name, description",
         )
         .bind(id)
         .bind(&data.name)

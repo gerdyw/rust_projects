@@ -1,5 +1,5 @@
+use sqlx::migrate::{MigrateError, Migrator};
 use sqlx::postgres::{PgPool, PgPoolOptions};
-use sqlx::migrate::Migrator;
 use std::time::Duration;
 
 /// Initialize a PostgreSQL connection pool
@@ -13,7 +13,7 @@ pub async fn init_pool(database_url: &str) -> Result<PgPool, sqlx::Error> {
 
 /// Run database migrations
 /// Migrations are embedded in the binary at compile time
-pub async fn run_migrations(pool: &PgPool) -> Result<(), sqlx::Error> {
+pub async fn run_migrations(pool: &PgPool) -> Result<(), MigrateError> {
     static MIGRATOR: Migrator = sqlx::migrate!("./migrations");
     MIGRATOR.run(pool).await
 }

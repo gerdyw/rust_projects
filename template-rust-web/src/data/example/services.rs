@@ -1,9 +1,10 @@
+use super::models::{CreateExampleEntity, ExampleEntity, UpdateExampleEntity};
+use super::repository::ExampleRepository;
 use crate::db::RepositoryError;
 use uuid::Uuid;
-use super::models::{ExampleEntity, CreateExampleEntity, UpdateExampleEntity};
-use super::repository::ExampleRepository;
 
 /// Service layer for business logic on ExampleEntity
+#[derive(Clone)]
 pub struct ExampleService {
     repository: ExampleRepository,
 }
@@ -24,11 +25,14 @@ impl ExampleService {
     }
 
     /// Create a new entity with validation
-    pub async fn create(&self, data: CreateExampleEntity) -> Result<ExampleEntity, RepositoryError> {
+    pub async fn create(
+        &self,
+        data: CreateExampleEntity,
+    ) -> Result<ExampleEntity, RepositoryError> {
         // Add business logic validation here
         if data.name.trim().is_empty() {
             return Err(RepositoryError::ValidationError(
-                "Name cannot be empty".to_string()
+                "Name cannot be empty".to_string(),
             ));
         }
 
@@ -36,12 +40,16 @@ impl ExampleService {
     }
 
     /// Update an entity with validation
-    pub async fn update(&self, id: Uuid, data: UpdateExampleEntity) -> Result<ExampleEntity, RepositoryError> {
+    pub async fn update(
+        &self,
+        id: Uuid,
+        data: UpdateExampleEntity,
+    ) -> Result<ExampleEntity, RepositoryError> {
         // Add business logic validation here
         if let Some(ref name) = data.name {
             if name.trim().is_empty() {
                 return Err(RepositoryError::ValidationError(
-                    "Name cannot be empty".to_string()
+                    "Name cannot be empty".to_string(),
                 ));
             }
         }

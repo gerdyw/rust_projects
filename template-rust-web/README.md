@@ -104,6 +104,8 @@ Environment variables (see [.env.example](.env.example)):
 | `DATABASE_USER` | Database user | `postgres` |
 | `DATABASE_PASSWORD` | Database password | `postgres` |
 | `SERVICE_PORT` | HTTP server port | `3000` (local), `8080` (docker) |
+| `API_KEY` | API key for authentication | Required unless disabled |
+| `API_KEY_DISABLED` | Disable API key auth (set to `true`) | `false` |
 | `RUST_LOG` | Logging level | `project_name=debug` |
 
 ## Database Migrations

@@ -89,9 +89,10 @@ clean-rust:
 # Full cleanup
 clean: clean-rust clean-docker
 
-# Development workflow - run everything needed for local dev
+# Development workflow - run everything needed for local dev (no auth)
 dev: db-up
-    @echo "Database started. Run 'just run' to start the application."
+    @echo "Database started. Starting application without authentication..."
+    API_KEY_DISABLED=true cargo run
 
 # Production deployment (customize based on your deployment strategy)
 deploy:
