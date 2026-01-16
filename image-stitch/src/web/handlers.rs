@@ -1,10 +1,10 @@
-use axum::{http::StatusCode, response::Response, Json};
+use axum::{extract::State, http::StatusCode, response::Response, Json};
 use base64::{prelude::BASE64_STANDARD, Engine};
 use chrono::Local;
 use exif::{In, Tag};
 use image::{
     codecs::png::{CompressionType, FilterType as PngFilterType, PngEncoder},
-    ColorType, DynamicImage, ExtendedColorType, GenericImage, ImageEncoder, ImageFormat,
+    DynamicImage, ExtendedColorType, GenericImage, ImageEncoder,
 };
 use rayon::prelude::*;
 use std::fs;
@@ -13,11 +13,14 @@ use std::{cmp::min, io::Cursor};
 use tokio::task;
 use tracing::{debug, error, info};
 
-use crate::web::StitchRequest;
+use crate::{domain::AppState, web::StitchRequest};
 
 const MAX_WIDTH: u32 = 2000;
 
-pub async fn stitch_images(Json(data): Json<StitchRequest>) -> Result<Response, StatusCode> {
+pub async fn stitch_images(
+    State(state): State<AppState>,
+    Json(data): Json<StitchRequest>,
+) -> Result<Response, StatusCode> {
     match process_stitch(data.images).await {
         Ok(png_data) => {
             info!("Image stitching completed successfully");
@@ -52,31 +55,6 @@ async fn process_stitch_blocking(image_data: Vec<String>) -> Result<Vec<u8>, Str
         image_data.len()
     );
 
-    // Decode all images
-    // let mut images = Vec::new();
-    // for (idx, img_data) in image_data.iter().enumerate() {
-    //     debug!("Decoding image {}", idx);
-
-    //     // Remove whitespace from base64 string
-    //     let cleaned_data: String = img_data.chars().filter(|c| !c.is_whitespace()).collect();
-
-    //     let decoded = BASE64_STANDARD
-    //         .decode(&cleaned_data)
-    //         .map_err(|e| format!("Failed to decode base64 for image {}: {}", idx, e))?;
-
-    //     let img = image::load_from_memory(&decoded)
-    //         .map_err(|e| format!("Failed to load image {} from memory: {}", idx, e))?;
-
-    //     let img = apply_exif_orientation(&decoded, img);
-
-    //     debug!(
-    //         "Image {} loaded successfully: {}x{}",
-    //         idx,
-    //         img.width(),
-    //         img.height()
-    //     );
-    //     images.push(img);
-    // }
     let images = decode_images(image_data)?;
 
     if images.is_empty() {
