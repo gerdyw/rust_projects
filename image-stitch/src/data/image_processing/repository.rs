@@ -3,6 +3,7 @@ use crate::data::image_processing::models::{
 };
 use sqlx::PgPool;
 use uuid::Uuid;
+use std::str::FromStr;
 
 #[derive(Clone)]
 pub struct ImageProcessingRepository {
@@ -15,8 +16,7 @@ impl ImageProcessingRepository {
     }
 
     pub async fn create(&self, job: CreateImageProcessingJob) -> Result<ImageProcessingJob, sqlx::Error> {
-        let record = sqlx::query_as!(
-            ImageProcessingJob,
+        let record = sqlx::query!(
             r#"
             INSERT INTO image_processing_jobs (image_count, status)
             VALUES ($1, 'pending')
@@ -24,7 +24,7 @@ impl ImageProcessingRepository {
                 id, 
                 created_at, 
                 updated_at, 
-                status as "status: JobStatus", 
+                status, 
                 image_count, 
                 result_path, 
                 error_message
@@ -34,18 +34,25 @@ impl ImageProcessingRepository {
         .fetch_one(&self.pool)
         .await?;
 
-        Ok(record)
+        Ok(ImageProcessingJob {
+            id: record.id,
+            created_at: record.created_at,
+            updated_at: record.updated_at,
+            status: JobStatus::from_str(&record.status).map_err(|e| sqlx::Error::Decode(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData, e))))?,
+            image_count: record.image_count,
+            result_path: record.result_path,
+            error_message: record.error_message,
+        })
     }
 
     pub async fn get_by_id(&self, id: Uuid) -> Result<Option<ImageProcessingJob>, sqlx::Error> {
-        let record = sqlx::query_as!(
-            ImageProcessingJob,
+        let record = sqlx::query!(
             r#"
             SELECT 
                 id, 
                 created_at, 
                 updated_at, 
-                status as "status: JobStatus", 
+                status, 
                 image_count, 
                 result_path, 
                 error_message
@@ -57,13 +64,23 @@ impl ImageProcessingRepository {
         .fetch_optional(&self.pool)
         .await?;
 
-        Ok(record)
+        match record {
+            Some(rec) => Ok(Some(ImageProcessingJob {
+                id: rec.id,
+                created_at: rec.created_at,
+                updated_at: rec.updated_at,
+                status: JobStatus::from_str(&rec.status).map_err(|e| sqlx::Error::Decode(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData, e))))?,
+                image_count: rec.image_count,
+                result_path: rec.result_path,
+                error_message: rec.error_message,
+            })),
+            None => Ok(None),
+        }
     }
 
     pub async fn update(&self, id: Uuid, update: UpdateImageProcessingJob) -> Result<ImageProcessingJob, sqlx::Error> {
         let status_str = update.status.to_string();
-        let record = sqlx::query_as!(
-            ImageProcessingJob,
+        let record = sqlx::query!(
             r#"
             UPDATE image_processing_jobs
             SET 
@@ -76,7 +93,7 @@ impl ImageProcessingRepository {
                 id, 
                 created_at, 
                 updated_at, 
-                status as "status: JobStatus", 
+                status, 
                 image_count, 
                 result_path, 
                 error_message
@@ -89,6 +106,14 @@ impl ImageProcessingRepository {
         .fetch_one(&self.pool)
         .await?;
 
-        Ok(record)
+        Ok(ImageProcessingJob {
+            id: record.id,
+            created_at: record.created_at,
+            updated_at: record.updated_at,
+            status: JobStatus::from_str(&record.status).map_err(|e| sqlx::Error::Decode(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData, e))))?,
+            image_count: record.image_count,
+            result_path: record.result_path,
+            error_message: record.error_message,
+        })
     }
 }
