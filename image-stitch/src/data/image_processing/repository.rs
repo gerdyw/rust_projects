@@ -10,6 +10,15 @@ pub struct ImageProcessingRepository {
     pool: PgPool,
 }
 
+fn parse_job_status(status_str: &str) -> Result<JobStatus, sqlx::Error> {
+    JobStatus::from_str(status_str).map_err(|e| {
+        sqlx::Error::Decode(Box::new(std::io::Error::new(
+            std::io::ErrorKind::InvalidData,
+            e,
+        )))
+    })
+}
+
 impl ImageProcessingRepository {
     pub fn new(pool: PgPool) -> Self {
         Self { pool }
@@ -38,7 +47,7 @@ impl ImageProcessingRepository {
             id: record.id,
             created_at: record.created_at,
             updated_at: record.updated_at,
-            status: JobStatus::from_str(&record.status).map_err(|e| sqlx::Error::Decode(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData, e))))?,
+            status: parse_job_status(&record.status)?,
             image_count: record.image_count,
             result_path: record.result_path,
             error_message: record.error_message,
@@ -69,7 +78,7 @@ impl ImageProcessingRepository {
                 id: rec.id,
                 created_at: rec.created_at,
                 updated_at: rec.updated_at,
-                status: JobStatus::from_str(&rec.status).map_err(|e| sqlx::Error::Decode(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData, e))))?,
+                status: parse_job_status(&rec.status)?,
                 image_count: rec.image_count,
                 result_path: rec.result_path,
                 error_message: rec.error_message,
@@ -110,7 +119,7 @@ impl ImageProcessingRepository {
             id: record.id,
             created_at: record.created_at,
             updated_at: record.updated_at,
-            status: JobStatus::from_str(&record.status).map_err(|e| sqlx::Error::Decode(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData, e))))?,
+            status: parse_job_status(&record.status)?,
             image_count: record.image_count,
             result_path: record.result_path,
             error_message: record.error_message,

@@ -142,9 +142,13 @@ pub async fn get_job_result(
                     StatusCode::INTERNAL_SERVER_ERROR
                 })?)
         }
+        JobStatus::Failed => {
+            error!("Job {} failed", job_id);
+            Err(StatusCode::INTERNAL_SERVER_ERROR)
+        }
         _ => {
-            error!("Job {} is not completed (status: {})", job_id, job.status);
-            Err(StatusCode::NOT_FOUND)
+            error!("Job {} is not yet completed (status: {})", job_id, job.status);
+            Err(StatusCode::CONFLICT)
         }
     }
 }
@@ -203,12 +207,12 @@ fn process_stitch_blocking(image_data: Vec<String>) -> Result<String, String> {
         return Err("No images provided".to_string());
     }
 
-    // Find widest width
+    // Find narrowest width
     let narrowest_width = images
         .iter()
         .map(|img| img.width())
         .min()
-        .ok_or("Failed to determine widest width")?;
+        .ok_or("Failed to determine narrowest width")?;
 
     debug!("Narrowest width: {}", narrowest_width);
 
@@ -302,12 +306,12 @@ fn process_stitch_blocking_bytes(image_data: Vec<String>) -> Result<Vec<u8>, Str
         return Err("No images provided".to_string());
     }
 
-    // Find widest width
+    // Find narrowest width
     let narrowest_width = images
         .iter()
         .map(|img| img.width())
         .min()
-        .ok_or("Failed to determine widest width")?;
+        .ok_or("Failed to determine narrowest width")?;
 
     debug!("Narrowest width: {}", narrowest_width);
 
