@@ -1,4 +1,3 @@
-use project_name::data::example::{ExampleRepository, ExampleService};
 use project_name::db::{init_pool, run_migrations};
 use project_name::domain::{AppState, Settings};
 use project_name::web::create_router;
