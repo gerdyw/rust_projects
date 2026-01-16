@@ -1,9 +1,10 @@
 use crate::domain::AppState;
+use axum::extract::DefaultBodyLimit;
 use axum::{
     body::Body,
     http::{Request, StatusCode},
     middleware::{self, Next},
-    routing::get,
+    routing::{get, post},
     Router,
 };
 use tower_http::trace::TraceLayer;
@@ -12,7 +13,8 @@ use tower_http::trace::TraceLayer;
 pub fn create_router(state: AppState, api_key: Option<String>) -> Router {
     let app = Router::new()
         .route("/health", get(super::health_check))
-        .nest("/api/examples", super::examples_router());
+        .route("/stitch", post(super::stitch_images))
+        .layer(DefaultBodyLimit::max(100 * 1024 * 1024)); // 100MB limit
 
     let app = add_auth_layer(api_key, app);
 

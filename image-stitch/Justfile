@@ -10,7 +10,7 @@ default:
 
 # Run the application locally
 run:
-    cargo run
+    API_KEY_DISABLED=true cargo run
 
 # Run tests
 test:

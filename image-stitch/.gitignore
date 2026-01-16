@@ -20,3 +20,7 @@ logs/
 # Ignore OS files
 .DS_Store
 Thumbs.db
+
+# ignore images output folder
+stitched_images/
+stitched_images/

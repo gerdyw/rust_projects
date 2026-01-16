@@ -33,12 +33,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     run_migrations(&pool).await?;
     tracing::info!("Database migrations completed");
 
-    // Initialize services
-    let example_repository = ExampleRepository::new(pool.clone());
-    let example_service = ExampleService::new(example_repository);
-
     // Create application state
-    let app_state = AppState::new(pool, example_service);
+    let app_state = AppState::new(pool);
 
     // Build router with middleware
     let app = create_router(app_state, settings.api_key.key);
