@@ -13,7 +13,12 @@ use tower_http::trace::TraceLayer;
 pub fn create_router(state: AppState, api_key: Option<String>) -> Router {
     let app = Router::new()
         .route("/health", get(super::health_check))
+        // Legacy sync endpoint
         .route("/stitch", post(super::stitch_images))
+        // New async endpoints
+        .route("/jobs", post(super::submit_stitch_job))
+        .route("/jobs/{job_id}", get(super::get_job_status))
+        .route("/jobs/{job_id}/result", get(super::get_job_result))
         .layer(DefaultBodyLimit::max(100 * 1024 * 1024)); // 100MB limit
 
     let app = add_auth_layer(api_key, app);
