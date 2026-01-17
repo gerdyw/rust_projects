@@ -1,6 +1,7 @@
 pub mod handlers;
 pub mod health_check;
 pub mod router;
+pub mod templates;
 pub mod types;
 // pub mod routes;
 

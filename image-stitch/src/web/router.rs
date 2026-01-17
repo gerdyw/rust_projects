@@ -19,6 +19,10 @@ pub fn create_router(state: AppState, api_key: Option<String>) -> Router {
         .route("/jobs", post(super::submit_stitch_job))
         .route("/jobs/{job_id}", get(super::get_job_status))
         .route("/jobs/{job_id}/result", get(super::get_job_result))
+        // HTMX frontend endpoints
+        .route("/wait/{job_id}", get(super::serve_waiting_page))
+        .route("/status/{job_id}", get(super::get_status_fragment))
+        .route("/images/{job_id}", get(super::serve_image_page))
         .layer(DefaultBodyLimit::max(100 * 1024 * 1024)); // 100MB limit
 
     let app = add_auth_layer(api_key, app);
