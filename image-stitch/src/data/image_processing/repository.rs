@@ -2,8 +2,8 @@ use crate::data::image_processing::models::{
     CreateImageProcessingJob, ImageProcessingJob, JobStatus, UpdateImageProcessingJob,
 };
 use sqlx::PgPool;
-use uuid::Uuid;
 use std::str::FromStr;
+use uuid::Uuid;
 
 #[derive(Clone)]
 pub struct ImageProcessingRepository {
@@ -24,7 +24,10 @@ impl ImageProcessingRepository {
         Self { pool }
     }
 
-    pub async fn create(&self, job: CreateImageProcessingJob) -> Result<ImageProcessingJob, sqlx::Error> {
+    pub async fn create(
+        &self,
+        job: CreateImageProcessingJob,
+    ) -> Result<ImageProcessingJob, sqlx::Error> {
         let record = sqlx::query!(
             r#"
             INSERT INTO image_processing_jobs (image_count, status)
@@ -87,7 +90,11 @@ impl ImageProcessingRepository {
         }
     }
 
-    pub async fn update(&self, id: Uuid, update: UpdateImageProcessingJob) -> Result<ImageProcessingJob, sqlx::Error> {
+    pub async fn update(
+        &self,
+        id: Uuid,
+        update: UpdateImageProcessingJob,
+    ) -> Result<ImageProcessingJob, sqlx::Error> {
         let status_str = update.status.to_string();
         let record = sqlx::query!(
             r#"

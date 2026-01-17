@@ -1,4 +1,4 @@
-use axum::{extract::State, http::StatusCode, response::Response, Json, extract::Path};
+use axum::{extract::Path, extract::State, http::StatusCode, response::Response, Json};
 use base64::{prelude::BASE64_STANDARD, Engine};
 use chrono::Local;
 use exif::{In, Tag};
@@ -16,8 +16,8 @@ use uuid::Uuid;
 
 use crate::{
     data::image_processing::JobStatus,
-    domain::AppState, 
-    web::{StitchRequest, JobSubmitResponse, JobStatusResponse}
+    domain::AppState,
+    web::{JobStatusResponse, JobSubmitResponse, StitchRequest},
 };
 
 const MAX_WIDTH: u32 = 2000;
@@ -28,7 +28,7 @@ pub async fn submit_stitch_job(
     Json(data): Json<StitchRequest>,
 ) -> Result<Json<JobSubmitResponse>, StatusCode> {
     let image_count = data.images.len() as i32;
-    
+
     // Create a job in the database
     let job = state
         .image_processing_service
@@ -46,7 +46,7 @@ pub async fn submit_stitch_job(
     let service = state.image_processing_service.clone();
     tokio::spawn(async move {
         info!("Starting background processing for job: {}", job_id);
-        
+
         // Mark as processing
         if let Err(e) = service.mark_processing(job_id).await {
             error!("Failed to mark job {} as processing: {}", job_id, e);
@@ -56,7 +56,10 @@ pub async fn submit_stitch_job(
         // Process the images
         match process_stitch(data.images).await {
             Ok(result_path) => {
-                info!("Job {} completed successfully, result: {}", job_id, result_path);
+                info!(
+                    "Job {} completed successfully, result: {}",
+                    job_id, result_path
+                );
                 if let Err(e) = service.mark_completed(job_id, result_path).await {
                     error!("Failed to mark job {} as completed: {}", job_id, e);
                 }
@@ -73,6 +76,7 @@ pub async fn submit_stitch_job(
     Ok(Json(JobSubmitResponse {
         job_id,
         status: "pending".to_string(),
+        url: format!("/jobs/{}", job_id),
     }))
 }
 
@@ -147,7 +151,10 @@ pub async fn get_job_result(
             Err(StatusCode::INTERNAL_SERVER_ERROR)
         }
         _ => {
-            error!("Job {} is not yet completed (status: {})", job_id, job.status);
+            error!(
+                "Job {} is not yet completed (status: {})",
+                job_id, job.status
+            );
             Err(StatusCode::CONFLICT)
         }
     }

@@ -10,6 +10,7 @@ pub struct StitchRequest {
 pub struct JobSubmitResponse {
     pub job_id: Uuid,
     pub status: String,
+    pub url: String,
 }
 
 #[derive(Serialize)]
@@ -20,4 +21,3 @@ pub struct JobStatusResponse {
     pub result_path: Option<String>,
     pub error_message: Option<String>,
 }
-
