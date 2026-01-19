@@ -1,21 +1,24 @@
-use project_name::db::{init_pool, run_migrations};
-use project_name::domain::{AppState, Settings};
-use project_name::web::create_router;
+use image_stitch::db::{init_pool, run_migrations};
+use image_stitch::domain::{AppState, Settings};
+use image_stitch::web::create_router;
 use std::net::SocketAddr;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Load .env file if present (for local development)
+    dotenvy::dotenv().ok();
+
     // Initialize tracing
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "project_name=debug,tower_http=debug".into()),
+                .unwrap_or_else(|_| "image_stitch=debug,tower_http=debug".into()),
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    tracing::info!("Starting project-name service");
+    tracing::info!("Starting image-stitch service");
 
     // Load settings from environment
     let settings = Settings::from_env()?;
@@ -36,7 +39,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let app_state = AppState::new(pool);
 
     // Build router with middleware
-    let app = create_router(app_state, settings.api_key.key);
+    let app = create_router(app_state, settings.api_key);
 
     // Start server
     let addr = SocketAddr::from(([0, 0, 0, 0], settings.service_port));

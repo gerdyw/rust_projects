@@ -1,4 +1,4 @@
-# Justfile for project-name automation
+# Justfile for image-stitch automation
 # See: https://github.com/casey/just
 
 set dotenv-load := true
@@ -10,7 +10,7 @@ default:
 
 # Run the application locally
 run:
-    API_KEY_DISABLED=true cargo run
+    DATABASE_HOST=localhost cargo run
 
 # Run tests
 test:
@@ -37,20 +37,24 @@ build:
     cargo build --release
 
 # Docker commands - local development
-docker-build:
+dc-build:
     docker compose build
 
-docker-up:
+dc-up:
     docker compose up -d
 
-docker-down:
+dc-down:
     docker compose down
 
-docker-logs:
-    docker compose logs -f app
+dc-logs:
+    docker compose logs -f image-stitch
 
-docker-restart:
-    docker compose restart app
+dc-restart:
+    docker compose restart image-stitch
+
+# Build and push to Raspberry Pi registry
+build-push:
+    ./scripts/build-and-push.sh
 
 # Rebuild from scratch (no cache)
 rebuild:
@@ -93,13 +97,6 @@ clean: clean-rust clean-docker
 dev: db-up
     @echo "Database started. Starting application without authentication..."
     API_KEY_DISABLED=true cargo run
-
-# Production deployment (customize based on your deployment strategy)
-deploy:
-    @echo "Building for ARM64..."
-    docker compose build
-    @echo "Deploying to production..."
-    docker compose up -d
 
 # Health check
 health:

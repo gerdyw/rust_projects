@@ -201,7 +201,9 @@ pub async fn get_status_fragment(
 
     match job.status {
         JobStatus::Pending => Html(templates::status_pending()).into_response(),
-        JobStatus::Processing => Html(templates::status_processing(job.image_count)).into_response(),
+        JobStatus::Processing => {
+            Html(templates::status_processing(job.image_count)).into_response()
+        }
         JobStatus::Completed | JobStatus::Failed => {
             // Redirect to image page (handles both success and error)
             Response::builder()

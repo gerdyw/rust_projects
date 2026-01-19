@@ -1,11 +1,22 @@
 use std::env;
 
+/// API key authentication mode
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ApiKeyMode {
+    /// Full - API key required for all endpoints
+    Full(String),
+    /// SubmitOnly - API key required only for POST endpoints (/stitch and /jobs)
+    SubmitOnly(String),
+    /// None - No API key required
+    None,
+}
+
 /// Application settings loaded from environment variables
 #[derive(Debug, Clone)]
 pub struct Settings {
     pub database: DatabaseSettings,
     pub service_port: u16,
-    pub api_key: ApiKeySettings,
+    pub api_key: ApiKeyMode,
 }
 
 #[derive(Debug, Clone)]
@@ -15,12 +26,6 @@ pub struct DatabaseSettings {
     pub name: String,
     pub user: String,
     pub password: String,
-}
-
-#[derive(Debug, Clone)]
-pub struct ApiKeySettings {
-    pub enabled: bool,
-    pub key: Option<String>,
 }
 
 impl Settings {
@@ -44,28 +49,27 @@ impl Settings {
             .map_err(|_| "SERVICE_PORT must be a valid number".to_string())?;
 
         // API Key configuration
-        let api_key_disabled = env::var("API_KEY_DISABLED")
-            .unwrap_or_else(|_| "false".to_string())
-            .to_lowercase();
-        let api_key_enabled = api_key_disabled != "true";
+        let api_key_mode_str = env::var("API_KEY_MODE").unwrap_or_else(|_| "full".to_string());
 
-        let api_key = if api_key_enabled {
-            let key = env::var("API_KEY")
-                .map_err(|_| "API_KEY must be set, or set API_KEY_DISABLED=true to disable authentication".to_string())?;
-            Some(key)
-        } else {
-            None
-        };
-
-        let api_key_settings = ApiKeySettings {
-            enabled: api_key_enabled,
-            key: api_key,
+        let api_key = match api_key_mode_str.to_lowercase().as_str() {
+            "full" => {
+                let key = env::var("API_KEY")
+                    .map_err(|_| "API_KEY must be set when API_KEY_MODE is 'full'.\nTo disable API key authentication, set API_KEY_MODE to 'none'.".to_string())?;
+                ApiKeyMode::Full(key)
+            }
+            "submit_only" | "submitonly" => {
+                let key = env::var("API_KEY").map_err(|_| {
+                    "API_KEY must be set when API_KEY_MODE is 'submit_only'".to_string()
+                })?;
+                ApiKeyMode::SubmitOnly(key)
+            }
+            _ => ApiKeyMode::None,
         };
 
         Ok(Self {
             database,
             service_port,
-            api_key: api_key_settings,
+            api_key,
         })
     }
 

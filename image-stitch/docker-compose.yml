@@ -1,34 +1,35 @@
 services:
-  app:
+  image-stitch:
     build:
       context: .
       dockerfile: Dockerfile
-    image: project-name:latest
-    container_name: project-name-app
+    container_name: image-stitch
     ports:
-      - "${SERVICE_PORT:-8080}:8080"
+      - "${SERVICE_PORT:-3000}:3000"
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - DATABASE_NAME=${DATABASE_NAME:-exampledb}
-      - DATABASE_USER=${DATABASE_USER:-postgres}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD:-postgres}
-      - SERVICE_PORT=8080
-      - RUST_LOG=${RUST_LOG:-project_name=debug,tower_http=debug}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - SERVICE_PORT=${SERVICE_PORT:-3000}
+      - API_KEY_MODE=${API_KEY_MODE}
+      - API_KEY=${API_KEY}
+      - RUST_LOG=${RUST_LOG:-image_stitch=debug,tower_http=debug}
+    volumes:
+      - ./stitched_images:/app/stitched_images
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
-    networks:
-      - app-network
 
   db:
     image: postgres:16-alpine
-    container_name: project-name-db
+    container_name: image-stitch-db
     environment:
-      - POSTGRES_DB=exampledb
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - "${DATABASE_PORT:-5432}:5432"
     volumes:
@@ -39,13 +40,7 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
-    networks:
-      - app-network
 
 volumes:
   postgres_data:
     driver: local
-
-networks:
-  app-network:
-    driver: bridge

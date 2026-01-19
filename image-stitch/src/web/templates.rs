@@ -130,11 +130,7 @@ pub fn error_page(title: &str, message: &str, details: Option<&str>) -> String {
 
 /// Job not found error page
 pub fn job_not_found(job_id: Uuid) -> String {
-    error_page(
-        "Job Not Found",
-        &format!("Job ID: {}", job_id),
-        None,
-    )
+    error_page("Job Not Found", &format!("Job ID: {}", job_id), None)
 }
 
 /// Processing failed page with error details

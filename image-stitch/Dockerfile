@@ -22,9 +22,11 @@ RUN rm -rf src
 # Copy actual source code
 COPY src ./src
 COPY migrations ./migrations
+COPY .sqlx ./.sqlx
 
 # Build the actual application
-RUN touch src/main.rs && \
+ENV SQLX_OFFLINE=true
+RUN touch src/lib.rs src/main.rs && \
     cargo build --release --target aarch64-unknown-linux-musl
 
 # Stage 2: Create minimal runtime image
@@ -36,7 +38,7 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates tzdata
 
 # Copy the compiled binary from builder
-COPY --from=builder /app/target/aarch64-unknown-linux-musl/release/project-name /usr/local/bin/project-name
+COPY --from=builder /app/target/aarch64-unknown-linux-musl/release/image-stitch /usr/local/bin/image-stitch
 
 # Copy migrations directory
 COPY --from=builder /app/migrations /app/migrations
@@ -49,7 +51,7 @@ RUN addgroup -g 1000 appuser && \
 USER appuser
 
 # Expose the service port
-EXPOSE 8080
+EXPOSE 3000
 
 # Set the entrypoint
-ENTRYPOINT ["/usr/local/bin/project-name"]
+ENTRYPOINT ["/usr/local/bin/image-stitch"]

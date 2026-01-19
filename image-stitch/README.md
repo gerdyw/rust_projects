@@ -14,7 +14,7 @@ A Rust web service template using Axum, PostgreSQL, and Docker.
 ## Project Structure
 
 ```
-project-name/
+image-stitch/
 ├── src/
 │   ├── main.rs           # Application entry point
 │   ├── lib.rs            # Library root
@@ -37,7 +37,7 @@ project-name/
 ├── Dockerfile            # ARM64 multi-stage build
 ├── docker-compose.yml    # Services orchestration
 ├── local.env             # Local development config
-├── docker.env            # Docker deployment config
+├── .env                  # Docker deployment config
 └── Justfile              # Task automation
 ```
 
