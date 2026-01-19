@@ -26,6 +26,7 @@ pub struct DatabaseSettings {
     pub name: String,
     pub user: String,
     pub password: String,
+    pub schema: String,
 }
 
 impl Settings {
@@ -41,6 +42,7 @@ impl Settings {
             user: env::var("DATABASE_USER").map_err(|_| "DATABASE_USER not set".to_string())?,
             password: env::var("DATABASE_PASSWORD")
                 .map_err(|_| "DATABASE_PASSWORD not set".to_string())?,
+            schema: env::var("DATABASE_SCHEMA").unwrap_or_else(|_| "public".to_string()),
         };
 
         let service_port = env::var("SERVICE_PORT")
@@ -73,15 +75,16 @@ impl Settings {
         })
     }
 
-    /// Build database connection URL
+    /// Build database connection URL with schema
     pub fn database_url(&self) -> String {
         format!(
-            "postgres://{}:{}@{}:{}/{}",
+            "postgres://{}:{}@{}:{}/{}?search_path={}",
             self.database.user,
             self.database.password,
             self.database.host,
             self.database.port,
-            self.database.name
+            self.database.name,
+            self.database.schema
         )
     }
 }
