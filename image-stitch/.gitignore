@@ -1,0 +1,25 @@
+# Ignore build artifacts
+/target/
+Cargo.lock
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Ignore local environment files
+.env
+.env.local
+ 
+# Ignore logs
+*.log
+logs/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# ignore images output folder
+stitched_images/

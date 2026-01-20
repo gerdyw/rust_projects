@@ -1,0 +1,42 @@
+[package]
+name = "image-stitch"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Web framework
+axum = { version = "0.8.8", features = ["macros"] }
+tower = "0.5.3"
+tower-http = { version = "0.6.8", features = ["trace", "fs"] }
+
+# Database
+sqlx = { version = "0.8.6", features = [
+    "runtime-tokio-rustls",
+    "postgres",
+    "uuid",
+    "chrono",
+    "json",
+    "migrate",
+] }
+
+# Async runtime
+tokio = { version = "1.49.0", features = ["rt-multi-thread", "macros"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Utilities
+uuid = { version = "1.19.0", features = ["v4", "serde"] }
+chrono = { version = "0.4.42", features = ["serde"] }
+dotenvy = "0.15"
+
+# Logging and tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+base64 = "0.22.1"
+image = "0.25.9"
+rayon = "1.11.0"
+exif = { package = "kamadak-exif", version = "0.6" }
+
+[dev-dependencies]
