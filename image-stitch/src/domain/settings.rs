@@ -77,7 +77,7 @@ impl Settings {
 
     /// Build database connection URL with schema
     pub fn database_url(&self) -> String {
-        format!(
+        let url = format!(
             "postgres://{}:{}@{}:{}/{}?search_path={}",
             self.database.user,
             self.database.password,
@@ -85,6 +85,9 @@ impl Settings {
             self.database.port,
             self.database.name,
             self.database.schema
-        )
+        );
+
+        tracing::debug!("Constructed database URL: {}", url);
+        url
     }
 }

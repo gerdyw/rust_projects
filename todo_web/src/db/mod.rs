@@ -7,13 +7,15 @@ pub mod metadata;
 
 pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
     let db_url = format!(
-        "postgres://{}:{}@{}:{}/{}",
+        "postgres://{}:{}@{}:{}/{}?currentSchema={}",
         db_settings.username,
         db_settings.password,
         db_settings.host,
         db_settings.port,
-        db_settings.db_name
+        db_settings.db_name,
+        db_settings.schema
     );
+
     debug!("Database URL: {}", db_url);
     let pool = PgPoolOptions::new()
         .max_connections(5)
@@ -22,6 +24,7 @@ pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
         .expect("Failed to create PostgreSQL connection pool");
     let migrator = sqlx::migrate!();
     debug!("Found {} migrations", migrator.migrations.len());
+
     migrator
         .run(&pool)
         .await

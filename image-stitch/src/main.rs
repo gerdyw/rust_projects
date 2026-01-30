@@ -25,9 +25,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing::info!("Configuration loaded successfully");
 
     // Initialize database connection pool
-    let database_url = settings.database_url();
     tracing::info!("Connecting to database at {}", settings.database.host);
-    let pool = init_pool(&database_url).await?;
+    let pool = init_pool(&settings.database).await?;
     tracing::info!("Database connection established");
 
     // Run database migrations

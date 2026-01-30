@@ -6,6 +6,7 @@ pub struct DatabaseSettings {
     pub db_name: String,
     pub username: String,
     pub password: String,
+    pub schema: String,
     pub port: u16,
 }
 
@@ -42,6 +43,7 @@ fn load_db_settings() -> DatabaseSettings {
         db_name: std::env::var("DATABASE_NAME").expect("DATABASE_NAME must be set"),
         username: std::env::var("DATABASE_USER").expect("DATABASE_USER must be set"),
         password: std::env::var("DATABASE_PASSWORD").expect("DATABASE_PASSWORD must be set"),
+        schema: std::env::var("DATABASE_SCHEMA").expect("DATABASE_SCHEMA must be set"),
     }
 }
 
