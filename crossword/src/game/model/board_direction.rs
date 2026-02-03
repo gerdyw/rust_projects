@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use crate::model::MoveDirection;
+use super::MoveDirection;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum BoardDirection {

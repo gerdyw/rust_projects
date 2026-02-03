@@ -1,4 +1,6 @@
-use crate::model::{BoardDirection, PuzzleCell, Word};
+use super::puzzle_cell::PuzzleCell;
+use super::word::Word;
+use super::BoardDirection;
 
 use super::{Coordinate, Grid};
 use std::{cmp::Ordering, fmt::Display};

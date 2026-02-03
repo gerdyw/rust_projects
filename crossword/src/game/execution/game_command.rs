@@ -1,4 +1,4 @@
-use crate::model::{Coordinate, MoveDirection};
+use crate::game::model::{Coordinate, MoveDirection};
 
 #[derive(Debug)]
 pub enum CellCondition {

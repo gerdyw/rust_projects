@@ -1,6 +1,6 @@
 use std::{cmp::Ordering, fmt::Display};
 
-use crate::model::{BoardDirection, MoveDirection};
+use super::{BoardDirection, MoveDirection};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Coordinate {

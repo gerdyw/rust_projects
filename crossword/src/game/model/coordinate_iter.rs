@@ -1,4 +1,4 @@
-use crate::model::{BoardDirection, Coordinate};
+use super::{BoardDirection, Coordinate};
 
 pub struct CoordinateIter {
     current: Coordinate,

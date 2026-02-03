@@ -1,4 +1,4 @@
-use crate::model::{Coordinate, Grid, MoveDirection};
+use super::{Coordinate, Grid, MoveDirection};
 
 #[derive(Debug)]
 pub struct GridIterator<'a, T: Copy> {

@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use ratatui::crossterm::event::{self, Event::Key, KeyCode};
 
-use crate::{execution::game_command::GameCommand, model::MoveDirection};
+use crate::{game::execution::game_command::GameCommand, game::model::MoveDirection};
 
 pub struct KeyParser {}
 

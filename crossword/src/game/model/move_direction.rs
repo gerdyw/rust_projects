@@ -1,4 +1,4 @@
-use crate::model::BoardDirection;
+use super::BoardDirection;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MoveDirection {

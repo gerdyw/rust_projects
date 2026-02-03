@@ -2,8 +2,8 @@
 mod tests {
     use super::super::{CommandExecutor, GameCommand};
     use crate::{
-        execution::puzzle_parser::from_toml_file,
-        model::{BoardDirection, Coordinate, MoveDirection, PlayerBoard},
+        game::execution::puzzle_parser::from_toml_file,
+        game::model::{BoardDirection, Coordinate, MoveDirection, PlayerBoard},
     };
 
     fn create_test_executor() -> CommandExecutor {

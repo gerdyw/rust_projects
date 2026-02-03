@@ -5,7 +5,7 @@ use serde_json::Value;
 
 use crate::{
     debug_log::debug_log,
-    model::{BoardDirection, Coordinate, Grid, Puzzle, PuzzleCell, Word, puzzle::PuzzleWords},
+    game::model::{BoardDirection, Coordinate, Grid, Puzzle, PuzzleCell, Word, puzzle::PuzzleWords},
 };
 
 #[derive(Debug, Serialize, Deserialize)]

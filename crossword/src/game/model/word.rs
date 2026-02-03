@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use crate::model::{BoardDirection, CoordinateIter, WordIter};
+use super::{BoardDirection, CoordinateIter, WordIter};
 
 use super::Coordinate;
 

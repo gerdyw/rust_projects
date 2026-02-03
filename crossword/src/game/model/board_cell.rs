@@ -1,6 +1,4 @@
-use std::fmt::Display;
-
-use crate::model::PuzzleCell;
+use super::puzzle_cell::PuzzleCell;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BoardCell {

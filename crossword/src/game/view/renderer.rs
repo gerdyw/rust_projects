@@ -9,8 +9,8 @@ use ratatui::{
 };
 
 use crate::{
-    model::{BoardCell, BoardDirection, Coordinate, PlayerBoard},
-    view::style::Theme,
+    game::model::{BoardCell, BoardDirection, Coordinate, PlayerBoard},
+    game::view::style::Theme,
 };
 
 pub struct Renderer {

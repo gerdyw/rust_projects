@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use crate::model::BoardCell;
+use crate::game::model::BoardCell;
 
 impl Display for BoardCell {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

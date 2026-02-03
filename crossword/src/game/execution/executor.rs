@@ -4,10 +4,10 @@ use std::io::Write;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::debug_log::debug_log;
-use crate::model::Coordinate;
+use crate::game::model::Coordinate;
 use crate::{
-    execution::game_command::GameCommand,
-    model::{BoardCell, MoveDirection, PlayerBoard},
+    game::execution::game_command::GameCommand,
+    game::model::{BoardCell, MoveDirection, PlayerBoard},
 };
 
 pub struct CommandExecutor {
@@ -98,7 +98,7 @@ impl CommandExecutor {
     }
 
     fn enter_char(&mut self, c: char) -> Option<GameCommand> {
-        let overwrite_mode = matches!(self.game_state.get_current(), BoardCell::Filled(_));
+        let overwrite_mode = self.game_state.get_current().is_filled();
         self.game_state.write_to_cell(c);
 
         if overwrite_mode {

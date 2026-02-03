@@ -2,7 +2,7 @@ use std::time::{Duration, Instant};
 
 use crate::{
     debug_log,
-    model::{
+    game::model::{
         BoardCell, BoardDirection, Coordinate, Grid, LoopIter, MoveDirection, Puzzle, PuzzleCell,
         Word, WordIter,
     },
