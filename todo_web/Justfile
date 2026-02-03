@@ -30,6 +30,9 @@ deploy:
 deploy-image:
     ./scripts/deploy-from-registry.sh
 
+build-push:
+    ./scripts/build-push.sh
+
 update-repo:
     ssh -Y pi@raspberrypi.local 'bash -s' < ./scripts/update-repo.sh
 

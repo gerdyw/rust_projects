@@ -1,0 +1,3 @@
+# Ensure SQLx macros run in offline mode during local builds/checks
+[env]
+SQLX_OFFLINE = "true"
