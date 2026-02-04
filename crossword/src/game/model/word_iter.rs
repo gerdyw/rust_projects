@@ -1,6 +1,6 @@
 use crate::{
     debug_log,
-    game::model::{BoardDirection, Coordinate, CoordinateIter, Word},
+    game::model::{BoardDirection, Coordinate, Word},
 };
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]

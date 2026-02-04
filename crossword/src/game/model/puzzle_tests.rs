@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
     use crate::{
-        execution::puzzle_parser::from_toml_file,
-        model::{BoardDirection, PuzzleCell::*, Word},
+        game::execution::puzzle_parser::from_toml_file,
+        game::model::{BoardDirection, PuzzleCell::*, Word},
     };
 
     use super::super::{Coordinate, Grid, Puzzle, PuzzleWords};

@@ -1,11 +1,13 @@
 use crate::game::view::renderer::Renderer;
 
 use super::execution::{CommandExecutor, KeyParser};
-use ratatui::crossterm::terminal::{
-    disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
-};
+use ratatui::Terminal;
+use ratatui::backend::CrosstermBackend;
 use ratatui::crossterm::ExecutableCommand;
-use std::io::{self, stdout};
+use ratatui::crossterm::terminal::{
+    EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode,
+};
+use std::io::{self, Stdout, stdout};
 
 pub struct GameScene {
     parser: KeyParser,
@@ -22,12 +24,7 @@ impl GameScene {
         }
     }
 
-    pub fn run(&mut self) -> io::Result<()> {
-        // Setup terminal
-        enable_raw_mode()?;
-        stdout().execute(EnterAlternateScreen)?;
-        let mut terminal = ratatui::init();
-
+    pub fn run(&mut self, terminal: &mut Terminal<CrosstermBackend<Stdout>>) -> io::Result<()> {
         // Main loop
         while self.executor.is_running() {
             // Render

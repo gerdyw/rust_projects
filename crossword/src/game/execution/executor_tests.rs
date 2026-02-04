@@ -1,9 +1,9 @@
 #[cfg(test)]
 mod tests {
     use super::super::{CommandExecutor, GameCommand};
-    use crate::{
-        game::execution::puzzle_parser::from_toml_file,
-        game::model::{BoardDirection, Coordinate, MoveDirection, PlayerBoard},
+    use crate::game::{
+        execution::puzzle_parser::from_toml_file,
+        model::{BoardCell, BoardDirection, Coordinate, MoveDirection, PlayerBoard},
     };
 
     fn create_test_executor() -> CommandExecutor {
@@ -56,7 +56,7 @@ mod tests {
         // Verify character was written (cursor may have moved)
         let board = executor.get_board();
         let cell = board.get(cursor);
-        assert!(matches!(cell, crate::model::BoardCell::Filled('A')));
+        assert!(matches!(cell, BoardCell::Filled('A')));
     }
 
     #[test]
@@ -82,7 +82,7 @@ mod tests {
 
         let board = executor.get_board();
         let cell = board.get(cursor);
-        assert!(matches!(cell, crate::model::BoardCell::Empty));
+        assert!(matches!(cell, BoardCell::Empty));
     }
 
     #[test]

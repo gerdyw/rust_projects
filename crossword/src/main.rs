@@ -1,9 +1,13 @@
+use std::io::{self, Stdout};
+
+use crossword::game::GameScene;
 use crossword::game::execution::puzzle_parser::{from_toml_file, parse_ipuz_to_puzzle};
 use crossword::game::execution::{CommandExecutor, KeyParser, PuzzleType};
 use crossword::game::model::PlayerBoard;
 use crossword::game::view::renderer::Renderer;
-use crossword::game::GameScene;
 use crossword::scene::SceneRunner;
+use ratatui::prelude::CrosstermBackend;
+use ratatui::{Terminal, prelude};
 
 fn main() -> std::io::Result<()> {
     // Parse the puzzle file path from command line arguments
@@ -34,7 +38,12 @@ fn main() -> std::io::Result<()> {
     let game_scene = GameScene::new(parser, executor, renderer);
     let mut scene_runner = SceneRunner::new(game_scene);
 
-    scene_runner.run()?;
+    // Setup terminal
+    enable_raw_mode()?;
+    stdout().execute(EnterAlternateScreen)?;
+    let mut terminal: Terminal<CrosstermBackend<Stdout>> = ratatui::init();
+
+    scene_runner.run(&mut terminal)?;
 
     Ok(())
 }
