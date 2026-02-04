@@ -1,18 +1,9 @@
+use db_init::{DbConfig, SchemaMode};
 use tower_sessions_redis_store::fred::prelude::{Config, Server, ServerConfig};
 
 #[derive(Debug)]
-pub struct DatabaseSettings {
-    pub host: String,
-    pub db_name: String,
-    pub username: String,
-    pub password: String,
-    pub schema: String,
-    pub port: u16,
-}
-
-#[derive(Debug)]
 pub struct Settings {
-    pub database: DatabaseSettings,
+    pub database: DbConfig,
     pub cache: Config,
     pub assets_location: String,
     pub port: u16,
@@ -33,17 +24,20 @@ pub fn load_settings() -> Settings {
     }
 }
 
-fn load_db_settings() -> DatabaseSettings {
-    DatabaseSettings {
+fn load_db_settings() -> DbConfig {
+    DbConfig {
         host: std::env::var("DATABASE_HOST").expect("DATABASE_HOST must be set"),
         port: std::env::var("DATABASE_PORT")
             .unwrap_or_else(|_| "5432".to_string())
             .parse()
             .expect("DATABASE_PORT must be a valid port number"),
-        db_name: std::env::var("DATABASE_NAME").expect("DATABASE_NAME must be set"),
+        database: std::env::var("DATABASE_NAME").expect("DATABASE_NAME must be set"),
         username: std::env::var("DATABASE_USER").expect("DATABASE_USER must be set"),
         password: std::env::var("DATABASE_PASSWORD").expect("DATABASE_PASSWORD must be set"),
         schema: std::env::var("DATABASE_SCHEMA").expect("DATABASE_SCHEMA must be set"),
+        max_connections: 5,
+        acquire_timeout_secs: 3,
+        schema_mode: SchemaMode::CreateIfMissing,
     }
 }
 
