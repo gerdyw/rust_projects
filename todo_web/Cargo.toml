@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 
 # Database
+db_init = { path = "../crates/db_init", features = ["postgres"] }
 sqlx = { version = "0.8.6", features = [
     "runtime-tokio",
     "postgres",      # Changed from sqlite
