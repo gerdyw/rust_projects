@@ -10,7 +10,8 @@ pub struct Settings {
 }
 
 pub fn load_settings() -> Settings {
-    let database = load_db_settings();
+    let database = DbConfig::from_env(SchemaMode::CreateIfMissing)
+        .expect("Failed to load database configuration");
     let cache = load_cache_settings();
 
     Settings {
@@ -21,23 +22,6 @@ pub fn load_settings() -> Settings {
             .unwrap_or_else(|_| "3000".to_string())
             .parse()
             .expect("SERVICE_PORT must be a valid port number"),
-    }
-}
-
-fn load_db_settings() -> DbConfig {
-    DbConfig {
-        host: std::env::var("DATABASE_HOST").expect("DATABASE_HOST must be set"),
-        port: std::env::var("DATABASE_PORT")
-            .unwrap_or_else(|_| "5432".to_string())
-            .parse()
-            .expect("DATABASE_PORT must be a valid port number"),
-        database: std::env::var("DATABASE_NAME").expect("DATABASE_NAME must be set"),
-        username: std::env::var("DATABASE_USER").expect("DATABASE_USER must be set"),
-        password: std::env::var("DATABASE_PASSWORD").expect("DATABASE_PASSWORD must be set"),
-        schema: std::env::var("DATABASE_SCHEMA").expect("DATABASE_SCHEMA must be set"),
-        max_connections: 5,
-        acquire_timeout_secs: 3,
-        schema_mode: SchemaMode::CreateIfMissing,
     }
 }
 

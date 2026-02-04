@@ -23,21 +23,7 @@ pub struct Settings {
 impl Settings {
     /// Load settings from environment variables
     pub fn from_env() -> Result<Self, String> {
-        let database = DbConfig {
-            host: env::var("DATABASE_HOST").map_err(|_| "DATABASE_HOST not set".to_string())?,
-            port: env::var("DATABASE_PORT")
-                .unwrap_or_else(|_| "5432".to_string())
-                .parse()
-                .map_err(|_| "DATABASE_PORT must be a valid number".to_string())?,
-            database: env::var("DATABASE_NAME").map_err(|_| "DATABASE_NAME not set".to_string())?,
-            username: env::var("DATABASE_USER").map_err(|_| "DATABASE_USER not set".to_string())?,
-            password: env::var("DATABASE_PASSWORD")
-                .map_err(|_| "DATABASE_PASSWORD not set".to_string())?,
-            schema: env::var("DATABASE_SCHEMA").unwrap_or_else(|_| "public".to_string()),
-            max_connections: 5,
-            acquire_timeout_secs: 3,
-            schema_mode: SchemaMode::MustExist,
-        };
+        let database = DbConfig::from_env(SchemaMode::MustExist)?;
 
         let service_port = env::var("SERVICE_PORT")
             .unwrap_or_else(|_| "3000".to_string())

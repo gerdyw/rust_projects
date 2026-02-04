@@ -39,6 +39,64 @@ pub struct DbConfig {
     pub schema_mode: SchemaMode,
 }
 
+impl DbConfig {
+    /// Load database configuration from environment variables
+    ///
+    /// # Environment Variables
+    ///
+    /// - `DATABASE_HOST` (required): Database host
+    /// - `DATABASE_PORT` (optional, default: 5432): Database port
+    /// - `DATABASE_NAME` (required): Database name
+    /// - `DATABASE_USER` (required): Database username
+    /// - `DATABASE_PASSWORD` (required): Database password
+    /// - `DATABASE_SCHEMA` (optional, default: "public"): Schema name
+    /// - `DATABASE_MAX_CONNECTIONS` (optional, default: 5): Maximum pool connections
+    /// - `DATABASE_ACQUIRE_TIMEOUT_SECS` (optional, default: 3): Connection acquire timeout
+    ///
+    /// # Arguments
+    ///
+    /// * `schema_mode` - Schema creation behavior (MustExist or CreateIfMissing)
+    ///
+    /// # Returns
+    ///
+    /// Returns a configured `DbConfig` or an error string if required variables are missing
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use db_init::{DbConfig, SchemaMode};
+    ///
+    /// let config = DbConfig::from_env(SchemaMode::CreateIfMissing)
+    ///     .expect("Failed to load database configuration");
+    /// ```
+    pub fn from_env(schema_mode: SchemaMode) -> Result<Self, String> {
+        Ok(Self {
+            host: std::env::var("DATABASE_HOST")
+                .map_err(|_| "DATABASE_HOST not set".to_string())?,
+            port: std::env::var("DATABASE_PORT")
+                .unwrap_or_else(|_| "5432".to_string())
+                .parse()
+                .map_err(|_| "DATABASE_PORT must be a valid number".to_string())?,
+            database: std::env::var("DATABASE_NAME")
+                .map_err(|_| "DATABASE_NAME not set".to_string())?,
+            username: std::env::var("DATABASE_USER")
+                .map_err(|_| "DATABASE_USER not set".to_string())?,
+            password: std::env::var("DATABASE_PASSWORD")
+                .map_err(|_| "DATABASE_PASSWORD not set".to_string())?,
+            schema: std::env::var("DATABASE_SCHEMA").unwrap_or_else(|_| "public".to_string()),
+            max_connections: std::env::var("DATABASE_MAX_CONNECTIONS")
+                .ok()
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(5),
+            acquire_timeout_secs: std::env::var("DATABASE_ACQUIRE_TIMEOUT_SECS")
+                .ok()
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(3),
+            schema_mode,
+        })
+    }
+}
+
 impl Default for DbConfig {
     fn default() -> Self {
         Self {

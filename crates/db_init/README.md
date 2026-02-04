@@ -8,6 +8,7 @@ A reusable database initialization library for Rust projects using sqlx.
 - **Schema Management**: Verify schemas or create them automatically
 - **Embedded Migrations**: Run sqlx migrations from your application
 - **Configurable Pooling**: Control max connections, timeouts, and other pool settings
+- **Environment Loading**: Standardized loading of database configuration from environment variables
 - **Type-Safe**: Leverages sqlx's compile-time query checking
 
 ## Usage
@@ -20,7 +21,45 @@ db_init = { path = "../crates/db_init", features = ["postgres"] }
 sqlx = { version = "0.8.6", features = ["migrate", "postgres", ...] }
 ```
 
-### Basic Example
+### Loading from Environment Variables
+
+The simplest way to configure the database connection is to load from environment variables:
+
+```rust
+use db_init::{DbConfig, SchemaMode, init_pool, run_migrations};
+use sqlx::migrate::Migrator;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Load configuration from environment variables
+    let config = DbConfig::from_env(SchemaMode::CreateIfMissing)?;
+
+    // Initialize connection pool
+    let pool = init_pool(&config).await?;
+
+    // Run migrations (from your application's migrations directory)
+    static MIGRATOR: Migrator = sqlx::migrate!("./migrations");
+    run_migrations(&pool, &MIGRATOR).await?;
+
+    Ok(())
+}
+```
+
+#### Required Environment Variables
+
+- `DATABASE_HOST`: Database host (required)
+- `DATABASE_NAME`: Database name (required)
+- `DATABASE_USER`: Database username (required)
+- `DATABASE_PASSWORD`: Database password (required)
+
+#### Optional Environment Variables
+
+- `DATABASE_PORT`: Database port (default: 5432)
+- `DATABASE_SCHEMA`: Schema name (default: "public")
+- `DATABASE_MAX_CONNECTIONS`: Maximum pool connections (default: 5)
+- `DATABASE_ACQUIRE_TIMEOUT_SECS`: Connection acquire timeout in seconds (default: 3)
+
+### Manual Configuration Example
 
 ```rust
 use db_init::{DbConfig, SchemaMode, init_pool, run_migrations};
@@ -52,6 +91,36 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
+```rust
+use db_init::{DbConfig, SchemaMode, init_pool, run_migrations};
+use sqlx::migrate::Migrator;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Manually configure database connection
+    let config = DbConfig {
+        host: "localhost".to_string(),
+        port: 5432,
+        database: "mydb".to_string(),
+        username: "user".to_string(),
+        password: "pass".to_string(),
+        schema: "my_schema".to_string(),
+        max_connections: 5,
+        acquire_timeout_secs: 3,
+        schema_mode: SchemaMode::CreateIfMissing,
+    };
+
+    // Initialize connection pool
+    let pool = init_pool(&config).await?;
+
+    // Run migrations (from your application's migrations directory)
+    static MIGRATOR: Migrator = sqlx::migrate!("./migrations");
+    run_migrations(&pool, &MIGRATOR).await?;
+
+    Ok(())
+}
+```
+
 ### Schema Modes
 
 The library supports two schema modes:
@@ -59,9 +128,9 @@ The library supports two schema modes:
 - `SchemaMode::MustExist` (default): Expects the schema to already exist
 - `SchemaMode::CreateIfMissing`: Creates the schema if it doesn't exist
 
-### Environment-Based Configuration
+### Environment-Based Configuration (Legacy)
 
-You can easily build configuration from environment variables:
+You can also build configuration from environment variables manually:
 
 ```rust
 use db_init::DbConfig;
