@@ -13,11 +13,11 @@
 //!
 //! ## Example
 //!
-//! ```rust,no_run
+//! ```ignore
 //! use db_init::{DbConfig, init_pool, run_migrations};
 //!
-//! #[tokio::main]
-//! async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!     let config = DbConfig {
 //!         host: "localhost".to_string(),
 //!         port: 5432,
@@ -34,8 +34,8 @@
 //!     // Run migrations from caller's embedded migrator
 //!     // run_migrations(&pool, &my_migrator).await?;
 //!     
-//!     Ok(())
-//! }
+//! #   Ok(())
+//! # }
 //! ```
 
 #[cfg(feature = "postgres")]

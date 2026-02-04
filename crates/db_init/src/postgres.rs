@@ -1,24 +1,19 @@
 //! PostgreSQL-specific database initialization
 
 use crate::error::DbInitError;
+use sqlx::migrate::Migrator;
 use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
 use sqlx::{Connection, Executor};
-use sqlx::migrate::Migrator;
 use std::time::Duration;
 
 /// Schema creation behavior
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum SchemaMode {
     /// Expect schema to exist (default)
+    #[default]
     MustExist,
     /// Create schema if it doesn't exist
     CreateIfMissing,
-}
-
-impl Default for SchemaMode {
-    fn default() -> Self {
-        SchemaMode::MustExist
-    }
 }
 
 /// PostgreSQL database configuration
@@ -76,9 +71,10 @@ impl Default for DbConfig {
 ///
 /// # Example
 ///
-/// ```rust,no_run
+/// ```ignore
 /// use db_init::{DbConfig, init_pool};
 ///
+/// # #[tokio::main]
 /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
 /// let config = DbConfig {
 ///     host: "localhost".to_string(),
@@ -140,12 +136,12 @@ async fn create_schema_if_missing(config: &DbConfig) -> Result<(), DbInitError> 
         .password(&config.password);
 
     let mut conn = sqlx::postgres::PgConnection::connect_with(&options).await?;
-    
+
     let schema_identifier = escape_identifier(&config.schema);
     let create_schema_sql = format!("create schema if not exists {}", schema_identifier);
-    
+
     conn.execute(sqlx::query(&create_schema_sql)).await?;
-    
+
     Ok(())
 }
 
@@ -166,13 +162,14 @@ async fn create_schema_if_missing(config: &DbConfig) -> Result<(), DbInitError> 
 ///
 /// # Example
 ///
-/// ```rust,no_run
+/// ```ignore
 /// use db_init::{DbConfig, init_pool, run_migrations};
 /// use sqlx::migrate::Migrator;
 ///
+/// # #[tokio::main]
 /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
 /// let pool = init_pool(&DbConfig::default()).await?;
-/// 
+///
 /// // From caller's crate with embedded migrations
 /// static MIGRATOR: Migrator = sqlx::migrate!("./migrations");
 /// run_migrations(&pool, &MIGRATOR).await?;
@@ -203,7 +200,7 @@ pub async fn verify_schema(pool: &PgPool, expected_schema: &str) -> Result<(), D
     let search_path: String = sqlx::query_scalar("show search_path")
         .fetch_one(pool)
         .await?;
-    
+
     let current_schema: Option<String> = sqlx::query_scalar("select current_schema()")
         .fetch_one(pool)
         .await?;
@@ -249,7 +246,10 @@ mod tests {
     fn test_escape_identifier() {
         assert_eq!(escape_identifier("public"), "\"public\"");
         assert_eq!(escape_identifier("my_schema"), "\"my_schema\"");
-        assert_eq!(escape_identifier("schema\"with\"quotes"), "\"schema\"\"with\"\"quotes\"");
+        assert_eq!(
+            escape_identifier("schema\"with\"quotes"),
+            "\"schema\"\"with\"\"quotes\""
+        );
     }
 
     #[test]

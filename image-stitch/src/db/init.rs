@@ -6,7 +6,7 @@ use sqlx::postgres::PgPool;
 pub use db_init::DbInitError;
 
 /// Initialize a PostgreSQL connection pool
-/// 
+///
 /// This is a thin wrapper around the shared db_init crate that maps
 /// our application's DatabaseSettings to the shared DbConfig.
 pub async fn init_pool(database: &DatabaseSettings) -> Result<PgPool, sqlx::Error> {
@@ -22,12 +22,10 @@ pub async fn init_pool(database: &DatabaseSettings) -> Result<PgPool, sqlx::Erro
         schema_mode: db_init::SchemaMode::MustExist,
     };
 
-    db_init::init_pool(&config)
-        .await
-        .map_err(|e| match e {
-            db_init::DbInitError::Sqlx(err) => err,
-            other => sqlx::Error::Protocol(format!("Database init error: {}", other)),
-        })
+    db_init::init_pool(&config).await.map_err(|e| match e {
+        db_init::DbInitError::Sqlx(err) => err,
+        other => sqlx::Error::Protocol(format!("Database init error: {}", other)),
+    })
 }
 
 /// Run database migrations

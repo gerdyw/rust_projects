@@ -10,7 +10,7 @@ pub mod errors;
 pub mod metadata;
 
 /// Initialize database with connection pool, schema creation, and migrations
-/// 
+///
 /// This is a wrapper around the shared db_init crate that maintains backward
 /// compatibility with todo_web's initialization behavior.
 pub async fn init_db(db_settings: &DatabaseSettings) -> Pool<Postgres> {
