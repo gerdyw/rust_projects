@@ -21,13 +21,25 @@ fn job_etag(job_id: Uuid) -> String {
     format!("\"{}\"", job_id)
 }
 
+fn normalize_etag(tag: &str) -> &str {
+    tag.strip_prefix("W/").unwrap_or(tag)
+}
+
 /// Check an `If-None-Match` header against an ETag; returns true when the
 /// client already holds a fresh copy and a 304 should be sent.
 fn is_not_modified(req_headers: &HeaderMap, etag: &str) -> bool {
     req_headers
         .get(header::IF_NONE_MATCH)
         .and_then(|v| v.to_str().ok())
-        .map_or(false, |inm| inm == etag)
+        .map_or(false, |inm| {
+            let normalized_etag = normalize_etag(etag);
+
+            inm.trim() == "*"
+                || inm
+                    .split(',')
+                    .map(|tag| tag.trim())
+                    .any(|tag| normalize_etag(tag) == normalized_etag)
+        })
 }
 
 /// Submit images for async processing
@@ -151,7 +163,15 @@ pub async fn get_job_result(
 
             // Support conditional requests: return 304 if client already has this version
             if is_not_modified(&req_headers, &etag) {
-                return Ok(StatusCode::NOT_MODIFIED.into_response());
+                return Ok(Response::builder()
+                    .status(StatusCode::NOT_MODIFIED)
+                    .header(header::CACHE_CONTROL, "public, max-age=31536000, immutable")
+                    .header(header::ETAG, etag)
+                    .body(axum::body::Body::empty())
+                    .map_err(|e| {
+                        error!("Failed to build 304 response: {}", e);
+                        StatusCode::INTERNAL_SERVER_ERROR
+                    })?);
             }
 
             let image_data = fs::read(&result_path).map_err(|e| {
@@ -305,7 +325,12 @@ pub async fn serve_image_page(
 
             // Support conditional requests: return 304 if client already has this version
             if is_not_modified(&req_headers, &etag) {
-                return StatusCode::NOT_MODIFIED.into_response();
+                return Response::builder()
+                    .status(StatusCode::NOT_MODIFIED)
+                    .header(header::CACHE_CONTROL, "public, max-age=31536000, immutable")
+                    .header(header::ETAG, etag)
+                    .body(axum::body::Body::empty())
+                    .unwrap();
             }
 
             let image_data = match fs::read(&result_path) {
