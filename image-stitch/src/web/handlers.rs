@@ -293,16 +293,23 @@ pub async fn serve_image_page(
     let job = match state.image_processing_service.get_job(job_id).await {
         Ok(Some(job)) => job,
         Ok(None) => {
-            return Html(templates::job_not_found(job_id)).into_response();
+            return (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::job_not_found(job_id)),
+            )
+                .into_response();
         }
         Err(e) => {
             error!("Failed to get job {}: {}", job_id, e);
-            return Html(templates::error_page(
-                "Error",
-                "Failed to retrieve job information",
-                None,
-            ))
-            .into_response();
+            return (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::error_page(
+                    "Error",
+                    "Failed to retrieve job information",
+                    None,
+                )),
+            )
+                .into_response();
         }
     };
 
@@ -312,12 +319,15 @@ pub async fn serve_image_page(
                 Some(path) => path,
                 None => {
                     error!("Job {} completed but no result path", job_id);
-                    return Html(templates::error_page(
-                        "Error",
-                        "Image processing completed but result file is missing",
-                        None,
-                    ))
-                    .into_response();
+                    return (
+                        [(header::CACHE_CONTROL, "no-store")],
+                        Html(templates::error_page(
+                            "Error",
+                            "Image processing completed but result file is missing",
+                            None,
+                        )),
+                    )
+                        .into_response();
                 }
             };
 
@@ -337,12 +347,15 @@ pub async fn serve_image_page(
                 Ok(data) => data,
                 Err(e) => {
                     error!("Failed to read result file {}: {}", result_path, e);
-                    return Html(templates::error_page(
-                        "Error",
-                        "Failed to read image file",
-                        Some(&e.to_string()),
-                    ))
-                    .into_response();
+                    return (
+                        [(header::CACHE_CONTROL, "no-store")],
+                        Html(templates::error_page(
+                            "Error",
+                            "Failed to read image file",
+                            Some(&e.to_string()),
+                        )),
+                    )
+                        .into_response();
                 }
             };
 
@@ -358,12 +371,17 @@ pub async fn serve_image_page(
             let error_message = job
                 .error_message
                 .unwrap_or_else(|| "Unknown error".to_string());
-            Html(templates::processing_failed(&error_message)).into_response()
+            (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::processing_failed(&error_message)),
+            )
+                .into_response()
         }
         _ => {
             // Still processing, redirect back to waiting page
             Response::builder()
                 .status(StatusCode::SEE_OTHER)
+                .header(header::CACHE_CONTROL, "no-store")
                 .header(header::LOCATION, format!("/wait/{}", job_id))
                 .body(String::new().into())
                 .unwrap()
