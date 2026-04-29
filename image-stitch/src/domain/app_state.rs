@@ -12,8 +12,8 @@ impl AppState {
     pub fn new(db: PgPool) -> Self {
         let repository = ImageProcessingRepository::new(db.clone());
         let image_processing_service = ImageProcessingService::new(repository);
-        
-        Self { 
+
+        Self {
             db,
             image_processing_service,
         }
