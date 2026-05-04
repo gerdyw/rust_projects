@@ -1,0 +1,137 @@
+name: Build and Publish Docker Image
+
+# Triggered manually — choose which project's Dockerfile to build.
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Project to build"
+        required: true
+        type: choice
+        options:
+          - todo_web
+          - image-stitch
+          - template-rust-web
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 1: Build the x86 image and push to GitHub Container Registry
+  # ─────────────────────────────────────────────────────────────────────────────
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      image: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # Image name: ghcr.io/<owner>/<project>
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.event.inputs.project }}
+          tags: |
+            # Tag with the short commit SHA for traceability
+            type=sha,prefix=
+            # Always also update the `latest` tag
+            type=raw,value=latest
+
+      # todo_web uses the repo root as its build context (it references ../crates/db_init).
+      # All other projects use their own subdirectory as the context.
+      - name: Resolve build context and Dockerfile path
+        id: config
+        run: |
+          PROJECT="${{ github.event.inputs.project }}"
+          if [ "$PROJECT" = "todo_web" ]; then
+            echo "context=."                     >> "$GITHUB_OUTPUT"
+            echo "dockerfile=todo_web/Dockerfile" >> "$GITHUB_OUTPUT"
+          else
+            echo "context=$PROJECT"               >> "$GITHUB_OUTPUT"
+            echo "dockerfile=$PROJECT/Dockerfile" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and push x86 Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ steps.config.outputs.context }}
+          file: ${{ steps.config.outputs.dockerfile }}
+          # Build for the host architecture of a standard Hetzner cloud VM (x86_64).
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Cache layers in GitHub Actions cache to speed up subsequent runs.
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 2: SSH into the Hetzner VM and restart the relevant compose service.
+  #
+  # CONFIGURATION REQUIRED ON THE HETZNER VM
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 1. Generate a dedicated deploy key pair (do NOT reuse your personal key):
+  #      ssh-keygen -t ed25519 -C "github-actions-deploy" -f ~/.ssh/deploy_key
+  #
+  # 2. Append the public key to the deploy user's authorised keys on the VM:
+  #      cat ~/.ssh/deploy_key.pub >> ~/.ssh/authorized_keys
+  #    Tip: create a low-privilege `deploy` OS user that only has access to the
+  #    compose directory and the Docker socket/CLI.
+  #
+  # 3. Ensure the compose user can run `docker` without sudo (add to group):
+  #      sudo usermod -aG docker <deploy-user>
+  #    Log out and back in (or run `newgrp docker`) for the group to take effect.
+  #
+  # 4. Make sure `docker compose` (v2 plugin) is installed on the VM:
+  #      docker compose version
+  #
+  # 5. On GitHub → Repository Settings → Secrets and variables → Actions,
+  #    add the following Repository Secrets:
+  #
+  #      VM_HOST             – public IP or hostname of your Hetzner VM
+  #      VM_USER             – OS user that will run docker compose (e.g. deploy)
+  #      VM_SSH_KEY          – contents of the *private* deploy key file
+  #      VM_COMPOSE_DIR      – absolute path to the infra repo's docker-compose.yml
+  #                            on the VM (e.g. /home/deploy/infra)
+  #
+  # 6. (Optional but recommended) Restrict incoming SSH on the VM to GitHub's
+  #    Actions IP ranges so only CI can trigger deploys:
+  #      https://api.github.com/meta  (look for "actions" CIDR blocks)
+  #    Add those to your Hetzner firewall rule or /etc/hosts.allow.
+  # ─────────────────────────────────────────────────────────────────────────────
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    permissions: {}
+
+    steps:
+      - name: Pull new image and restart service on Hetzner VM
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          # Pull the newly published image and restart only the affected service
+          # so other running services are not disrupted.
+          script: |
+            cd "${{ secrets.VM_COMPOSE_DIR }}"
+            docker compose pull ${{ github.event.inputs.project }}
+            docker compose up -d --no-deps ${{ github.event.inputs.project }}

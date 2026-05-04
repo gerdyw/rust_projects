@@ -1,7 +1,7 @@
-# Multi-stage Docker build for ARM64 (Apple Silicon / Raspberry Pi)
+# Multi-stage Docker build for x86_64
 
 # Stage 1: Build the Rust application
-FROM messense/rust-musl-cross:aarch64-musl AS builder
+FROM messense/rust-musl-cross:x86_64-musl AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN mkdir -p src && \
     echo "pub fn dummy() {}" > src/lib.rs
 
 # Build dependencies (this layer will be cached)
-RUN cargo build --release --target aarch64-unknown-linux-musl
+RUN cargo build --release --target x86_64-unknown-linux-musl
 
 # Remove dummy files
 RUN rm -rf src
@@ -25,7 +25,7 @@ COPY migrations ./migrations
 
 # Build the actual application
 RUN touch src/main.rs && \
-    cargo build --release --target aarch64-unknown-linux-musl
+    cargo build --release --target x86_64-unknown-linux-musl
 
 # Stage 2: Create minimal runtime image
 FROM alpine:3.19
@@ -36,7 +36,7 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates tzdata
 
 # Copy the compiled binary from builder
-COPY --from=builder /app/target/aarch64-unknown-linux-musl/release/project-name /usr/local/bin/project-name
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/project-name /usr/local/bin/project-name
 
 # Copy migrations directory
 COPY --from=builder /app/migrations /app/migrations
