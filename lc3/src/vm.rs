@@ -153,14 +153,20 @@ impl VM {
 
     fn execute_load(&mut self, load: LoadOp) {
         let dest_reg = load.dest_reg();
-        let value = match load {
-            LoadOp::PcRelative(args) => self.memory[self.pc.wrapping_add(args.pc_offset) as usize],
+        
+        let address = match load {
+            LoadOp::PcRelative(args) => self.pc.wrapping_add(args.pc_offset),
             LoadOp::BaseRelative(args) => {
                 let base = self.registers[args.base_reg];
-                self.memory[self.pc.wrapping_add(base).wrapping_add(args.offset) as usize]
+                base.wrapping_add(args.offset)
             }
-        };
+            LoadOp::Indirect(args) => {
+                let pointer_address = self.pc.wrapping_add(args.pc_offset) as usize;
+                self.memory[pointer_address]
+            },
+        } as usize;
 
+        let value = self.memory[address];
         self.set_register(value, dest_reg);
     }
 
@@ -171,6 +177,10 @@ impl VM {
         let dest_address = match store {
             StoreOp::PcRelative(args) => self.pc.wrapping_add(args.pc_offset),
             StoreOp::BaseRelative(args) => self.registers[args.base_reg].wrapping_add(args.offset),
+            StoreOp::Indirect(args) => {
+                let pointer_address = self.pc.wrapping_add(args.pc_offset) as usize;
+                self.memory[pointer_address]
+            },
         } as usize;
 
         self.memory[dest_address] = value;

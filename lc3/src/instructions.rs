@@ -39,9 +39,11 @@ impl From<u16> for Instruction {
             0b0000 => Self::Branch(value.into()),
             0b0010 => Self::Load(LoadOp::PcRelative(value.into())),
             0b0110 => Self::Load(LoadOp::BaseRelative(value.into())),
+            0b1010 => Self::Load(LoadOp::Indirect(value.into())),
             0b1110 => Self::LoadEffectiveAddress(value.into()),
             0b0011 => Self::Store(StoreOp::PcRelative(value.into())),
             0b0111 => Self::Store(StoreOp::BaseRelative(value.into())),
+            0b1011 => Self::Store(StoreOp::Indirect(value.into())),
             0b1100 => Self::Jump(extract_reg(value, BASE_REG)),
             0b0100 => Self::JumpSubroutine(value.into()),
             0b1111 => Self::Trap(value.into()),
@@ -54,7 +56,7 @@ impl From<u16> for Instruction {
 pub enum LoadOp {
     PcRelative(LoadArgs),
     BaseRelative(LoadRelativeArgs),
-    // Indirect(LoadIndirectArgs),
+    Indirect(LoadIndirectArgs),
 }
 
 
@@ -63,6 +65,7 @@ impl LoadOp {
         match self {
             Self::PcRelative(args) => args.dest_reg,
             Self::BaseRelative(args) => args.dest_reg,
+            Self::Indirect(args) => args.dest_reg,
         }
     }
 }
@@ -71,6 +74,7 @@ impl LoadOp {
 pub enum StoreOp {
     PcRelative(StoreArgs),
     BaseRelative(StoreRelativeArgs),
+    Indirect(StoreIndirectArgs),
 }
 
 impl StoreOp {
@@ -78,6 +82,7 @@ impl StoreOp {
         match self {
             Self::BaseRelative(args) => args.source_reg,
             Self::PcRelative(args) => args.source_reg,
+            Self::Indirect(args) => args.source_reg,
         }
     }
 }
@@ -165,6 +170,21 @@ impl From<u16> for LoadRelativeArgs {
 }
 
 #[derive(Debug)]
+pub struct LoadIndirectArgs {
+    pub dest_reg: usize,
+    pub pc_offset: u16,
+}
+
+impl From<u16> for LoadIndirectArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            dest_reg: extract_dest_reg(value),
+            pc_offset: bits_extended(value, 0, 9),
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct StoreArgs {
     pub source_reg: usize,
     pub pc_offset: u16,
@@ -189,9 +209,24 @@ pub struct StoreRelativeArgs {
 impl From<u16> for StoreRelativeArgs {
     fn from(value: u16) -> Self {
         Self {
-            source_reg: extract_source_reg1(value),
+            source_reg: extract_dest_reg(value),
             base_reg: extract_base_reg(value),
             offset: bits_extended(value, 0, 6),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StoreIndirectArgs {
+    pub source_reg: usize,
+    pub pc_offset: u16,
+}
+
+impl From<u16> for StoreIndirectArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            source_reg: extract_base_reg(value),
+            pc_offset: bits_extended(value, 0, 9)
         }
     }
 }
