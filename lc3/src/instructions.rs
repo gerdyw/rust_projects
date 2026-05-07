@@ -1,4 +1,4 @@
-use crate::helpers::{bit, bits, sign_extend};
+use crate::helpers::{bit, bits, bits_extended};
 
 const DEST_REG: u8 = 9;
 const SOURCE_REG1: u8 = 6;
@@ -9,9 +9,6 @@ const IMMEDIATE_LEN: u8 = 5;
 const IMMEDIATE_MODE: u8 = 5;
 
 const REG_LEN: u8 = 3;
-const PC_OFFSET: u8 = 0;
-const PC_OFFSET_LEN: u8 = 9;
-
 const BASE_REG: u8 = 6;
 
 const P: u8 = 9;
@@ -22,29 +19,13 @@ const N: u8 = 11;
 pub enum Instruction {
     Add(BinaryOp),
     And(BinaryOp),
-    Not {
-        dest_reg: usize,
-        source_reg: usize,
-    },
-    Branch {
-        branch_neg: bool,
-        branch_zero: bool,
-        branch_pos: bool,
-        pc_offset: u16,
-    },
-    Load {
-        dest_reg: usize,
-        pc_offset: u16,
-    },
-    LoadEffectiveAddress {
-        dest_reg: usize,
-        pc_offset: u16,
-    },
-    Store {
-        source_reg: usize,
-        pc_offset: u16,
-    },
+    Not(NotArgs),
+    Branch(BranchArgs),
+    Load(LoadOp),
+    LoadEffectiveAddress(LeaArgs),
+    Store(StoreOp),
     Jump(usize),
+    JumpSubroutine(JumpSubroutine),
     Trap(TrapVec),
 }
 
@@ -52,33 +33,165 @@ impl From<u16> for Instruction {
     fn from(value: u16) -> Self {
         let opcode = value >> 12;
         match opcode {
-            0b0001 => Instruction::Add(value.into()),
-            0b0101 => Instruction::And(value.into()),
-            0b1001 => Instruction::Not {
-                dest_reg: extract_dest_reg(value),
-                source_reg: extract_source_reg1(value),
-            },
-            0b0000 => Instruction::Branch {
-                branch_neg: bit(value, N),
-                branch_zero: bit(value, Z),
-                branch_pos: bit(value, P),
-                pc_offset: extract_pc_offset(value),
-            },
-            0b0010 => Instruction::Load {
-                dest_reg: extract_dest_reg(value),
-                pc_offset: extract_pc_offset(value),
-            },
-            0b1110 => Instruction::LoadEffectiveAddress {
-                dest_reg: extract_dest_reg(value),
-                pc_offset: extract_pc_offset(value),
-            },
-            0b0011 => Instruction::Store {
-                source_reg: extract_store_source_reg(value),
-                pc_offset: extract_pc_offset(value),
-            },
-            0b1100 => Instruction::Jump(extract_reg(value, BASE_REG)),
-            0b1111 => Instruction::Trap(value.into()),
+            0b0001 => Self::Add(value.into()),
+            0b0101 => Self::And(value.into()),
+            0b1001 => Self::Not(value.into()),
+            0b0000 => Self::Branch(value.into()),
+            0b0010 => Self::Load(LoadOp::PcRelative(value.into())),
+            0b0110 => Self::Load(LoadOp::BaseRelative(value.into())),
+            0b1110 => Self::LoadEffectiveAddress(value.into()),
+            0b0011 => Self::Store(StoreOp::PcRelative(value.into())),
+            0b0111 => Self::Store(StoreOp::BaseRelative(value.into())),
+            0b1100 => Self::Jump(extract_reg(value, BASE_REG)),
+            0b0100 => Self::JumpSubroutine(value.into()),
+            0b1111 => Self::Trap(value.into()),
             _ => panic!("unimplemented opcode: {opcode:x}"),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum LoadOp {
+    PcRelative(LoadArgs),
+    BaseRelative(LoadRelativeArgs),
+    // Indirect(LoadIndirectArgs),
+}
+
+
+impl LoadOp {
+    pub fn dest_reg(&self) -> usize {
+        match self {
+            Self::PcRelative(args) => args.dest_reg,
+            Self::BaseRelative(args) => args.dest_reg,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum StoreOp {
+    PcRelative(StoreArgs),
+    BaseRelative(StoreRelativeArgs),
+}
+
+impl StoreOp {
+    pub fn source_reg(&self) -> usize {
+        match self {
+            Self::BaseRelative(args) => args.source_reg,
+            Self::PcRelative(args) => args.source_reg,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct NotArgs {
+    pub dest_reg: usize,
+    pub source_reg: usize,
+}
+
+impl From<u16> for NotArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            dest_reg: extract_dest_reg(value),
+            source_reg: extract_source_reg1(value),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct BranchArgs {
+    pub branch_neg: bool,
+    pub branch_zero: bool,
+    pub branch_pos: bool,
+    pub pc_offset: u16,
+}
+
+impl From<u16> for BranchArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            branch_neg: bit(value, N),
+            branch_zero: bit(value, Z),
+            branch_pos: bit(value, P),
+            pc_offset: bits_extended(value, 0, 9),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct LoadArgs {
+    pub dest_reg: usize,
+    pub pc_offset: u16,
+}
+
+
+impl From<u16> for LoadArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            dest_reg: extract_dest_reg(value),
+            pc_offset: bits_extended(value, 0, 9),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct LeaArgs {
+    pub dest_reg: usize,
+    pub pc_offset: u16,
+}
+
+impl From<u16> for LeaArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            dest_reg: extract_dest_reg(value),
+            pc_offset: bits_extended(value, 0, 9),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct LoadRelativeArgs {
+    pub dest_reg: usize,
+    pub base_reg: usize,
+    pub offset: u16,
+}
+
+impl From<u16> for LoadRelativeArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            dest_reg: extract_dest_reg(value),
+            base_reg: extract_base_reg(value),
+            offset: bits_extended(value, 0, 6),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StoreArgs {
+    pub source_reg: usize,
+    pub pc_offset: u16,
+}
+
+impl From<u16> for StoreArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            source_reg: extract_base_reg(value),
+            pc_offset: bits_extended(value, 0, 9),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StoreRelativeArgs {
+    pub source_reg: usize,
+    pub base_reg: usize,
+    pub offset: u16,
+}
+
+impl From<u16> for StoreRelativeArgs {
+    fn from(value: u16) -> Self {
+        Self {
+            source_reg: extract_source_reg1(value),
+            base_reg: extract_base_reg(value),
+            offset: bits_extended(value, 0, 6),
         }
     }
 }
@@ -154,6 +267,21 @@ impl From<u16> for BinaryOp {
 }
 
 #[derive(Debug)]
+pub enum JumpSubroutine {
+    Relative(u16),
+    Register(usize),
+}
+
+impl From<u16> for JumpSubroutine {
+    fn from(value: u16) -> Self {
+        match bit(value, 11) {
+            true => Self::Relative(bits_extended(value, 0, 11)),
+            false => Self::Register(extract_base_reg(value)),
+        }
+    }
+}
+
+#[derive(Debug)]
 pub enum TrapVec {
     Halt = 0x25,
 }
@@ -185,10 +313,6 @@ fn extract_dest_reg(value: u16) -> usize {
     extract_reg(value, DEST_REG)
 }
 
-fn extract_pc_offset(value: u16) -> u16 {
-    sign_extend(bits(value, PC_OFFSET, PC_OFFSET_LEN), PC_OFFSET_LEN)
-}
-
-fn extract_store_source_reg(value: u16) -> usize {
-    extract_reg(value, DEST_REG)
+fn extract_base_reg(value: u16) -> usize {
+    extract_reg(value, BASE_REG)
 }

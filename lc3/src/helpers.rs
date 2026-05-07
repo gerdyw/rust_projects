@@ -32,6 +32,10 @@ pub fn bits(value: u16, start: u8, len: u8) -> u16 {
     (value >> start) & mask
 }
 
+pub fn bits_extended(value: u16, start: u8, len: u8) -> u16 {
+    sign_extend(bits(value, start, len), len)
+}
+
 pub fn bit(value: u16, index: u8) -> bool {
     debug_assert!(index < 16);
     (value >> index) & 1 != 0

@@ -1,7 +1,11 @@
 use crate::{
     cond::Cond,
     helpers::{sign_extend, words_from_bytes},
-    instructions::{BinaryOp, Instruction::{self, *}, TrapVec},
+    instructions::{
+        BinaryOp, BranchArgs,
+        Instruction::{self, *},
+        JumpSubroutine, LeaArgs, LoadOp, NotArgs, StoreOp, TrapVec,
+    },
 };
 
 const MEMORY_SIZE: usize = 1 << 16;
@@ -40,16 +44,17 @@ impl VM {
         match instr {
             Add(op) => self.execute_add(op),
             And(op) => self.execute_and(op),
-            Not { dest_reg, source_reg } => self.execute_not(dest_reg, source_reg),
-            Branch { branch_neg: n, branch_zero: z, branch_pos: p, pc_offset } => self.execute_branch(n, z, p, pc_offset),
-            Load { dest_reg, pc_offset } => self.execute_load(dest_reg, pc_offset),
-            LoadEffectiveAddress { dest_reg, pc_offset } => self.execute_load_effective_address(dest_reg, pc_offset),
-            Store { source_reg, pc_offset } => self.execute_store(source_reg, pc_offset),
+            Not(op) => self.execute_not(op),
+            Branch(args) => self.execute_branch(args),
+            Load(op) => self.execute_load(op),
+            LoadEffectiveAddress(args) => self.load_effective_address(args),
+            Store(op) => self.execute_store(op),
             Jump(register) => self.execute_jump(register),
             Trap(trap_vec) => self.execute_trap(trap_vec),
+            JumpSubroutine(jsr) => self.execute_jump_subroutine(jsr),
         };
     }
-    
+
     pub fn load_obj_bytes(&mut self, origin: u16, bytes: &[u8]) -> Result<(), String> {
         let start = origin as usize;
         let words = words_from_bytes(bytes)?;
@@ -89,12 +94,12 @@ impl VM {
         self.registers[dest_reg] = result;
         self.update_flags(dest_reg);
     }
-    
+
     fn update_flags(&mut self, register: usize) {
         let value = self.registers[register];
 
         self.cond = if value == 0 {
-        Cond::Zero
+            Cond::Zero
         } else if (value & 0x8000) != 0 {
             Cond::Negative
         } else {
@@ -106,8 +111,16 @@ impl VM {
         let source_reg1 = operand.source_reg1();
         let op1 = self.registers[source_reg1];
         let op2 = match operand {
-            BinaryOp::Immediate { dest_reg: _, source_reg1: _, immediate } => sign_extend(*immediate as u16, 5),
-            BinaryOp::Register { dest_reg: _, source_reg1: _, source_reg2 } => self.registers[*source_reg2],
+            BinaryOp::Immediate {
+                dest_reg: _,
+                source_reg1: _,
+                immediate,
+            } => sign_extend(*immediate as u16, 5),
+            BinaryOp::Register {
+                dest_reg: _,
+                source_reg1: _,
+                source_reg2,
+            } => self.registers[*source_reg2],
         };
 
         (op1, op2)
@@ -120,43 +133,64 @@ impl VM {
             }
         }
     }
-    
-    fn execute_not(&mut self, dest_reg: usize, source_reg: usize) {
-        let value = !self.registers[source_reg];
-        self.set_register(value, dest_reg);
+
+    fn execute_not(&mut self, not: NotArgs) {
+        let value = !self.registers[not.source_reg];
+        self.set_register(value, not.dest_reg);
     }
-    
-    fn execute_branch(&mut self, branch_neg: bool, branch_zero: bool, branch_pos: bool, pc_offset: u16) {
+
+    fn execute_branch(&mut self, branch: BranchArgs) {
         let should_branch = match self.cond {
-            Cond::Negative => branch_neg,
-            Cond::Zero => branch_zero,
-            Cond::Positive => branch_pos,
+            Cond::Negative => branch.branch_neg,
+            Cond::Zero => branch.branch_zero,
+            Cond::Positive => branch.branch_pos,
         };
 
         if should_branch {
-            self.pc = self.pc.wrapping_add(pc_offset);
+            self.pc = self.pc.wrapping_add(branch.pc_offset);
         }
     }
-    
-    fn execute_load(&mut self, dest_reg: usize, pc_offset: u16) {
-        let address = self.pc.wrapping_add(pc_offset);
-        let value = self.memory[address as usize];
+
+    fn execute_load(&mut self, load: LoadOp) {
+        let dest_reg = load.dest_reg();
+        let value = match load {
+            LoadOp::PcRelative(args) => self.memory[self.pc.wrapping_add(args.pc_offset) as usize],
+            LoadOp::BaseRelative(args) => {
+                let base = self.registers[args.base_reg];
+                self.memory[self.pc.wrapping_add(base).wrapping_add(args.offset) as usize]
+            }
+        };
+
         self.set_register(value, dest_reg);
     }
-    
-    fn execute_load_effective_address(&mut self, dest_reg: usize, pc_offset: u16) {
-        let address = self.pc.wrapping_add(pc_offset);
-        self.set_register(address, dest_reg);
-    }
-    
-    fn execute_store(&mut self, source_reg: usize, pc_offset: u16) {
-        let address = self.pc.wrapping_add(pc_offset) as usize;
+
+    fn execute_store(&mut self, store: StoreOp) {
+        let source_reg = store.source_reg();
         let value = self.registers[source_reg];
-        self.memory[address] = value;
+
+        let dest_address = match store {
+            StoreOp::PcRelative(args) => self.pc.wrapping_add(args.pc_offset),
+            StoreOp::BaseRelative(args) => self.registers[args.base_reg].wrapping_add(args.offset),
+        } as usize;
+
+        self.memory[dest_address] = value;
     }
-    
+
     fn execute_jump(&mut self, register: usize) {
         let address = self.registers[register];
         self.pc = address;
+    }
+
+    fn execute_jump_subroutine(&mut self, jsr: JumpSubroutine) {
+        self.registers[7] = self.pc;
+        self.pc = match jsr {
+            JumpSubroutine::Relative(offset) => self.pc.wrapping_add(offset),
+            JumpSubroutine::Register(register) => self.registers[register],
+        }
+    }
+
+    fn load_effective_address(&mut self, args: LeaArgs) {
+        let address = self.pc.wrapping_add(args.pc_offset);
+        self.registers[args.dest_reg] = address;
     }
 }
