@@ -1,12 +1,17 @@
 # Multi-stage Docker build for ARM64 (Apple Silicon / Raspberry Pi)
+# Build context must be the repo root: docker build -f image-stitch/Dockerfile .
 
 # Stage 1: Build the Rust application
 FROM messense/rust-musl-cross:aarch64-musl AS builder
 
-WORKDIR /app
+# Mirror the repo layout so ../crates/db_init resolves correctly
+WORKDIR /usr/src/app/image-stitch
+
+# Copy the shared db_init crate (one level up, matching path = "../crates/db_init")
+COPY crates/db_init /usr/src/app/crates/db_init/
 
 # Copy dependency manifests
-COPY Cargo.toml Cargo.lock* ./
+COPY image-stitch/Cargo.toml image-stitch/Cargo.lock* ./
 
 # Create a dummy main.rs to cache dependencies
 RUN mkdir -p src && \
@@ -14,15 +19,22 @@ RUN mkdir -p src && \
     echo "pub fn dummy() {}" > src/lib.rs
 
 # Build dependencies (this layer will be cached)
-RUN cargo build --release --target aarch64-unknown-linux-musl
-
+ARG TARGETARCH
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+      export RUST_TARGET=x86_64-unknown-linux-musl; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+      export RUST_TARGET=aarch64-unknown-linux-musl; \
+    else \
+      echo "Unsupported arch: $TARGETARCH" && exit 1; \
+    fi && \
+    cargo build --release --target "$RUST_TARGET"
 # Remove dummy files
 RUN rm -rf src
 
 # Copy actual source code
-COPY src ./src
-COPY migrations ./migrations
-COPY .sqlx ./.sqlx
+COPY image-stitch/src ./src
+COPY image-stitch/migrations ./migrations
+COPY image-stitch/.sqlx ./.sqlx
 
 # Build the actual application
 ENV SQLX_OFFLINE=true
@@ -38,10 +50,10 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates tzdata
 
 # Copy the compiled binary from builder
-COPY --from=builder /app/target/aarch64-unknown-linux-musl/release/image-stitch /usr/local/bin/image-stitch
+COPY --from=builder /usr/src/app/image-stitch/target/aarch64-unknown-linux-musl/release/image-stitch /usr/local/bin/image-stitch
 
 # Copy migrations directory
-COPY --from=builder /app/migrations /app/migrations
+COPY --from=builder /usr/src/app/image-stitch/migrations /app/migrations
 
 # Create non-root user
 RUN addgroup -g 1000 appuser && \

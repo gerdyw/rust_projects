@@ -3,14 +3,15 @@
 set -euo pipefail
 
 SERVICE_NAME="image-stitch"
-REGISTRY="raspberrypi.local:5000"
+REGISTRY="host.docker.internal:6000"
 BUILD_TIME=$(date +%Y%m%d_%H%M%S)
 
 echo "=== Building and pushing $SERVICE_NAME to registry ==="
 
 # 1. Build the ARM64 image locally
 echo "--- Building ARM64 image ---"
-docker build --platform linux/arm64 -t "${SERVICE_NAME}:latest" .
+REPO_ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
+docker build --platform linux/arm64 -f "${REPO_ROOT}/image-stitch/Dockerfile" -t "${SERVICE_NAME}:latest" "${REPO_ROOT}"
 
 # 2. Tag for registry
 echo "--- Tagging image for registry ---"
