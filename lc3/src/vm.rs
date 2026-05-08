@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use crate::{
     cond::Cond,
     helpers::{sign_extend, words_from_bytes},
@@ -17,6 +19,7 @@ pub struct VM {
     pub pc: u16,
     pub cond: Cond,
     pub running: bool,
+    pub input: VecDeque<char>,
     pub output: String,
 }
 
@@ -28,6 +31,7 @@ impl VM {
             pc: 0,
             cond: Cond::default(),
             running: false,
+            input: VecDeque::new(),
             output: "".into(),
         }
     }
@@ -68,14 +72,13 @@ impl VM {
         Ok(())
     }
 
-    pub fn load_words(&mut self, origin: u16, words: &[u16]) -> Result<(), String> {
+    pub fn load_words(&mut self, origin: u16, words: &[u16]) {
         let start = origin as usize;
         for (i, &word) in words.iter().enumerate() {
             self.memory[start + i] = word;
         }
 
         self.pc = origin;
-        Ok(())
     }
 
     fn execute_add(&mut self, add: BinaryOp) {
@@ -200,28 +203,70 @@ impl VM {
 
     fn execute_trap(&mut self, vec: TrapVec) {
         match vec {
-            TrapVec::GetC => todo!(),
-            TrapVec::Out => {
-                let ch = self.registers[0] as u8 as char;
-                print!("{ch}");
-                self.output.push(ch)
-            },
-            TrapVec::PutS => {
-                let mut addr = self.registers[0] as usize;
-                let mut ch = self.memory[addr] as u8 as char; 
-                while ch != '\0' {
-                    print!("{ch}");
-                    self.output.push(ch);
-                    addr += 1;
-                    ch = self.memory[addr] as u8 as char;
-                }
-                println!();
-            },
-            TrapVec::IN => todo!(),
-            TrapVec::PutSP => todo!(),
-            TrapVec::Halt => {
-                self.running = false;
-            }
+            TrapVec::GetC => self.execute_trap_getc(),
+            TrapVec::Out => self.execute_trap_out(),
+            TrapVec::PutS => self.execute_trap_puts(),
+            TrapVec::IN => self.execute_trap_in(),
+            TrapVec::PutSP => self.execute_trap_putsp(),
+            TrapVec::Halt => self.execute_trap_halt(),
         }
+    }
+
+    fn execute_trap_getc(&mut self) {
+        todo!()
+    }
+
+    fn execute_trap_out(&mut self) {
+        let ch = self.registers[0] as u8 as char;
+        self.out(ch);
+    }
+
+    fn execute_trap_puts(&mut self) {
+        let mut addr = self.registers[0];
+        loop {
+            let ch = self.memory[addr as usize] as u8 as char;
+
+            if ch == '\0' {
+                break;
+            }
+
+            self.out(ch);
+            addr = addr.wrapping_add(1);
+        }
+        println!();
+    }
+
+    fn execute_trap_in(&mut self) {
+        todo!()
+    }
+
+    fn execute_trap_putsp(&mut self) {
+        let mut addr = self.registers[0];
+
+        loop {
+            let word = self.memory[addr as usize];
+
+            if word == 0 {
+                break;
+            }
+            let ch = word as u8 as char;
+            self.out(ch);
+
+            let ch = (word >> 8) as u8 as char;
+            if ch != '\0' {
+                self.out(ch);
+            }
+
+            addr = addr.wrapping_add(1);
+        }
+    }
+
+    fn execute_trap_halt(&mut self) {
+        self.running = false;
+    }
+
+    fn out(&mut self, ch: char) {
+        print!("{ch}");
+        self.output.push(ch);
     }
 }

@@ -333,6 +333,7 @@ impl From<u16> for TrapVec {
         match trap_vec {
             0x21 => TrapVec::Out,
             0x22 => TrapVec::PutS,
+            0x24 => TrapVec::PutSP,
             0x25 => TrapVec::Halt,
             _ => panic!("unimplemented trap: x{trap_vec:02X}"),
         }
