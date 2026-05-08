@@ -5,10 +5,11 @@ pub mod vm;
 
 #[cfg(test)]
 mod tests {
-    use crate::{cond::Cond, vm::VM};
+    mod add_tests {
+        use crate::{cond::Cond, vm::VM};
 
-    #[test]
-    fn add_immediate_positive() {
+        #[test]
+        fn add_immediate_positive() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -64,10 +65,14 @@ mod tests {
 
         assert_eq!(vm.registers[0], 0xFFFF);
         assert_eq!(vm.cond, Cond::Negative);
+        }
     }
 
-    #[test]
-    fn and_immediate_clears_register() {
+    mod and_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn and_immediate_clears_register() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -147,10 +152,14 @@ mod tests {
 
         assert_eq!(vm.registers[0], 5);
         assert_eq!(vm.cond, Cond::Positive);
+        }
     }
 
-    #[test]
-    fn not_zero_becomes_all_ones() {
+    mod not_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn not_zero_becomes_all_ones() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -186,10 +195,14 @@ mod tests {
 
         assert_eq!(vm.registers[0], 0);
         assert_eq!(vm.cond, Cond::Zero);
+        }
     }
 
-    #[test]
-    fn br_not_taken_when_condition_does_not_match() {
+    mod branch_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn br_not_taken_when_condition_does_not_match() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -226,10 +239,14 @@ mod tests {
         vm.run();
 
         assert_eq!(vm.registers[1], 0);
+        }
     }
 
-    #[test]
-    fn ld_loads_pc_relative_value() {
+    mod load_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn ld_loads_pc_relative_value() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -266,10 +283,14 @@ mod tests {
 
         assert_eq!(vm.registers[0], 0xFFFF);
         assert_eq!(vm.cond, Cond::Negative);
+        }
     }
 
-    #[test]
-    fn st_stores_pc_relative_value() {
+    mod store_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn st_stores_pc_relative_value() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -286,10 +307,14 @@ mod tests {
         vm.run();
 
         assert_eq!(vm.memory[0x3003], 10);
+        }
     }
 
-    #[test]
-    fn lea_loads_address_not_value() {
+    mod lea_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn lea_loads_address_not_value() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -305,10 +330,14 @@ mod tests {
         vm.run();
 
         assert_eq!(vm.registers[0], 0x3002);
+        }
     }
 
-    #[test]
-    fn jmp_sets_pc_to_address_in_base_register() {
+    mod jmp_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn jmp_sets_pc_to_address_in_base_register() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -389,10 +418,14 @@ mod tests {
         vm.run();
 
         assert_eq!(vm.cond, Cond::Negative);
+        }
     }
 
-    #[test]
-    fn jsr_jumps_to_pc_relative_subroutine_and_sets_r7() {
+    mod jsr_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn jsr_jumps_to_pc_relative_subroutine_and_sets_r7() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -481,10 +514,14 @@ mod tests {
         assert_eq!(vm.registers[2], 0x3004);
         assert_eq!(vm.registers[7], 0x3004);
         assert_eq!(vm.cond, Cond::Negative);
+        }
     }
 
-    #[test]
-    fn ldr_loads_from_base_register_plus_positive_offset() {
+    mod ldr_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn ldr_loads_from_base_register_plus_positive_offset() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -550,10 +587,14 @@ mod tests {
         assert_eq!(vm.registers[1], 0x3004);
         assert_eq!(vm.registers[0], 0x1234);
         assert_eq!(vm.cond, Cond::Positive);
+        }
     }
 
-    #[test]
-    fn str_stores_to_base_register_plus_offset() {
+    mod str_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn str_stores_to_base_register_plus_offset() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -642,10 +683,14 @@ mod tests {
         assert_eq!(vm.memory[0x3006], 7);
         assert_eq!(vm.registers[2], 7);
         assert_eq!(vm.cond, Cond::Positive);
+        }
     }
 
-    #[test]
-    fn ldi_loads_through_pc_relative_pointer() {
+    mod ldi_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn ldi_loads_through_pc_relative_pointer() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -705,10 +750,14 @@ mod tests {
 
         assert_eq!(vm.registers[0], 0x0000);
         assert_eq!(vm.cond, Cond::Zero);
+        }
     }
 
-    #[test]
-    fn sti_stores_through_pc_relative_pointer() {
+    mod sti_tests {
+        use crate::{cond::Cond, vm::VM};
+
+        #[test]
+        fn sti_stores_through_pc_relative_pointer() {
         let mut vm = VM::new();
 
         vm.load_words(
@@ -773,5 +822,139 @@ mod tests {
         assert_eq!(vm.memory[0x3006], 7);
         assert_eq!(vm.registers[1], 7);
         assert_eq!(vm.cond, Cond::Positive);
+        }
+    }
+
+    mod trap_tests {
+        use crate::{vm::VM};
+
+        #[test]
+        fn trap_out_prints_character_from_r0() {
+        let mut vm = VM::new();
+
+        vm.load_words(
+            0x3000,
+            &[
+                0xE003, // LEA R0, +3      ; R0 = x3002
+                0x6000, // LDR R0, R0, #0  ; R0 = memory[x3002] = 'A'
+                0xF021, // OUT             ; output char in R0
+                0xF025, // HALT
+                0x0041, // 'A'
+            ],
+        )
+        .unwrap();
+
+        vm.run();
+
+        assert_eq!(vm.output, "A");
+    }
+
+    #[test]
+    fn trap_out_uses_low_byte_of_r0() {
+        let mut vm = VM::new();
+
+        vm.load_words(
+            0x3000,
+            &[
+                0xE003, // LEA R0, +1      ; R0 = x3002
+                0x6000, // LDR R0, R0, #0  ; R0 = x4142
+                0xF021, // OUT             ; prints low byte only: x42 = 'B'
+                0xF025, // HALT
+                0x4142, // high byte 'A', low byte 'B'
+            ],
+        )
+        .unwrap();
+
+        vm.run();
+
+        assert_eq!(vm.output, "B");
+    }
+
+    #[test]
+    fn trap_puts_prints_zero_terminated_string() {
+        let mut vm = VM::new();
+
+        vm.load_words(
+            0x3000,
+            &[
+                0xE002, // LEA R0, +2      ; R0 = x3003
+                0xF022, // PUTS            ; print string at R0
+                0xF025, // HALT
+                0x0048, // 'H'
+                0x0069, // 'i'
+                0x0000, // terminator
+            ],
+        )
+        .unwrap();
+
+        vm.run();
+
+        assert_eq!(vm.output, "Hi");
+    }
+
+    #[test]
+    fn trap_puts_stops_at_zero_word() {
+        let mut vm = VM::new();
+
+        vm.load_words(
+            0x3000,
+            &[
+                0xE002, // LEA R0, +2      ; R0 = x3003
+                0xF022, // PUTS
+                0xF025, // HALT
+                0x004F, // 'O'
+                0x004B, // 'K'
+                0x0000, // terminator
+                0x0021, // '!' should not print
+            ],
+        )
+        .unwrap();
+
+        vm.run();
+
+        assert_eq!(vm.output, "OK");
+    }
+
+    #[test]
+    fn trap_puts_empty_string_prints_nothing() {
+        let mut vm = VM::new();
+
+        vm.load_words(
+            0x3000,
+            &[
+                0xE002, // LEA R0, +2      ; R0 = x3003
+                0xF022, // PUTS
+                0xF025, // HALT
+                0x0000, // empty string terminator
+            ],
+        )
+        .unwrap();
+
+        vm.run();
+
+        assert_eq!(vm.output, "");
+    }
+
+    #[test]
+    fn trap_puts_uses_low_byte_of_each_word() {
+        let mut vm = VM::new();
+
+        vm.load_words(
+            0x3000,
+            &[
+                0xE002, // LEA R0, +2      ; R0 = x3003
+                0xF022, // PUTS
+                0xF025, // HALT
+                0x4148, // low byte x48 = 'H'
+                0x4269, // low byte x69 = 'i'
+                0x0000, // terminator
+            ],
+        )
+        .unwrap();
+
+        vm.run();
+
+        assert_eq!(vm.output, "Hi");
+        }
     }
 }

@@ -17,6 +17,7 @@ pub struct VM {
     pub pc: u16,
     pub cond: Cond,
     pub running: bool,
+    pub output: String,
 }
 
 impl VM {
@@ -27,6 +28,7 @@ impl VM {
             pc: 0,
             cond: Cond::default(),
             running: false,
+            output: "".into(),
         }
     }
 
@@ -126,14 +128,6 @@ impl VM {
         (op1, op2)
     }
 
-    fn execute_trap(&mut self, vec: TrapVec) {
-        match vec {
-            TrapVec::Halt => {
-                self.running = false;
-            }
-        }
-    }
-
     fn execute_not(&mut self, not: NotArgs) {
         let value = !self.registers[not.source_reg];
         self.set_register(value, not.dest_reg);
@@ -202,5 +196,32 @@ impl VM {
     fn load_effective_address(&mut self, args: LeaArgs) {
         let address = self.pc.wrapping_add(args.pc_offset);
         self.registers[args.dest_reg] = address;
+    }
+
+    fn execute_trap(&mut self, vec: TrapVec) {
+        match vec {
+            TrapVec::GetC => todo!(),
+            TrapVec::Out => {
+                let ch = self.registers[0] as u8 as char;
+                print!("{ch}");
+                self.output.push(ch)
+            },
+            TrapVec::PutS => {
+                let mut addr = self.registers[0] as usize;
+                let mut ch = self.memory[addr] as u8 as char; 
+                while ch != '\0' {
+                    print!("{ch}");
+                    self.output.push(ch);
+                    addr += 1;
+                    ch = self.memory[addr] as u8 as char;
+                }
+                println!();
+            },
+            TrapVec::IN => todo!(),
+            TrapVec::PutSP => todo!(),
+            TrapVec::Halt => {
+                self.running = false;
+            }
+        }
     }
 }

@@ -318,6 +318,11 @@ impl From<u16> for JumpSubroutine {
 
 #[derive(Debug)]
 pub enum TrapVec {
+    GetC = 0x20,
+    Out = 0x21,
+    PutS = 0x22,
+    IN = 0x23,
+    PutSP = 0x24,
     Halt = 0x25,
 }
 
@@ -326,6 +331,8 @@ impl From<u16> for TrapVec {
         let trap_vec = instr & 0x00FF;
 
         match trap_vec {
+            0x21 => TrapVec::Out,
+            0x22 => TrapVec::PutS,
             0x25 => TrapVec::Halt,
             _ => panic!("unimplemented trap: x{trap_vec:02X}"),
         }
