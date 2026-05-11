@@ -40,3 +40,13 @@ pub fn bit(value: u16, index: u8) -> bool {
     debug_assert!(index < 16);
     (value >> index) & 1 != 0
 }
+
+pub trait ToChar {
+    fn to_char(self) -> char;
+}
+
+impl ToChar for u16 {
+    fn to_char(self) -> char {
+        self as u8 as char
+    }
+}

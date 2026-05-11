@@ -1,8 +1,8 @@
-use std::collections::VecDeque;
+use std::{collections::VecDeque, io};
 
 use crate::{
     cond::Cond,
-    helpers::{sign_extend, words_from_bytes},
+    helpers::{ToChar, sign_extend, words_from_bytes},
     instructions::{
         BinaryOp, BranchArgs,
         Instruction::{self, *},
@@ -19,7 +19,7 @@ pub struct VM {
     pub pc: u16,
     pub cond: Cond,
     pub running: bool,
-    pub input: VecDeque<char>,
+    pub input: VecDeque<u8>,
     pub output: String,
 }
 
@@ -150,7 +150,7 @@ impl VM {
 
     fn execute_load(&mut self, load: LoadOp) {
         let dest_reg = load.dest_reg();
-        
+
         let address = match load {
             LoadOp::PcRelative(args) => self.pc.wrapping_add(args.pc_offset),
             LoadOp::BaseRelative(args) => {
@@ -160,7 +160,7 @@ impl VM {
             LoadOp::Indirect(args) => {
                 let pointer_address = self.pc.wrapping_add(args.pc_offset) as usize;
                 self.memory[pointer_address]
-            },
+            }
         } as usize;
 
         let value = self.memory[address];
@@ -177,7 +177,7 @@ impl VM {
             StoreOp::Indirect(args) => {
                 let pointer_address = self.pc.wrapping_add(args.pc_offset) as usize;
                 self.memory[pointer_address]
-            },
+            }
         } as usize;
 
         self.memory[dest_address] = value;
@@ -206,14 +206,15 @@ impl VM {
             TrapVec::GetC => self.execute_trap_getc(),
             TrapVec::Out => self.execute_trap_out(),
             TrapVec::PutS => self.execute_trap_puts(),
-            TrapVec::IN => self.execute_trap_in(),
+            TrapVec::In => self.execute_trap_in(),
             TrapVec::PutSP => self.execute_trap_putsp(),
             TrapVec::Halt => self.execute_trap_halt(),
         }
     }
 
     fn execute_trap_getc(&mut self) {
-        todo!()
+        let c = self.read_char();
+        self.set_register(c as u16, 0);
     }
 
     fn execute_trap_out(&mut self) {
@@ -237,7 +238,9 @@ impl VM {
     }
 
     fn execute_trap_in(&mut self) {
-        todo!()
+        let c = self.read_char();
+        self.set_register(c as u16, 0);
+        self.out(c);
     }
 
     fn execute_trap_putsp(&mut self) {
@@ -249,10 +252,10 @@ impl VM {
             if word == 0 {
                 break;
             }
-            let ch = word as u8 as char;
+            let ch = word.to_char();
             self.out(ch);
 
-            let ch = (word >> 8) as u8 as char;
+            let ch = (word >> 8).to_char();
             if ch != '\0' {
                 self.out(ch);
             }
@@ -268,5 +271,19 @@ impl VM {
     fn out(&mut self, ch: char) {
         print!("{ch}");
         self.output.push(ch);
+    }
+
+    fn read_char(&mut self) -> char {
+        if let Some(ch) = self.input.pop_front() {
+            return ch as char;
+        };
+
+        let mut line = String::new();
+        io::stdin().read_line(&mut line).expect("Awaiting a line");
+        self.input.extend(line.bytes());
+
+        self.input
+            .pop_front()
+            .expect("expected at least one byte of input") as char
     }
 }
