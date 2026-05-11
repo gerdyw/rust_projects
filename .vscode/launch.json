@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug LC3 hello_world.obj",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "cwd": "${workspaceFolder}/lc3",
+                "args": [
+                    "build",
+                    "--bin",
+                    "lc3",
+                    "--package",
+                    "lc3"
+                ],
+                "filter": {
+                    "name": "lc3",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "asm/hello_world.obj"
+            ],
+            "cwd": "${workspaceFolder}/lc3"
+        }
+    ]
+}

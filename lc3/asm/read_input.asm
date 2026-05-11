@@ -1,0 +1,17 @@
+.ORIG x3000
+
+LEA R0, PROMPT
+PUTS
+
+GETC
+OUT
+
+LEA R0, NEWLINE
+PUTS
+
+HALT
+
+PROMPT  .STRINGZ "Type one character: "
+NEWLINE .STRINGZ "\n"
+
+.END
