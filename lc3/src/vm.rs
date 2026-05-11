@@ -39,7 +39,7 @@ impl VM {
     pub fn run(&mut self) {
         self.running = true;
         while self.running {
-            let instr: Instruction = self.memory[self.pc as usize].into();
+            let instr: Instruction = self.read_mem(self.pc).into();
             self.pc = self.pc.wrapping_add(1);
 
             self.execute(instr);
@@ -62,10 +62,10 @@ impl VM {
     }
 
     pub fn load_obj_bytes(&mut self, origin: u16, bytes: &[u8]) -> Result<(), String> {
-        let start = origin as usize;
+        let start = origin;
         let words = words_from_bytes(bytes)?;
         for (i, &word) in words.iter().enumerate() {
-            self.memory[start + i] = word;
+            self.write_mem(start.wrapping_add(i as u16), word);
         }
 
         self.pc = origin;
@@ -73,9 +73,9 @@ impl VM {
     }
 
     pub fn load_words(&mut self, origin: u16, words: &[u16]) {
-        let start = origin as usize;
+        let start = origin;
         for (i, &word) in words.iter().enumerate() {
-            self.memory[start + i] = word;
+            self.write_mem(start.wrapping_add(i as u16), word);
         }
 
         self.pc = origin;
@@ -96,7 +96,7 @@ impl VM {
     }
 
     fn set_register(&mut self, result: u16, dest_reg: usize) {
-        self.registers[dest_reg] = result;
+        self.write_reg(dest_reg, result);
         self.update_flags(dest_reg);
     }
 
@@ -114,7 +114,7 @@ impl VM {
 
     fn extract_operands(&self, operand: &BinaryOp) -> (u16, u16) {
         let source_reg1 = operand.source_reg1();
-        let op1 = self.registers[source_reg1];
+        let op1 = self.read_reg(source_reg1);
         let op2 = match operand {
             BinaryOp::Immediate {
                 dest_reg: _,
@@ -125,14 +125,14 @@ impl VM {
                 dest_reg: _,
                 source_reg1: _,
                 source_reg2,
-            } => self.registers[*source_reg2],
+            } => self.read_reg(*source_reg2),
         };
 
         (op1, op2)
     }
 
     fn execute_not(&mut self, not: NotArgs) {
-        let value = !self.registers[not.source_reg];
+        let value = !self.read_reg(not.source_reg);
         self.set_register(value, not.dest_reg);
     }
 
@@ -154,51 +154,51 @@ impl VM {
         let address = match load {
             LoadOp::PcRelative(args) => self.pc.wrapping_add(args.pc_offset),
             LoadOp::BaseRelative(args) => {
-                let base = self.registers[args.base_reg];
+                let base = self.read_reg(args.base_reg);
                 base.wrapping_add(args.offset)
             }
             LoadOp::Indirect(args) => {
-                let pointer_address = self.pc.wrapping_add(args.pc_offset) as usize;
-                self.memory[pointer_address]
+                let pointer_address = self.pc.wrapping_add(args.pc_offset);
+                self.read_mem(pointer_address)
             }
-        } as usize;
+        };
 
-        let value = self.memory[address];
+        let value = self.read_mem(address);
         self.set_register(value, dest_reg);
     }
 
     fn execute_store(&mut self, store: StoreOp) {
         let source_reg = store.source_reg();
-        let value = self.registers[source_reg];
+        let value = self.read_reg(source_reg);
 
         let dest_address = match store {
             StoreOp::PcRelative(args) => self.pc.wrapping_add(args.pc_offset),
-            StoreOp::BaseRelative(args) => self.registers[args.base_reg].wrapping_add(args.offset),
+            StoreOp::BaseRelative(args) => self.read_reg(args.base_reg).wrapping_add(args.offset),
             StoreOp::Indirect(args) => {
-                let pointer_address = self.pc.wrapping_add(args.pc_offset) as usize;
-                self.memory[pointer_address]
+                let pointer_address = self.pc.wrapping_add(args.pc_offset);
+                self.read_mem(pointer_address)
             }
-        } as usize;
+        };
 
-        self.memory[dest_address] = value;
+        self.write_mem(dest_address, value);
     }
 
     fn execute_jump(&mut self, register: usize) {
-        let address = self.registers[register];
+        let address = self.read_reg(register);
         self.pc = address;
     }
 
     fn execute_jump_subroutine(&mut self, jsr: JumpSubroutine) {
-        self.registers[7] = self.pc;
+        self.write_reg(7, self.pc);
         self.pc = match jsr {
             JumpSubroutine::Relative(offset) => self.pc.wrapping_add(offset),
-            JumpSubroutine::Register(register) => self.registers[register],
+            JumpSubroutine::Register(register) => self.read_reg(register),
         }
     }
 
     fn load_effective_address(&mut self, args: LeaArgs) {
         let address = self.pc.wrapping_add(args.pc_offset);
-        self.registers[args.dest_reg] = address;
+        self.write_reg(args.dest_reg, address);
     }
 
     fn execute_trap(&mut self, vec: TrapVec) {
@@ -218,14 +218,14 @@ impl VM {
     }
 
     fn execute_trap_out(&mut self) {
-        let ch = self.registers[0] as u8 as char;
+        let ch = self.read_reg(0) as u8 as char;
         self.out(ch);
     }
 
     fn execute_trap_puts(&mut self) {
-        let mut addr = self.registers[0];
+        let mut addr = self.read_reg(0);
         loop {
-            let ch = self.memory[addr as usize] as u8 as char;
+            let ch = self.read_mem(addr).to_char();
 
             if ch == '\0' {
                 break;
@@ -244,10 +244,10 @@ impl VM {
     }
 
     fn execute_trap_putsp(&mut self) {
-        let mut addr = self.registers[0];
+        let mut addr = self.read_reg(0);
 
         loop {
-            let word = self.memory[addr as usize];
+            let word = self.read_mem(addr);
 
             if word == 0 {
                 break;
@@ -285,5 +285,21 @@ impl VM {
         self.input
             .pop_front()
             .expect("expected at least one byte of input") as char
+    }
+
+    fn read_mem(&self, idx: u16) -> u16 {
+        self.memory[idx as usize]
+    }
+
+    fn write_mem(&mut self, idx: u16, value: u16) {
+        self.memory[idx as usize] = value;
+    }
+
+    fn read_reg(&self, idx: usize) -> u16 {
+        self.registers[idx]
+    }
+
+    fn write_reg(&mut self, idx: usize, value: u16) {
+        self.registers[idx] = value;
     }
 }
