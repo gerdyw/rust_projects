@@ -1,0 +1,6 @@
+name = "share-music"
+main = "build/index.js"
+compatibility_date = "2026-05-11"
+
+[build]
+command = "cargo install \"worker-build@^0.8\" && worker-build --release --panic-unwind"
