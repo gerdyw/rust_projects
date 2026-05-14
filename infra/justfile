@@ -1,0 +1,26 @@
+# Docker Compose justfile for pi_infra
+# Usage: just up, just down, just logs, etc.
+
+set dotenv-load := false
+set shell := ["zsh", "-c"]
+
+# Start services in background
+repull service="":
+  docker compose pull {{service}}
+  docker compose up -d {{service}}
+
+# Stop services
+down service="":
+  docker compose down {{service}}
+
+# View logs
+logs service="":
+  docker compose logs -f {{service}}
+
+# Pull and start database + cache
+infra-up:
+  docker compose up -d db cache registry
+
+# Show this help
+help:
+  @just --list

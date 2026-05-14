@@ -1,0 +1,153 @@
+services:
+  # ============================================================================
+  # Infrastructure Services
+  # ============================================================================
+
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: pi-infra-db
+    ports:
+      - "${DATABASE_PORT:-5432}:5432"
+    env_file:
+      - ./.env.defaults
+      - ./.env
+      - ./env/db.env
+    volumes:
+      - ./postgres_data/data:/var/lib/postgresql/data
+      - ./postgres_data/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis Cache
+  cache:
+    image: redis:7-alpine
+    container_name: pi-infra-redis
+    ports:
+      - "${CACHE_PORT:-6379}:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  # Docker Registry
+  registry:
+    image: registry:3
+    container_name: pi-infra-registry
+    ports:
+      - "0.0.0.0:${REGISTRY_PORT:-5000}:5000"
+    env_file:
+      - ./.env.defaults
+      - ./.env
+      - ./env/registry.env
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry/config.yml:/etc/docker/registry/config.yml:ro
+    depends_on:
+      telemetry-collector:
+        condition: service_started
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/v2/" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  telemetry-collector:
+    image: grafana/otel-lgtm:latest
+    container_name: pi-infra-telemetry
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"   # Grafana UI
+      - "4317:4317"                     # OTLP gRPC
+      - "4318:4318"                     # OTLP HTTP
+    env_file:
+      - ./.env.defaults
+      - ./.env
+      - ./env/telemetry.env
+    volumes:
+      - ./telemetry-data:/data
+    healthcheck:
+        test: ["CMD-SHELL", "curl -sf http://localhost:3000/api/health || exit 1"]
+        interval: 15s
+        timeout: 10s
+        retries: 5
+        start_period: 120s
+    restart: unless-stopped
+
+
+  # ============================================================================
+  # Application Services
+  # ============================================================================
+
+  # Image Stitch Service
+  image-stitch:
+    image: localhost:5000/image-stitch:latest
+    container_name: pi-infra-image-stitch
+    ports:
+      - "${IS_SERVICE_PORT:-3000}:3000"
+    env_file:
+      - ./.env.defaults
+      - ./.env
+      - ./env/image-stitch.env
+    networks:
+      - cloudflare-net
+      - default
+    volumes:
+      - ./stitched_images:/app/stitched_images
+    depends_on:
+        db:
+           condition: service_healthy
+        registry:
+           condition: service_healthy
+        telemetry-collector:
+          condition: service_started
+    restart: unless-stopped
+
+  # Todo Web Service
+  todo_web:
+    image: localhost:5000/todo_web:latest
+    container_name: pi-infra-todo-web
+    ports:
+      - "${TD_SERVICE_PORT:-4000}:${TD_SERVICE_PORT:-4000}"
+    env_file:
+      - ./.env.defaults
+      - ./.env
+      - ./env/todo_web.env
+    networks:
+      - cloudflare-net
+      - default
+    depends_on:
+        db:
+           condition: service_healthy
+        cache:
+           condition: service_healthy
+        telemetry-collector:
+          condition: service_started
+    restart: unless-stopped
+
+  # ============================================================================
+  # Optional Services
+  # ============================================================================
+
+  # Cloudflare Tunnel (production only)
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: pi-infra-cloudflared
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
+    restart: unless-stopped
+    profiles:
+      - prod
+    networks:
+      - cloudflare-net
+      - default
+
+networks:
+  cloudflare-net:
+  default:

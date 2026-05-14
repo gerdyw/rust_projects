@@ -1,0 +1,14 @@
+.env
+.DS_Store
+registry/data/
+stitched_images/
+/syncthing/config
+/syncthing/data
+
+telemetry-data/*
+!telemetry-data/.gitkeep
+
+postgres_data/*
+!postgres_data/.gitkeep
+
+.vscode
