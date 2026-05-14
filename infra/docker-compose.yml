@@ -1,0 +1,81 @@
+services:
+  image-stitch:
+    image: ${IMAGE_STITCH_IMAGE}
+    container_name: image-stitch
+    ports:
+      - "${IMAGE_STITCH_PORT:-3001}:3000"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-services}
+      DATABASE_SCHEMA: ${IMAGE_STITCH_SCHEMA:-image_stitch}
+      DATABASE_USER: ${DATABASE_USER:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      SERVICE_PORT: 3000
+      API_KEY_MODE: ${IMAGE_STITCH_API_KEY_MODE:-submit_only}
+      API_KEY: ${IMAGE_STITCH_API_KEY}
+      RUST_LOG: ${IMAGE_STITCH_RUST_LOG:-image_stitch=info}
+    volumes:
+      - image_stitch_data:/app/stitched_images
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  todo-web:
+    image: ${TODO_WEB_IMAGE}
+    container_name: todo_web
+    ports:
+      - "${TODO_WEB_PORT:-3000}:3000"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-services}
+      DATABASE_SCHEMA: ${TODO_WEB_SCHEMA:-todo_web}
+      DATABASE_USER: ${DATABASE_USER:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      CACHE_HOST: cache
+      CACHE_PORT: ${CACHE_PORT:-6379}
+      SERVICE_PORT: 3000
+      ASSETS_LOCATION: /app/assets
+      RUST_LOG: ${TODO_WEB_RUST_LOG:-info}
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: infra-postgres
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-services}
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+    ports:
+      - "${DATABASE_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  cache:
+    image: redis:7-alpine
+    container_name: infra-redis
+    ports:
+      - "${CACHE_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  image_stitch_data:
