@@ -1,9 +1,9 @@
 use axum::serve;
 use std::net::SocketAddr;
 use todo_web::{
-    web::app_routes::create_router,
     db::init_db,
     domain::{appstate::AppState, session_store::create_store, settings::load_settings},
+    web::app_routes::create_router,
 };
 use tokio::net::TcpListener;
 use tracing::debug;

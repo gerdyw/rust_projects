@@ -1,7 +1,7 @@
 use axum::{
     extract::Path,
     extract::State,
-    http::{header, StatusCode},
+    http::{header, HeaderMap, StatusCode},
     response::{Html, IntoResponse, Response},
     Json,
 };
@@ -15,6 +15,32 @@ use crate::{
     processing::{process_stitch, process_stitch_sync},
     web::{templates, JobStatusResponse, JobSubmitResponse, StitchRequest},
 };
+
+/// Build a quoted ETag value from a job UUID.
+fn job_etag(job_id: Uuid) -> String {
+    format!("\"{}\"", job_id)
+}
+
+fn normalize_etag(tag: &str) -> &str {
+    tag.strip_prefix("W/").unwrap_or(tag)
+}
+
+/// Check an `If-None-Match` header against an ETag; returns true when the
+/// client already holds a fresh copy and a 304 should be sent.
+fn is_not_modified(req_headers: &HeaderMap, etag: &str) -> bool {
+    req_headers
+        .get(header::IF_NONE_MATCH)
+        .and_then(|v| v.to_str().ok())
+        .map_or(false, |inm| {
+            let normalized_etag = normalize_etag(etag);
+
+            inm.trim() == "*"
+                || inm
+                    .split(',')
+                    .map(|tag| tag.trim())
+                    .any(|tag| normalize_etag(tag) == normalized_etag)
+        })
+}
 
 /// Submit images for async processing
 pub async fn submit_stitch_job(
@@ -78,7 +104,7 @@ pub async fn submit_stitch_job(
 pub async fn get_job_status(
     State(state): State<AppState>,
     Path(job_id): Path<Uuid>,
-) -> Result<Json<JobStatusResponse>, StatusCode> {
+) -> Result<Response, StatusCode> {
     let job = state
         .image_processing_service
         .get_job(job_id)
@@ -92,19 +118,26 @@ pub async fn get_job_status(
             StatusCode::NOT_FOUND
         })?;
 
-    Ok(Json(JobStatusResponse {
+    let body = JobStatusResponse {
         job_id: job.id,
         status: job.status.to_string(),
         image_count: job.image_count,
         result_path: job.result_path,
         error_message: job.error_message,
-    }))
+    };
+
+    Ok((
+        [(header::CACHE_CONTROL, "no-store")],
+        Json(body),
+    )
+        .into_response())
 }
 
 /// Get the processed image
 pub async fn get_job_result(
     State(state): State<AppState>,
     Path(job_id): Path<Uuid>,
+    req_headers: HeaderMap,
 ) -> Result<Response, StatusCode> {
     let job = state
         .image_processing_service
@@ -126,6 +159,21 @@ pub async fn get_job_result(
                 StatusCode::INTERNAL_SERVER_ERROR
             })?;
 
+            let etag = job_etag(job_id);
+
+            // Support conditional requests: return 304 if client already has this version
+            if is_not_modified(&req_headers, &etag) {
+                return Ok(Response::builder()
+                    .status(StatusCode::NOT_MODIFIED)
+                    .header(header::CACHE_CONTROL, "public, max-age=31536000, immutable")
+                    .header(header::ETAG, etag)
+                    .body(axum::body::Body::empty())
+                    .map_err(|e| {
+                        error!("Failed to build 304 response: {}", e);
+                        StatusCode::INTERNAL_SERVER_ERROR
+                    })?);
+            }
+
             let image_data = fs::read(&result_path).map_err(|e| {
                 error!("Failed to read result file {}: {}", result_path, e);
                 StatusCode::INTERNAL_SERVER_ERROR
@@ -133,7 +181,9 @@ pub async fn get_job_result(
 
             Ok(Response::builder()
                 .status(StatusCode::OK)
-                .header("Content-Type", "image/png")
+                .header(header::CONTENT_TYPE, "image/png")
+                .header(header::CACHE_CONTROL, "public, max-age=31536000, immutable")
+                .header(header::ETAG, etag)
                 .body(image_data.into())
                 .map_err(|e| {
                     error!("Failed to build response: {}", e);
@@ -179,8 +229,12 @@ pub async fn stitch_images(
 }
 
 /// Serve waiting page with loading spinner
-pub async fn serve_waiting_page(Path(job_id): Path<Uuid>) -> Html<String> {
-    Html(templates::waiting_page(job_id))
+pub async fn serve_waiting_page(Path(job_id): Path<Uuid>) -> Response {
+    (
+        [(header::CACHE_CONTROL, "no-store")],
+        Html(templates::waiting_page(job_id)),
+    )
+        .into_response()
 }
 
 /// Get status fragment for HTMX polling
@@ -191,23 +245,38 @@ pub async fn get_status_fragment(
     let job = match state.image_processing_service.get_job(job_id).await {
         Ok(Some(job)) => job,
         Ok(None) => {
-            return Html(templates::status_not_found()).into_response();
+            return (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::status_not_found()),
+            )
+                .into_response();
         }
         Err(e) => {
             error!("Failed to get job {}: {}", job_id, e);
-            return Html(templates::status_error()).into_response();
+            return (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::status_error()),
+            )
+                .into_response();
         }
     };
 
     match job.status {
-        JobStatus::Pending => Html(templates::status_pending()).into_response(),
-        JobStatus::Processing => {
-            Html(templates::status_processing(job.image_count)).into_response()
-        }
+        JobStatus::Pending => (
+            [(header::CACHE_CONTROL, "no-store")],
+            Html(templates::status_pending()),
+        )
+            .into_response(),
+        JobStatus::Processing => (
+            [(header::CACHE_CONTROL, "no-store")],
+            Html(templates::status_processing(job.image_count)),
+        )
+            .into_response(),
         JobStatus::Completed | JobStatus::Failed => {
             // Redirect to image page (handles both success and error)
             Response::builder()
                 .status(StatusCode::OK)
+                .header(header::CACHE_CONTROL, "no-store")
                 .header("HX-Redirect", format!("/images/{}", job_id))
                 .body(String::new().into())
                 .unwrap()
@@ -216,20 +285,31 @@ pub async fn get_status_fragment(
 }
 
 /// Serve image or error page
-pub async fn serve_image_page(State(state): State<AppState>, Path(job_id): Path<Uuid>) -> Response {
+pub async fn serve_image_page(
+    State(state): State<AppState>,
+    Path(job_id): Path<Uuid>,
+    req_headers: HeaderMap,
+) -> Response {
     let job = match state.image_processing_service.get_job(job_id).await {
         Ok(Some(job)) => job,
         Ok(None) => {
-            return Html(templates::job_not_found(job_id)).into_response();
+            return (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::job_not_found(job_id)),
+            )
+                .into_response();
         }
         Err(e) => {
             error!("Failed to get job {}: {}", job_id, e);
-            return Html(templates::error_page(
-                "Error",
-                "Failed to retrieve job information",
-                None,
-            ))
-            .into_response();
+            return (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::error_page(
+                    "Error",
+                    "Failed to retrieve job information",
+                    None,
+                )),
+            )
+                .into_response();
         }
     };
 
@@ -239,32 +319,51 @@ pub async fn serve_image_page(State(state): State<AppState>, Path(job_id): Path<
                 Some(path) => path,
                 None => {
                     error!("Job {} completed but no result path", job_id);
-                    return Html(templates::error_page(
-                        "Error",
-                        "Image processing completed but result file is missing",
-                        None,
-                    ))
-                    .into_response();
+                    return (
+                        [(header::CACHE_CONTROL, "no-store")],
+                        Html(templates::error_page(
+                            "Error",
+                            "Image processing completed but result file is missing",
+                            None,
+                        )),
+                    )
+                        .into_response();
                 }
             };
+
+            let etag = job_etag(job_id);
+
+            // Support conditional requests: return 304 if client already has this version
+            if is_not_modified(&req_headers, &etag) {
+                return Response::builder()
+                    .status(StatusCode::NOT_MODIFIED)
+                    .header(header::CACHE_CONTROL, "public, max-age=31536000, immutable")
+                    .header(header::ETAG, etag)
+                    .body(axum::body::Body::empty())
+                    .unwrap();
+            }
 
             let image_data = match fs::read(&result_path) {
                 Ok(data) => data,
                 Err(e) => {
                     error!("Failed to read result file {}: {}", result_path, e);
-                    return Html(templates::error_page(
-                        "Error",
-                        "Failed to read image file",
-                        Some(&e.to_string()),
-                    ))
-                    .into_response();
+                    return (
+                        [(header::CACHE_CONTROL, "no-store")],
+                        Html(templates::error_page(
+                            "Error",
+                            "Failed to read image file",
+                            Some(&e.to_string()),
+                        )),
+                    )
+                        .into_response();
                 }
             };
 
             Response::builder()
                 .status(StatusCode::OK)
                 .header(header::CONTENT_TYPE, "image/png")
-                .header(header::CACHE_CONTROL, "public, max-age=31536000")
+                .header(header::CACHE_CONTROL, "public, max-age=31536000, immutable")
+                .header(header::ETAG, etag)
                 .body(image_data.into())
                 .unwrap()
         }
@@ -272,12 +371,17 @@ pub async fn serve_image_page(State(state): State<AppState>, Path(job_id): Path<
             let error_message = job
                 .error_message
                 .unwrap_or_else(|| "Unknown error".to_string());
-            Html(templates::processing_failed(&error_message)).into_response()
+            (
+                [(header::CACHE_CONTROL, "no-store")],
+                Html(templates::processing_failed(&error_message)),
+            )
+                .into_response()
         }
         _ => {
             // Still processing, redirect back to waiting page
             Response::builder()
                 .status(StatusCode::SEE_OTHER)
+                .header(header::CACHE_CONTROL, "no-store")
                 .header(header::LOCATION, format!("/wait/{}", job_id))
                 .body(String::new().into())
                 .unwrap()

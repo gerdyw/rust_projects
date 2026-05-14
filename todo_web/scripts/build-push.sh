@@ -14,7 +14,8 @@ echo "=== Building and deploying $SERVICE_NAME ==="
 
 # 1. Build the image locally
 echo "--- Building image locally ---"
-docker build -t "${SERVICE_NAME}:latest" .
+REPO_ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
+docker build -f "${REPO_ROOT}/todo_web/Dockerfile" -t "${SERVICE_NAME}:latest" "${REPO_ROOT}"
 
 # 2. Tag and push to registry
 echo "--- Pushing to registry ---"

@@ -7,18 +7,12 @@ pub struct MarkDoneButton(pub Uuid, pub bool);
 
 impl Render for MarkDoneButton {
     fn render(&self) -> Markup {
-        let checked = "' ✅ '";
-        let unchecked = "' ⬜ '";
         html! {
             @if self.1 {
                 a .button hx-put=(format!("./todos/{}/undone", self.0)) hx-swap="outerHTML" hx-target="#todo-list"
-                    hx-on:mouseenter={"this.textContent=" (unchecked)}
-                    hx-on:mouseleave={"this.textContent=" (checked)}
                     { " ✅ " }
             } @else {
                 a .button hx-put=(format!("./todos/{}/done", self.0)) hx-swap="outerHTML" hx-target="#todo-list"
-                  hx-on:mouseenter={"this.textContent=" (checked)}
-                  hx-on:mouseleave={"this.textContent=" (unchecked)}
                   { " ⬜ " }
             }
         }

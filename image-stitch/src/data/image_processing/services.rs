@@ -39,14 +39,25 @@ impl ImageProcessingService {
     }
 
     pub async fn mark_processing(&self, id: Uuid) -> Result<ImageProcessingJob, sqlx::Error> {
-        self.update_job_status(id, JobStatus::Processing, None, None).await
+        self.update_job_status(id, JobStatus::Processing, None, None)
+            .await
     }
 
-    pub async fn mark_completed(&self, id: Uuid, result_path: String) -> Result<ImageProcessingJob, sqlx::Error> {
-        self.update_job_status(id, JobStatus::Completed, Some(result_path), None).await
+    pub async fn mark_completed(
+        &self,
+        id: Uuid,
+        result_path: String,
+    ) -> Result<ImageProcessingJob, sqlx::Error> {
+        self.update_job_status(id, JobStatus::Completed, Some(result_path), None)
+            .await
     }
 
-    pub async fn mark_failed(&self, id: Uuid, error_message: String) -> Result<ImageProcessingJob, sqlx::Error> {
-        self.update_job_status(id, JobStatus::Failed, None, Some(error_message)).await
+    pub async fn mark_failed(
+        &self,
+        id: Uuid,
+        error_message: String,
+    ) -> Result<ImageProcessingJob, sqlx::Error> {
+        self.update_job_status(id, JobStatus::Failed, None, Some(error_message))
+            .await
     }
 }
