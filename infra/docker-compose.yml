@@ -44,6 +44,8 @@ services:
     container_name: pi-infra-registry
     ports:
       - "0.0.0.0:${REGISTRY_PORT:-5500}:5500"
+    environment:
+      REGISTRY_HTTP_SECRET: ${REGISTRY_SECRET}
     env_file:
       - ./.env.defaults
       - ./.env
