@@ -1,8 +1,8 @@
 services:
   image-stitch:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: image-stitch/Dockerfile
     container_name: image-stitch
     ports:
       - "${SERVICE_PORT:-3000}:3000"
@@ -12,10 +12,14 @@ services:
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_SCHEMA=${DATABASE_SCHEMA:-image_stitch}
       - SERVICE_PORT=${SERVICE_PORT:-3000}
       - API_KEY_MODE=${API_KEY_MODE}
       - API_KEY=${API_KEY}
       - RUST_LOG=${RUST_LOG:-image_stitch=debug,tower_http=debug}
+      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES:-service.name=image_stitch}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://telemetry-collector:4318}
+      - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL:-http/protobuf}
     volumes:
       - ./stitched_images:/app/stitched_images
     depends_on:
