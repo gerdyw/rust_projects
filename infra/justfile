@@ -9,6 +9,10 @@ repull service="":
   docker compose pull {{service}}
   docker compose up -d {{service}}
 
+# Start full stack
+up:
+  docker compose up -d
+
 # Stop services
 down service="":
   docker compose down {{service}}
@@ -20,6 +24,11 @@ logs service="":
 # Pull and start database + cache
 infra-up:
   docker compose up -d db cache registry
+
+# Quick DB bootstrap verification
+db-check:
+  docker compose exec db psql -U postgres -d services_db -c "\\dn"
+  docker compose exec db psql -U postgres -d services_db -c "\\dx"
 
 # Show this help
 help:

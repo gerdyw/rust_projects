@@ -6,7 +6,7 @@ COMPOSE_FILE="docker-compose.yml"
 PI_ENV_FILE="docker.env"
 LOCAL_ENV_FILE="local.env"
 SERVICE_NAME="todo_web"
-REGISTRY="raspberrypi.local:5000"
+REGISTRY="raspberrypi.local:5500"
 BUILD_TIME=$(date +%Y%m%d_%H%M%S)
 IMAGE_TAG="${BUILD_TIME}"
 

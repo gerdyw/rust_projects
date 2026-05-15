@@ -1,34 +1,36 @@
 services:
   todo_web:
-    image: raspberrypi.local:5000/todo_web:latest
+    image: localhost:5500/todo_web:latest
     container_name: todo_web
     ports:
-      - "${SERVICE_PORT}:${SERVICE_PORT}"
+      - "${SERVICE_PORT:-4000}:${SERVICE_PORT:-4000}"
     environment:
       DATABASE_HOST: db
-      DATABASE_PORT: ${DATABASE_PORT}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-services_db}
+      DATABASE_USER: ${DATABASE_USER:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-change-me}
+      DATABASE_SCHEMA: ${DATABASE_SCHEMA:-todo_web}
       CACHE_HOST: cache
-      CACHE_PORT: ${CACHE_PORT}
+      CACHE_PORT: ${CACHE_PORT:-6379}
       RUST_LOG: debug
       ASSETS_LOCATION: /app/assets
-      SERVICE_PORT: ${SERVICE_PORT}
-      OTEL_EXPORTER_OTLP_ENDPOINT: localhost:4317
+      SERVICE_PORT: ${SERVICE_PORT:-4000}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://telemetry-collector:4318}
+      OTEL_EXPORTER_OTLP_PROTOCOL: ${OTEL_EXPORTER_OTLP_PROTOCOL:-http/protobuf}
       OTEL_RESOURCE_ATTRIBUTES: service.name=todo_web
     restart: unless-stopped
 
   db:
-    image: postgres
+    image: postgres:16-alpine
     container_name: todo_postgres
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      PG_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: todo_db
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-change-me}
+      POSTGRES_DB: ${DATABASE_NAME:-services_db}
     ports:
       - "5432:5432"
 
@@ -37,7 +39,7 @@ services:
     container_name: todo_redis
     restart: unless-stopped
     ports:
-      - "${CACHE_PORT}:6379"
+      - "${CACHE_PORT:-6379}:6379"
 
   cloudflared:
     image: cloudflare/cloudflared:latest

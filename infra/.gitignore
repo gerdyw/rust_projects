@@ -10,5 +10,6 @@ telemetry-data/*
 
 postgres_data/*
 !postgres_data/.gitkeep
+!postgres_data/init.sql
 
 .vscode

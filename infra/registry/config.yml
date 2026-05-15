@@ -6,7 +6,7 @@ storage:
   filesystem:
     rootdirectory: /var/lib/registry
 http:
-  addr: :5000
+  addr: :5500
   headers:
     Access-Control-Allow-Origin: ["*"]
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
@@ -14,7 +14,7 @@ http:
     Access-Control-Expose-Headers: ['Docker-Content-Digest']
     Access-Control-Max-Age: [1728000]
     X-Content-Type-Options: [nosniff]
-  host: http://localhost:5000
+  host: http://localhost:5500
   tls:
     enabled: false
 health:

@@ -23,7 +23,7 @@ pub struct Settings {
 impl Settings {
     /// Load settings from environment variables
     pub fn from_env() -> Result<Self, String> {
-        let database = DbConfig::from_env(SchemaMode::MustExist)?;
+        let database = DbConfig::from_env(SchemaMode::CreateIfMissing)?;
 
         let service_port = env::var("SERVICE_PORT")
             .unwrap_or_else(|_| "3000".to_string())
