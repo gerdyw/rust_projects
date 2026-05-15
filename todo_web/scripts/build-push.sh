@@ -6,7 +6,7 @@ COMPOSE_FILE="docker-compose.yml"
 PI_ENV_FILE="docker.env"
 LOCAL_ENV_FILE="local.env"
 SERVICE_NAME="todo_web"
-REMOTE_REGISTRY="raspberrypi.local:5500"
+REMOTE_REGISTRY="host.docker.internal:5500"
 LOCAL_REGISTRY="localhost:5500"
 REGISTRY="${REMOTE_REGISTRY}"
 BUILD_TIME=$(date +%Y%m%d_%H%M%S)
@@ -20,7 +20,7 @@ while [[ $# -gt 0 ]]; do
 			;;
 		-h|--help)
 			echo "Usage: $0 [--local]"
-			echo "  --local   Push to ${LOCAL_REGISTRY} instead of ${REMOTE_REGISTRY}"
+			echo "  --local   Push to local registry (${LOCAL_REGISTRY}) instead of tunnel (${REMOTE_REGISTRY})"
 			exit 0
 			;;
 		*)
