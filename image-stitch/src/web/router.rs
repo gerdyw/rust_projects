@@ -24,8 +24,8 @@ pub fn create_router(state: AppState, api_key_mode: ApiKeyMode) -> Router {
         .route("/wait/{job_id}", get(super::serve_waiting_page))
         .route("/status/{job_id}", get(super::get_status_fragment))
         .route("/images/{job_id}", get(super::serve_image_page))
-        .layer(DefaultBodyLimit::max(100 * 1024 * 1024))
-        .layer(middleware::from_fn(telemetry::http_telemetry_middleware)); // 100MB limit
+        .layer(DefaultBodyLimit::max(100 * 1024 * 1024)) // 100MB limit
+        .layer(middleware::from_fn(telemetry::http_telemetry_middleware));
 
     let app = add_auth_layer(api_key_mode, app);
 
