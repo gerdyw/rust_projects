@@ -2,21 +2,13 @@ use image_stitch::db::{init_pool, run_migrations};
 use image_stitch::domain::{AppState, Settings};
 use image_stitch::web::create_router;
 use std::net::SocketAddr;
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     // Load .env file if present (for local development)
     dotenvy::dotenv().ok();
 
-    // Initialize tracing
-    tracing_subscriber::registry()
-        .with(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "image_stitch=debug,tower_http=debug".into()),
-        )
-        .with(tracing_subscriber::fmt::layer())
-        .init();
+    let telemetry = telemetry::init("image_stitch")?;
 
     tracing::info!("Starting image-stitch service");
 
@@ -46,6 +38,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
+    telemetry.shutdown()?;
 
     Ok(())
 }

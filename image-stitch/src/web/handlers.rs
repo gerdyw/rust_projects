@@ -6,7 +6,7 @@ use axum::{
     Json,
 };
 use std::fs;
-use tracing::{error, info};
+use tracing::{error, info, info_span, instrument, Instrument};
 use uuid::Uuid;
 
 use crate::{
@@ -43,6 +43,7 @@ fn is_not_modified(req_headers: &HeaderMap, etag: &str) -> bool {
 }
 
 /// Submit images for async processing
+#[instrument(skip(state, data), fields(image_count = data.images.len()))]
 pub async fn submit_stitch_job(
     State(state): State<AppState>,
     Json(data): Json<StitchRequest>,
@@ -64,34 +65,41 @@ pub async fn submit_stitch_job(
 
     // Spawn background task for processing
     let service = state.image_processing_service.clone();
-    tokio::spawn(async move {
-        info!("Starting background processing for job: {}", job_id);
+    tokio::spawn(
+        async move {
+            info!("Starting background processing for job: {}", job_id);
 
-        // Mark as processing
-        if let Err(e) = service.mark_processing(job_id).await {
-            error!("Failed to mark job {} as processing: {}", job_id, e);
-            return;
-        }
+            // Mark as processing
+            if let Err(e) = service.mark_processing(job_id).await {
+                error!("Failed to mark job {} as processing: {}", job_id, e);
+                return;
+            }
 
-        // Process the images
-        match process_stitch(data.images).await {
-            Ok(result_path) => {
-                info!(
-                    "Job {} completed successfully, result: {}",
-                    job_id, result_path
-                );
-                if let Err(e) = service.mark_completed(job_id, result_path).await {
-                    error!("Failed to mark job {} as completed: {}", job_id, e);
+            // Process the images
+            match process_stitch(data.images).await {
+                Ok(result_path) => {
+                    info!(
+                        "Job {} completed successfully, result: {}",
+                        job_id, result_path
+                    );
+                    if let Err(e) = service.mark_completed(job_id, result_path).await {
+                        error!("Failed to mark job {} as completed: {}", job_id, e);
+                    }
+                }
+                Err(e) => {
+                    error!("Job {} failed: {}", job_id, e);
+                    if let Err(e) = service.mark_failed(job_id, e).await {
+                        error!("Failed to mark job {} as failed: {}", job_id, e);
+                    }
                 }
             }
-            Err(e) => {
-                error!("Job {} failed: {}", job_id, e);
-                if let Err(e) = service.mark_failed(job_id, e).await {
-                    error!("Failed to mark job {} as failed: {}", job_id, e);
-                }
-            }
         }
-    });
+        .instrument(info_span!(
+            "image_stitch.background_job",
+            %job_id,
+            image_count
+        )),
+    );
 
     Ok(Json(JobSubmitResponse {
         job_id,
@@ -101,6 +109,7 @@ pub async fn submit_stitch_job(
 }
 
 /// Get job status
+#[instrument(skip(state), fields(%job_id))]
 pub async fn get_job_status(
     State(state): State<AppState>,
     Path(job_id): Path<Uuid>,
@@ -134,6 +143,7 @@ pub async fn get_job_status(
 }
 
 /// Get the processed image
+#[instrument(skip(state, req_headers), fields(%job_id))]
 pub async fn get_job_result(
     State(state): State<AppState>,
     Path(job_id): Path<Uuid>,
@@ -205,6 +215,7 @@ pub async fn get_job_result(
 }
 
 /// Legacy synchronous endpoint - now deprecated
+#[instrument(skip(_state, data), fields(image_count = data.images.len()))]
 pub async fn stitch_images(
     State(_state): State<AppState>,
     Json(data): Json<StitchRequest>,

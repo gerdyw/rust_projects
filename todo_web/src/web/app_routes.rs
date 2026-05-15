@@ -6,7 +6,7 @@ use axum::{
 };
 
 use tower::ServiceBuilder;
-use tower_http::{services::ServeDir, set_header::SetResponseHeaderLayer};
+use tower_http::{services::ServeDir, set_header::SetResponseHeaderLayer, trace::TraceLayer};
 use tower_sessions::SessionManagerLayer;
 use tower_sessions_redis_store::{RedisStore, fred::prelude::Pool};
 
@@ -34,6 +34,8 @@ pub fn create_router(
         .nest("/users", user_router)
         .nest_service("/assets", static_router)
         .layer(session_layer.clone())
+        .layer(from_fn(telemetry::http_telemetry_middleware))
+        .layer(TraceLayer::new_for_http())
         .layer(from_fn(log_headers))
 }
 

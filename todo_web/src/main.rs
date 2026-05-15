@@ -6,12 +6,11 @@ use todo_web::{
     web::app_routes::create_router,
 };
 use tokio::net::TcpListener;
-use tracing::debug;
 
 #[tokio::main]
-async fn main() {
-    tracing_subscriber::fmt::init(); // logging initialization
-    debug!("Starting up...");
+async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    let telemetry = telemetry::init("todo_web")?;
+    tracing::debug!("Starting up...");
     let settings = load_settings();
     // init DB
     let pool = init_db(&settings.database).await;
@@ -24,8 +23,11 @@ async fn main() {
 
     // serve
     let addr = SocketAddr::from(([0, 0, 0, 0], settings.port));
-    println!("Listening on http://{addr}");
+    tracing::info!("Listening on http://{addr}");
     serve(TcpListener::bind(addr).await.unwrap(), app)
         .await
         .unwrap();
+    telemetry.shutdown()?;
+
+    Ok(())
 }

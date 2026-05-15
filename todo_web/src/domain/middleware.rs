@@ -45,12 +45,6 @@ pub async fn require_auth(
 pub async fn log_headers(req: Request<Body>, next: Next) -> Response {
     info!("{} {}", req.method(), req.uri());
 
-    // for (name, value) in req.headers() {
-    //     info!("Header: {} = {:?}", name, value);
-    // }
-
-    info!("{:?}", req.headers());
-
     next.run(req).await
 }
 

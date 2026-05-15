@@ -28,3 +28,4 @@ tracing = "0.1.41"
 tracing-subscriber = "0.3.20"
 tower-sessions = "0.14.0"
 tower-sessions-redis-store = "0.16.0"
+telemetry = { version = "0.1.0", path = "../crates/telemetry" }

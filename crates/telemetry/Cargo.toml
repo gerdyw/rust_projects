@@ -1,0 +1,14 @@
+[package]
+name = "telemetry"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8"
+opentelemetry = "0.31.0"
+opentelemetry-appender-tracing = "0.31.1"
+opentelemetry-otlp = { version = "0.31.0", package = "opentelemetry-otlp", features = ["http-proto", "trace", "metrics", "logs"] }
+opentelemetry_sdk = { version = "0.31.0", package = "opentelemetry_sdk", features = ["rt-tokio", "trace", "metrics", "logs"] }
+tracing = "0.1"
+tracing-opentelemetry = "0.32.1"
+tracing-subscriber = { version = "0.3", package = "tracing-subscriber", features = ["env-filter", "fmt", "registry"] }
