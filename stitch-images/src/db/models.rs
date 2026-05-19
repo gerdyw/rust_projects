@@ -13,36 +13,20 @@ pub struct ProcessingJob {
     pub error_message: Option<String>
 }
 
+impl ProcessingJob {
+    pub fn should_accept(&self, &idx: &u32) -> bool {
+        self.status == JobStatus::Created
+            && self.submitted_count < self.image_count
+            && (idx as i32) < self.image_count
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, PartialOrd, Type, Deserialize, Serialize)]
 #[sqlx(type_name = "job_status", rename_all = "lowercase")]
 pub enum JobStatus {
-    Pending,
+    Created,
+    SubmissionComplete,
     Processing,
     Completed,
     Failed,
-}
-
-impl std::fmt::Display for JobStatus {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            JobStatus::Pending => write!(f, "pending"),
-            JobStatus::Processing => write!(f, "processing"),
-            JobStatus::Completed => write!(f, "completed"),
-            JobStatus::Failed => write!(f, "failed"),
-        }
-    }
-}
-
-impl std::str::FromStr for JobStatus {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s.to_lowercase().as_str() {
-            "pending" => Ok(JobStatus::Pending),
-            "processing" => Ok(JobStatus::Processing),
-            "completed" => Ok(JobStatus::Completed),
-            "failed" => Ok(JobStatus::Failed),
-            _ => Err(format!("Invalid job status: {}", s)),
-        }
-    }
 }

@@ -51,19 +51,40 @@ impl JobRepo {
     pub async fn increment_submitted_count(
         &self,
         job_id: Uuid,
-    ) -> Result<Transaction<'_, Postgres>, sqlx::Error> {
+    ) -> Result<(bool, Transaction<'_, Postgres>), sqlx::Error> {
         let mut transaction = self.pool.begin().await?;
-        sqlx::query!(
+        let is_complete = sqlx::query_scalar!(
             r#"
                 UPDATE image_processing_jobs
                 SET submitted_count = submitted_count + 1
                 WHERE id = $1
+                RETURNING (submitted_count = image_count) as "is_complete!"
             "#,
             job_id
         )
-        .execute(&mut *transaction)
+        .fetch_one(&mut *transaction)
         .await?;
 
-        Ok(transaction)
+        if is_complete {
+            sqlx::query!(
+                r#"
+                    UPDATE image_processing_jobs
+                    SET status = 'submission_complete'
+                    WHERE id = $1
+                "#,
+                job_id
+            ).fetch_one(&mut *transaction).await?;
+        }
+
+        Ok((is_complete, transaction))
+    }
+
+    pub async fn set_failed(&self, job_id: Uuid, error_message: String) -> Result<(), sqlx::Error> {
+        sqlx::query!(r#"
+            UPDATE image_processing_jobs
+            SET status = 'failed', error_message = $1
+            WHERE id = $2
+        "#, error_message, job_id)
+        .fetch_one(&self.pool).await.map(|_| ())
     }
 }

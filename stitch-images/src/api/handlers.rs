@@ -5,7 +5,7 @@ use rocket::{Route, State, get, post};
 use rocket::serde::json::Json;
 use sqlx::Error::RowNotFound;
 use crate::api::models::{CreateJobResponse, JobId};
-use crate::db::models::ProcessingJob;
+use crate::db::models::{JobStatus, ProcessingJob};
 use crate::{api::models::CreateJob, db::repo::JobRepo};
 
 #[post("/create", data = "<job_data>")]
@@ -42,25 +42,26 @@ pub async fn submit_image(repo: &State<JobRepo>, job_id: JobId, idx: u32, mut im
         }
     })?;
 
-    if job.submitted_count == job.image_count || idx as i32 >= job.image_count {
+    if !job.should_accept(&idx) {
         return Err(Status::BadRequest);
     };
 
-    let transaction = repo.increment_submitted_count(job_id).await.map_err(|err| {
+    let (is_complete, transaction) = repo.increment_submitted_count(job_id).await.map_err(|err| {
         eprintln!("{}", err);
         Status::InternalServerError
     })?;
 
     let file_type = image.content_type().unwrap_or(&ContentType::JPEG).to_owned();
-    let extension = if file_type.is_jpeg() {
-        ".jpeg"
-    } else if file_type.is_png() {
-        ".png"
-    } else {
-        return Err(Status::BadRequest)
-    };
+    // let extension = if file_type.is_jpeg() {
+    //     ".jpeg"
+    // } else if file_type.is_png() {
+    //     ".png"
+    // } else {
+    //     return Err(Status::BadRequest)
+    // };
 
-    let path = format!("./temp_images/{}-{}.{}", job_id, idx, extension);
+    let extension = "";
+    let path = format!("./temp_images/{}-{}{}", job_id, idx, extension);
 
     image.persist_to(path).await.map_err(|err| {
         eprintln!("{}", err);
