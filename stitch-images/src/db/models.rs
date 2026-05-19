@@ -1,9 +1,6 @@
-use rocket::{Request, http::Status, request::{FromRequest, Outcome}};
 use serde::{Deserialize, Serialize};
-use sqlx::{Error, prelude::Type, types::chrono::NaiveDateTime};
+use sqlx::{prelude::Type, types::chrono::NaiveDateTime};
 use uuid::Uuid;
-
-use crate::db::repo::JobRepo;
 
 #[derive(Debug, Serialize)]
 pub struct ProcessingJob {
@@ -46,32 +43,6 @@ impl std::str::FromStr for JobStatus {
             "completed" => Ok(JobStatus::Completed),
             "failed" => Ok(JobStatus::Failed),
             _ => Err(format!("Invalid job status: {}", s)),
-        }
-    }
-}
-
-#[rocket::async_trait]
-impl<'r> FromRequest<'r> for ProcessingJob {
-    type Error = Status;
-    async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let result: Result<ProcessingJob, Status> = async {
-            let job_id_header = request.headers().get_one("x-job-id").ok_or(Status::BadRequest)?;
-            let job_id = Uuid::parse_str(job_id_header).map_err(|_| Status::BadRequest)?;
-            let repo = request.rocket().state::<JobRepo>().ok_or(Status::InternalServerError)?;
-
-            repo.get_job(job_id).await.map_err(|err| match err {
-                Error::RowNotFound => Status::NotFound,
-                _ => {
-                    eprintln!("sqlx error: {}", err);
-                    Status::InternalServerError
-                }
-            })
-        }
-        .await;
-
-        match result {
-            Ok(job) => Outcome::Success(job),
-            Err(status) => Outcome::Error((status, status)),
         }
     }
 }

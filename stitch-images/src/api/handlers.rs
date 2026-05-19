@@ -1,6 +1,9 @@
-use rocket::http::Status;
+use rocket::fs::TempFile;
+use rocket::http::{ContentType, Status};
+use rocket::response::status::Accepted;
 use rocket::{Route, State, get, post};
 use rocket::serde::json::Json;
+use sqlx::Error::RowNotFound;
 use crate::api::models::{CreateJobResponse, JobId};
 use crate::db::models::ProcessingJob;
 use crate::{api::models::CreateJob, db::repo::JobRepo};
@@ -20,7 +23,7 @@ pub async fn get_job(repo: &State<JobRepo>, job_id: JobId) -> Result<Json<Proces
     repo.get_job(job_id).await
         .map(Json)
         .map_err(|err| match err {
-        sqlx::Error::RowNotFound => Status::NotFound,
+        RowNotFound => Status::NotFound,
         _ => {
             eprintln!("{}", err);
             Status::InternalServerError
@@ -28,6 +31,50 @@ pub async fn get_job(repo: &State<JobRepo>, job_id: JobId) -> Result<Json<Proces
     })
 }
 
+#[post("/submit-image/<job_id>/<idx>", data = "<image>")]
+pub async fn submit_image(repo: &State<JobRepo>, job_id: JobId, idx: u32, mut image: TempFile<'_>) -> Result<Accepted<()>, Status> {
+    let JobId(job_id) = job_id;
+    let job = repo.get_job(job_id).await.map_err(|err| match err {
+        RowNotFound => Status::NotFound,
+        _ => {
+            eprintln!("{}", err);
+            Status::InternalServerError
+        }
+    })?;
+
+    if job.submitted_count == job.image_count || idx as i32 >= job.image_count {
+        return Err(Status::BadRequest);
+    };
+
+    let transaction = repo.increment_submitted_count(job_id).await.map_err(|err| {
+        eprintln!("{}", err);
+        Status::InternalServerError
+    })?;
+
+    let file_type = image.content_type().unwrap_or(&ContentType::JPEG).to_owned();
+    let extension = if file_type.is_jpeg() {
+        ".jpeg"
+    } else if file_type.is_png() {
+        ".png"
+    } else {
+        return Err(Status::BadRequest)
+    };
+
+    let path = format!("./temp_images/{}-{}.{}", job_id, idx, extension);
+
+    image.persist_to(path).await.map_err(|err| {
+        eprintln!("{}", err);
+        Status::InternalServerError
+    })?;
+
+    transaction.commit().await.map_err(|err| {
+        eprintln!("{}", err);
+        Status::InternalServerError
+    })?;
+
+    Ok(Accepted(()))
+}
+
 pub fn routes() -> Vec<Route> {
-    rocket::routes![create_job, get_job]
+    rocket::routes![create_job, get_job, submit_image]
 }

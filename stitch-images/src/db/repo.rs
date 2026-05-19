@@ -1,10 +1,10 @@
-use sqlx::{Pool, Postgres};
+use sqlx::{Pool, Postgres, Transaction};
 use uuid::Uuid;
 
 use crate::db::models::{JobStatus, ProcessingJob};
 
 pub struct JobRepo {
-    pool: Pool<Postgres>
+    pool: Pool<Postgres>,
 }
 
 impl JobRepo {
@@ -15,12 +15,13 @@ impl JobRepo {
     pub async fn create_job(&self, image_count: u32) -> Result<Uuid, sqlx::Error> {
         let image_count = image_count as i32;
 
-        sqlx::query_scalar!(r#"
+        sqlx::query_scalar!(
+            r#"
                 INSERT INTO image_processing_jobs (image_count)
                 VALUES ($1)
                 RETURNING id
             "#,
-            image_count    
+            image_count
         )
         .fetch_one(&self.pool)
         .await
@@ -45,5 +46,24 @@ impl JobRepo {
         )
         .fetch_one(&self.pool)
         .await
+    }
+
+    pub async fn increment_submitted_count(
+        &self,
+        job_id: Uuid,
+    ) -> Result<Transaction<'_, Postgres>, sqlx::Error> {
+        let mut transaction = self.pool.begin().await?;
+        sqlx::query!(
+            r#"
+                UPDATE image_processing_jobs
+                SET submitted_count = submitted_count + 1
+                WHERE id = $1
+            "#,
+            job_id
+        )
+        .execute(&mut *transaction)
+        .await?;
+
+        Ok(transaction)
     }
 }
