@@ -102,6 +102,6 @@ pub async fn submit_image(
     Ok(Accepted(()))
 }
 
-pub fn routes() -> Vec<Route> {
+pub fn api_routes() -> Vec<Route> {
     rocket::routes![create_job, get_job, submit_image]
 }

@@ -1,8 +1,16 @@
-use rocket::http::Status;
+use rocket::{Responder, response::{Redirect, content::RawHtml}};
 
-use crate::view::page::Page;
 
+#[derive(Responder)]
 pub enum JobResult {
-    JobLoadingPage(Page),
-    Redirect(Status::Re)
+    #[response(status = 404)]
+    NotFound(RawHtml<String>),
+
+    #[response(status = 500)]
+    InternalError(RawHtml<String>),
+    
+    #[response(status = 200)]
+    Loading(RawHtml<String>),
+
+    Ready(Redirect)
 }
