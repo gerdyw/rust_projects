@@ -1,4 +1,4 @@
-use rocket::{get, launch, routes};
+use rocket::{fs::FileServer, get, launch, routes};
 
 use stitch_images::{api::handlers, config::Config, db::{init, repo::JobRepo}, persistence::ImageManager};
 
@@ -17,6 +17,7 @@ async fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index])
         .mount("/api", handlers::routes())
+        .mount("/images", FileServer::from(config.dest_images_dir))
         .manage(repo)
         .manage(image_manager)
 }
