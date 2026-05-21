@@ -1,6 +1,5 @@
 -- Add up migration script here
 -- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
 DO $$ BEGIN
     CREATE TYPE job_status AS ENUM ('created', 'submission_complete', 'processing', 'completed', 'failed');
@@ -10,7 +9,7 @@ END $$;
 
 CREATE TABLE IF NOT EXISTS image_processing_jobs (
     -- id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    id UUID PRIMARY KEY DEFAULT public.uuid_generate_v4(),
+    id UUID PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
     status job_status NOT NULL DEFAULT 'created',

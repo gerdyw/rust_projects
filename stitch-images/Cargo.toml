@@ -9,7 +9,7 @@ db_init = { path = "../crates/db_init", features = ["postgres"] }
 sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "json", "migrate"] }
 chrono = { version = "0.4", features = ["serde"] }
 dotenvy = "0.15.7"
-uuid = { version = "1.23.1", features = ["serde"] }
+uuid = { version = "1.23.1", features = ["serde", "v7"] }
 serde = { version = "1.0.228", features = ["derive"] }
 
 image = "0.25.9"

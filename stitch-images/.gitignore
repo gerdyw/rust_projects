@@ -1,2 +1,5 @@
 .env
 /temp_images/*
+!/temp_images/.gitkeep
+/output_images/*
+!/output_images/.gitkeep
