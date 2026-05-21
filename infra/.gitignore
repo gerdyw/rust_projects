@@ -2,6 +2,7 @@
 .DS_Store
 registry/data/
 stitched_images/
+temp_images/
 /syncthing/config
 /syncthing/data
 

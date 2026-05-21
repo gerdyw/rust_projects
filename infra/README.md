@@ -1,10 +1,10 @@
 # Infra Deployment (VM Sparse Checkout)
 
-This directory is the deployment entrypoint for `image-stitch` and `todo_web`.
+This directory is the deployment entrypoint for `stitch-images` and `todo_web`.
 
 ## Scope
 
-- Managed services: `image-stitch`, `todo_web`
+- Managed services: `stitch-images`, `todo_web`
 - Shared infra: PostgreSQL, Redis, local Docker registry, telemetry stack
 
 ## Prerequisites
@@ -14,7 +14,7 @@ This directory is the deployment entrypoint for `image-stitch` and `todo_web`.
    - replace placeholder secrets in `.env`
    - for database credentials, only `DATABASE_PASSWORD` is required
 2. Ensure service images are available in the VM local registry:
-   - `localhost:5500/image-stitch:latest`
+   - `localhost:5500/stitch-images:latest`
    - `localhost:5500/todo_web:latest`
 
 ## First Boot Behavior
@@ -50,7 +50,7 @@ docker compose up -d
 docker compose ps
 
 # Logs
-docker compose logs -f db image-stitch todo_web
+docker compose logs -f db stitch-images todo_web
 
 # DB checks
 docker compose exec db psql -U postgres -d services_db -c "\\dn"
@@ -63,13 +63,13 @@ docker compose exec db psql -U postgres -d services_db -c "\\dx"
 2. Pull new tags:
 
 ```bash
-docker compose pull image-stitch todo_web
+docker compose pull stitch-images todo_web
 ```
 
 3. Restart services:
 
 ```bash
-docker compose up -d image-stitch todo_web
+docker compose up -d stitch-images todo_web
 ```
 
 ## Notes

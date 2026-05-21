@@ -1,5 +1,10 @@
-use std::{fs, io::{self, Error}, path::PathBuf};
+use std::{
+    fs,
+    io::{self, BufReader, Error},
+    path::{Path, PathBuf},
+};
 
+use exif::{In, Tag};
 use image::{DynamicImage, ImageError, ImageReader};
 use rocket::{fs::TempFile, futures::future::try_join_all};
 use uuid::Uuid;
@@ -47,7 +52,8 @@ impl ImageManager {
 
     async fn retrieve_temp_image(&self, job_id: Uuid, idx: u32) -> Result<DynamicImage, ImageError> {
         let path = self.temp_image_path(job_id, idx);
-        ImageReader::open(path)?.with_guessed_format()?.decode()
+        let image = ImageReader::open(&path)?.with_guessed_format()?.decode()?;
+        Ok(apply_exif_orientation_from_path(&path, image))
     }
 
     fn temp_image_path(&self, job_id: Uuid, idx: u32) -> PathBuf {
@@ -62,5 +68,32 @@ impl ImageManager {
 
     fn temp_image_paths(&self, job_id: Uuid, image_count: u32) -> Vec<PathBuf> {
         (0..image_count).into_iter().map(|idx| self.temp_image_path(job_id, idx)).collect()
+    }
+}
+
+fn apply_exif_orientation_from_path(path: &Path, img: DynamicImage) -> DynamicImage {
+    let file = match fs::File::open(path) {
+        Ok(file) => file,
+        Err(_) => return img,
+    };
+
+    let mut reader = BufReader::new(file);
+
+    let orientation = exif::Reader::new()
+        .read_from_container(&mut reader)
+        .ok()
+        .and_then(|exif| exif.get_field(Tag::Orientation, In::PRIMARY).cloned())
+        .and_then(|field| field.value.get_uint(0));
+
+    match orientation.unwrap_or(1) {
+        1 => img,
+        2 => img.fliph(),
+        3 => img.rotate180(),
+        4 => img.flipv(),
+        5 => img.rotate90().fliph(),
+        6 => img.rotate90(),
+        7 => img.rotate270().fliph(),
+        8 => img.rotate270(),
+        _ => img,
     }
 }

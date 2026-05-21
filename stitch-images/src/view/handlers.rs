@@ -1,6 +1,6 @@
 use rocket::{Route, State, get, response::Redirect, routes};
 
-use crate::{api::models::JobId, db::{models::ProcessingJob, repo::JobRepo}, view::{models::JobResult, page::{ErrorPage, LoadingPage}}};
+use crate::{api::models::JobId, db::{models::ProcessingJob, repo::JobRepo}, view::{models::{HxRedirectResponse, JobPollResult, JobResult}, page::{ErrorPage, LoadingPage}}};
 
 #[get("/<job_id>")]
 pub async fn get_job_page(repo: &State<JobRepo>, job_id: JobId) -> JobResult {
@@ -26,6 +26,24 @@ pub async fn get_job_page(repo: &State<JobRepo>, job_id: JobId) -> JobResult {
     }
 }
 
+#[get("/poll/<job_id>")]
+pub async fn poll_job(repo: &State<JobRepo>, job_id: JobId) -> JobPollResult {
+    let JobId(job_id) = job_id;
+
+    let job = match repo.get_job(job_id).await {
+        Ok(job) => job,
+        Err(sqlx::Error::RowNotFound) => return JobPollResult::NotFound(()),
+        Err(_) => return JobPollResult::InternalError(()),
+    };
+
+    match job {
+        ProcessingJob::Completed { id } => {
+            JobPollResult::HxRedirect(HxRedirectResponse(format!("/images/{id}.jpeg")))
+        }
+        _ => JobPollResult::NoContent(()),
+    }
+}
+
 pub fn view_handlers() -> Vec<Route> {
-    routes![get_job_page]
+    routes![get_job_page, poll_job]
 }

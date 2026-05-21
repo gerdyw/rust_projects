@@ -1,4 +1,4 @@
-use maud::{Markup, html};
+use maud::html;
 use rocket::response::content::RawHtml;
 use uuid::Uuid;
 
@@ -17,10 +17,25 @@ impl LoadingPage {
                     meta name="color-scheme" content="dark";
                     link rel="stylesheet" href="/assets/styles.css";
                     link rel="stylesheet" href="/assets/loader.css";
+                    script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
+                        integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
+                        crossorigin="anonymous"
+                    { }
                     title { "...Image stitching" }
                 }
                 body {
-                    div class="loader" { }
+                    div
+                        class="loader-shell"
+                        hx-get={ (format!("/jobs/poll/{}", self.0)) }
+                        hx-trigger="load, every 1s"
+                        hx-swap="none"
+                    {
+                        div class="loader" { }
+                        p class="loader-text" {
+                            "loading"
+                            span class="loading-dots" aria-hidden="true" {}
+                        }
+                    }
                 }
             }
         };
@@ -43,7 +58,7 @@ impl ErrorPage {
                     meta name="color-scheme" content="dark";
                     link rel="stylesheet" href="/assets/styles.css";
                     link rel="stylesheet" href="/assets/loader.css";
-                    title { "...Image stitching" }
+                    title { "An error occured" }
                 }
                 body {
                     div class="error-shell" {

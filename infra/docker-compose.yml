@@ -90,28 +90,29 @@ services:
   # Application Services
   # ============================================================================
 
-  # Image Stitch Service
-  image-stitch:
-    image: localhost:5500/image-stitch:latest
-    container_name: pi-infra-image-stitch
+  # Stitch Images Service
+  stitch-images:
+    image: localhost:5500/stitch-images:latest
+    container_name: pi-infra-stitch-images
     ports:
-      - "${IS_SERVICE_PORT:-3000}:3000"
+      - "${IS_SERVICE_PORT:-8000}:8000"
     env_file:
       - ./.env.defaults
       - ./.env
-      - ./env/image-stitch.env
+      - ./env/stitch-images.env
     networks:
       - cloudflare-net
       - default
     volumes:
-      - ./stitched_images:/app/stitched_images
+      - ./stitched_images:/data/output_images
+      - ./temp_images:/data/temp_images
     depends_on:
-        db:
-           condition: service_healthy
-        registry:
-           condition: service_healthy
-        telemetry-collector:
-          condition: service_started
+      db:
+        condition: service_healthy
+      registry:
+        condition: service_healthy
+      telemetry-collector:
+        condition: service_started
     restart: unless-stopped
 
   # Todo Web Service

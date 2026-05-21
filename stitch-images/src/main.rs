@@ -17,8 +17,9 @@ async fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index])
         .mount("/api", api_routes())
-        .mount("/job", view_handlers())
+        .mount("/jobs", view_handlers())
         .mount("/images", FileServer::from(config.dest_images_dir))
+        .mount("/assets", FileServer::from("./assets"))
         .manage(repo)
         .manage(image_manager)
 }
