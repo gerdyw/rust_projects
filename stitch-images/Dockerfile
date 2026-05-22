@@ -25,8 +25,10 @@ RUN rm -rf stitch-images/src
 
 # Copy actual source code
 COPY stitch-images/src stitch-images/src
+COPY stitch-images/assets stitch-images/assets
 COPY stitch-images/migrations stitch-images/migrations
 COPY stitch-images/.sqlx stitch-images/.sqlx
+COPY stitch-images/Rocket.toml stitch-images/Rocket.toml
 
 # Build the actual application
 ENV SQLX_OFFLINE=true
@@ -40,6 +42,8 @@ WORKDIR /app
 
 ENV TEMP_IMAGES_DIR=/data/temp_images
 ENV DEST_IMAGES_DIR=/data/output_images
+ENV ROCKET_ADDRESS=0.0.0.0
+ENV ROCKET_PORT=8000
 
 # Install runtime dependencies
 RUN apk add --no-cache ca-certificates tzdata
@@ -49,6 +53,12 @@ COPY --from=builder /app/stitch-images/target/aarch64-unknown-linux-musl/release
 
 # Copy migrations directory
 COPY --from=builder /app/stitch-images/migrations /app/migrations
+
+# Copy static assets served by Rocket
+COPY --from=builder /app/stitch-images/assets /app/assets
+
+# Copy Rocket runtime configuration
+COPY --from=builder /app/stitch-images/Rocket.toml /app/Rocket.toml
 
 # Create writable output directories and non-root user
 RUN mkdir -p /data/output_images /data/temp_images && \
