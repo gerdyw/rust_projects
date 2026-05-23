@@ -26,7 +26,12 @@ impl ImageManager {
         idx: u32,
     ) -> Result<(), Error> {
         let path = self.temp_image_path(job_id, idx);
-        temp_image.persist_to(path).await
+
+        match temp_image.persist_to(&path).await {
+            Ok(()) => Ok(()),
+            Err(err) if err.raw_os_error() == Some(18) => temp_image.move_copy_to(&path).await,
+            Err(err) => Err(err),
+        }
     }
 
     pub async fn retrieve_temp_images_for_job(

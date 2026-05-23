@@ -11,7 +11,11 @@ pub async fn get_job_page(repo: &State<JobRepo>, job_id: JobId) -> JobResult {
         Err(sqlx::Error::RowNotFound) => {
             return JobResult::NotFound(ErrorPage("Job not found".to_string()).render())
         }
-        Err(_) => {
+        Err(err) => {
+            match err.as_database_error() {
+                Some(error) => eprintln!("{}", error.message()),
+                None => eprintln!("unknown error"),
+            };
             return JobResult::InternalError(
                 ErrorPage("An unexpected error has occurred".to_string()).render()
             )
