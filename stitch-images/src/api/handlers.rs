@@ -1,10 +1,9 @@
-use crate::api::models::{CreateJobResponse, JobId};
+use crate::api::models::{CreateJobResponse, CreateJobResult, GetJobResult, JobId, SubmitImageResult};
 use crate::db::models::ProcessingJob;
 use crate::persistence::ImageManager;
 use crate::processing::processor::process_stitch;
 use crate::{api::models::CreateJob, db::repo::JobRepo};
 use rocket::fs::TempFile;
-use rocket::http::Status;
 use rocket::response::status::Accepted;
 use rocket::serde::json::Json;
 use rocket::tokio::task;
@@ -15,26 +14,24 @@ use sqlx::Error::RowNotFound;
 pub async fn create_job(
     repo: &State<JobRepo>,
     job_data: Json<CreateJob>,
-) -> Result<Json<CreateJobResponse>, String> {
-    repo.create_job(job_data.image_count)
-        .await
-        .map(|job_id| Json(CreateJobResponse { job_id }))
-        .map_err(|e| e.to_string())
+) -> CreateJobResult {
+    match repo.create_job(job_data.image_count).await {
+        Ok(job_id) => CreateJobResult::Created(Json(CreateJobResponse { job_id })),
+        Err(err) => CreateJobResult::InternalError(err.to_string()),
+    }
 }
 
-#[get("/<job_id>")]
-pub async fn get_job(repo: &State<JobRepo>, job_id: JobId) -> Result<Json<ProcessingJob>, Status> {
+#[get("/job/<job_id>")]
+pub async fn get_job(repo: &State<JobRepo>, job_id: JobId) -> GetJobResult {
     let JobId(job_id) = job_id;
-    repo.get_job(job_id)
-        .await
-        .map(Json)
-        .map_err(|err| match err {
-            RowNotFound => Status::NotFound,
-            _ => {
-                eprintln!("{}", err);
-                Status::InternalServerError
-            }
-        })
+    match repo.get_job(job_id).await {
+        Ok(job) => GetJobResult::Found(Json(job)),
+        Err(RowNotFound) => GetJobResult::NotFound(()),
+        Err(err) => {
+            eprintln!("{}", err);
+            GetJobResult::InternalError(err.to_string())
+        }
+    }
 }
 
 #[post("/submit-image/<job_id>/<idx>", data = "<image>")]
@@ -44,15 +41,16 @@ pub async fn submit_image(
     job_id: JobId,
     idx: u32,
     mut image: TempFile<'_>,
-) -> Result<Accepted<()>, Status> {
+) -> SubmitImageResult {
     let JobId(job_id) = job_id;
-    let job = repo.get_job(job_id).await.map_err(|err| match err {
-        RowNotFound => Status::NotFound,
-        _ => {
+    let job = match repo.get_job(job_id).await {
+        Ok(job) => job,
+        Err(RowNotFound) => return SubmitImageResult::NotFound(()),
+        Err(err) => {
             eprintln!("{}", err);
-            Status::InternalServerError
+            return SubmitImageResult::InternalError(err.to_string());
         }
-    })?;
+    };
 
     match job {
         ProcessingJob::Created {
@@ -60,35 +58,29 @@ pub async fn submit_image(
             image_count,
             submitted_count: _,
         } if idx < image_count => (),
-        _ => return Err(Status::BadRequest),
+        _ => return SubmitImageResult::BadRequest(()),
     }
 
-    let (job, tx) = repo
-        .increment_submitted_count(job_id)
-        .await
-        .map_err(|err| {
+    let (job, tx) = match repo.increment_submitted_count(job_id).await {
+        Ok(result) => result,
+        Err(err) => {
             eprintln!("{}", err);
-            Status::InternalServerError
-        })?;
+            return SubmitImageResult::InternalError(err.to_string());
+        }
+    };
 
-    image_manager
-        .save_temp_image(job.id(), &mut image, idx)
-        .await
-        .map_err(|err| {
-            eprintln!("{}", err);
-            Status::InternalServerError
-        })?;
-
-    tx.commit().await.map_err(|err| {
+    if let Err(err) = image_manager.save_temp_image(job.id(), &mut image, idx).await {
         eprintln!("{}", err);
-        Status::InternalServerError
-    })?;
+        return SubmitImageResult::InternalError(err.to_string());
+    }
+
+    if let Err(err) = tx.commit().await {
+        eprintln!("{}", err);
+        return SubmitImageResult::InternalError(err.to_string());
+    }
 
     match job {
-        ProcessingJob::SubmissionComplete {
-            id,
-            submitted_count,
-        } => {
+        ProcessingJob::SubmissionComplete { id, submitted_count } => {
             println!("Submission complete, starting stitch");
             let repo = repo.inner().clone();
             let image_manager = image_manager.inner().clone();
@@ -99,7 +91,7 @@ pub async fn submit_image(
         _ => (),
     }
 
-    Ok(Accepted(()))
+    SubmitImageResult::Submitted(Accepted(()))
 }
 
 pub fn api_routes() -> Vec<Route> {
