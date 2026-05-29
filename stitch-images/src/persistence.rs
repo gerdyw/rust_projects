@@ -51,6 +51,11 @@ impl ImageManager {
         image.save(path)
     }
 
+    pub fn stitched_image_path(&self, job_id: Uuid) -> PathBuf {
+        let filename = format!("{job_id}.jpeg");
+        PathBuf::from(&self.0.dest_images_dir).join(filename)
+    }
+
     pub fn remove_job_images(&self, job_id: Uuid, image_count: u32) -> io::Result<()> {
         self.temp_image_paths(job_id, image_count).iter().map(|path| fs::remove_file(path)).collect()
     }
@@ -64,11 +69,6 @@ impl ImageManager {
     fn temp_image_path(&self, job_id: Uuid, idx: u32) -> PathBuf {
         let filename = format!("{}-{}", job_id, idx);
         PathBuf::from(&self.0.temp_images_dir).join(filename)
-    }
-
-    fn stitched_image_path(&self, job_id: Uuid) -> PathBuf {
-        let filename = format!("{job_id}.jpeg");
-        PathBuf::from(&self.0.dest_images_dir).join(filename)
     }
 
     fn temp_image_paths(&self, job_id: Uuid, image_count: u32) -> Vec<PathBuf> {
