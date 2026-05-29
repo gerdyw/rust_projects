@@ -76,7 +76,9 @@ impl JobRepo {
         .await?;
 
         let entity = if entity.submitted_count == entity.image_count {
-            sqlx::query_as!(ProcessingJobEntity, r#"
+            sqlx::query_as!(
+                ProcessingJobEntity,
+                r#"
                 UPDATE image_processing_jobs
                 SET status = 'submission_complete'
                 WHERE id = $1
@@ -86,7 +88,9 @@ impl JobRepo {
                     status as "status: JobStatus",
                     image_count,
                     submitted_count,
-                    error_message "#, job_id)
+                    error_message "#,
+                job_id
+            )
             .fetch_one(&mut *tx)
             .await?
         } else {
@@ -96,7 +100,11 @@ impl JobRepo {
         Ok((entity.into(), tx))
     }
 
-    pub async fn set_failed(&self, job_id: Uuid, error_message: String) -> Result<PgQueryResult, sqlx::Error> {
+    pub async fn set_failed(
+        &self,
+        job_id: Uuid,
+        error_message: String,
+    ) -> Result<PgQueryResult, sqlx::Error> {
         sqlx::query!(
             r#"
             UPDATE image_processing_jobs
@@ -119,6 +127,8 @@ impl JobRepo {
                 AND submitted_count = image_count
             "#,
             job_id
-        ).execute(&self.pool).await
+        )
+        .execute(&self.pool)
+        .await
     }
 }

@@ -1,4 +1,6 @@
-use crate::api::models::{CreateJobResponse, CreateJobResult, GetJobResult, JobId, SubmitImageResult};
+use crate::api::models::{
+    CreateJobResponse, CreateJobResult, GetJobResult, JobId, SubmitImageResult,
+};
 use crate::db::models::ProcessingJob;
 use crate::persistence::ImageManager;
 use crate::processing::processor::process_stitch;
@@ -15,10 +17,7 @@ use tracing::{Instrument, error, info, instrument};
 
 #[post("/create", data = "<job_data>")]
 #[instrument(skip(repo, job_data), fields(otel.kind = "server", image_count = job_data.image_count))]
-pub async fn create_job(
-    repo: &State<JobRepo>,
-    job_data: Json<CreateJob>,
-) -> CreateJobResult {
+pub async fn create_job(repo: &State<JobRepo>, job_data: Json<CreateJob>) -> CreateJobResult {
     match repo.create_job(job_data.image_count).await {
         Ok(job_id) => {
             info!(%job_id, "created image stitching job");
@@ -89,7 +88,10 @@ pub async fn submit_image(
         }
     };
 
-    if let Err(err) = image_manager.save_temp_image(job.id(), &mut image, idx).await {
+    if let Err(err) = image_manager
+        .save_temp_image(job.id(), &mut image, idx)
+        .await
+    {
         error!(error = %err, "failed to persist submitted image");
         return SubmitImageResult::InternalError(err.to_string());
     }
@@ -100,19 +102,24 @@ pub async fn submit_image(
     }
 
     match job {
-        ProcessingJob::SubmissionComplete { id, submitted_count } => {
+        ProcessingJob::SubmissionComplete {
+            id,
+            submitted_count,
+        } => {
             info!(%id, submitted_count, "submission complete; starting image stitch");
             let repo = repo.inner().clone();
             let image_manager = image_manager.inner().clone();
             let telemetry = telemetry.inner().clone();
-            task::spawn(async move {
-                process_stitch(repo, image_manager, telemetry, id, submitted_count).await;
-            }
-            .instrument(tracing::info_span!(
-                "job_processing_task",
-                job_id = %id,
-                image_count = submitted_count
-            )));
+            task::spawn(
+                async move {
+                    process_stitch(repo, image_manager, telemetry, id, submitted_count).await;
+                }
+                .instrument(tracing::info_span!(
+                    "job_processing_task",
+                    job_id = %id,
+                    image_count = submitted_count
+                )),
+            );
         }
         _ => (),
     }

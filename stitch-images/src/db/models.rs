@@ -33,20 +33,17 @@ impl Into<ProcessingJob> for ProcessingJobEntity {
                 id: self.id,
                 submitted_count: self.submitted_count as u32,
             },
-            JobStatus::Processing => ProcessingJob::Processing {
-                id: self.id,
-            },
-            JobStatus::Completed => ProcessingJob::Completed {
-                id: self.id,
-            },
+            JobStatus::Processing => ProcessingJob::Processing { id: self.id },
+            JobStatus::Completed => ProcessingJob::Completed { id: self.id },
             JobStatus::Failed => ProcessingJob::Failed {
                 id: self.id,
-                error_message: self.error_message.unwrap_or_else(|| "Unknown error".to_string()),
+                error_message: self
+                    .error_message
+                    .unwrap_or_else(|| "Unknown error".to_string()),
             },
         }
     }
 }
-
 
 #[derive(Clone, Debug, PartialEq, PartialOrd, Type, Deserialize, Serialize)]
 #[sqlx(type_name = "job_status", rename_all = "snake_case")]
@@ -103,6 +100,13 @@ impl ProcessingJob {
     }
 
     pub fn should_accept(&self) -> bool {
-        matches!(self, ProcessingJob::Created { id: _, image_count: _, submitted_count: _ })
+        matches!(
+            self,
+            ProcessingJob::Created {
+                id: _,
+                image_count: _,
+                submitted_count: _
+            }
+        )
     }
 }

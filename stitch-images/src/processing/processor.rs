@@ -27,7 +27,11 @@ pub async fn process_stitch(
         .map_err(|err| ProcessingError::ImageError(err))
         .map(|images| process_stitch_blocking(images))
         .flatten()
-        .map(|image| image_manager.save_stitched_image(job_id, image).map_err(|err| ProcessingError::ImageError(err)))
+        .map(|image| {
+            image_manager
+                .save_stitched_image(job_id, image)
+                .map_err(|err| ProcessingError::ImageError(err))
+        })
         .flatten();
 
     match result {
@@ -71,7 +75,10 @@ fn process_stitch_blocking(images: Vec<DynamicImage>) -> Result<DynamicImage, Pr
             .enumerate()
             .map(|(idx, img)| {
                 if img.width() == desired_width {
-                    info!(image_index = idx, desired_width, "image already at desired width");
+                    info!(
+                        image_index = idx,
+                        desired_width, "image already at desired width"
+                    );
                     return img;
                 }
 
@@ -96,14 +103,22 @@ fn process_stitch_blocking(images: Vec<DynamicImage>) -> Result<DynamicImage, Pr
     };
 
     let total_height: u32 = images.iter().map(|img| img.height()).sum();
-    info!(stitched_width = desired_width, stitched_height = total_height, "computed stitched image dimensions");
+    info!(
+        stitched_width = desired_width,
+        stitched_height = total_height,
+        "computed stitched image dimensions"
+    );
 
     // Create and stitch
     let mut stitched_image = DynamicImage::new_rgba8(desired_width, total_height).to_rgba8();
     let mut current_y = 0;
 
     for (idx, img) in images.iter().enumerate() {
-        info!(image_index = idx, y_offset = current_y, "copying image into stitched output");
+        info!(
+            image_index = idx,
+            y_offset = current_y,
+            "copying image into stitched output"
+        );
         stitched_image
             .copy_from(&img.to_rgba8(), 0, current_y)
             .map_err(|err| ProcessingError::ImageError(err))?;

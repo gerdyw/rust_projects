@@ -8,10 +8,7 @@ use opentelemetry::{
 use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
 use opentelemetry_otlp::{LogExporter, MetricExporter, Protocol, SpanExporter, WithExportConfig};
 use opentelemetry_sdk::{
-    Resource,
-    logs::SdkLoggerProvider,
-    metrics::SdkMeterProvider,
-    trace::SdkTracerProvider,
+    Resource, logs::SdkLoggerProvider, metrics::SdkMeterProvider, trace::SdkTracerProvider,
 };
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 

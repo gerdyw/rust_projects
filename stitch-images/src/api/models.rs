@@ -1,6 +1,6 @@
-use rocket::{http::Status, request::FromParam};
 use rocket::response::{Responder, status::Accepted};
 use rocket::serde::json::Json;
+use rocket::{http::Status, request::FromParam};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -14,7 +14,7 @@ pub struct CreateJob {
 
 #[derive(Serialize)]
 pub struct CreateJobResponse {
-    pub job_id: Uuid
+    pub job_id: Uuid,
 }
 
 #[derive(Responder)]

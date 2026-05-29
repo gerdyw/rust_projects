@@ -1,12 +1,14 @@
 use rocket::{
     fairing::AdHoc,
     fs::{FileServer, NamedFile},
-    get, launch, routes,
+    get,
+    http::Status,
+    launch, routes,
 };
-use std::io;
+use uuid::Uuid;
 
 use stitch_images::{
-    api::{handlers::api_routes, models::JobId},
+    api::handlers::api_routes,
     config::Config,
     db::{init, repo::JobRepo},
     persistence::ImageManager,
@@ -20,16 +22,26 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-#[get("/<job_id>.jpeg")]
-#[instrument(skip(image_manager), fields(otel.kind = "server", job_id = %job_id.0))]
+#[get("/<file_name>")]
+#[instrument(skip(image_manager), fields(otel.kind = "server", file_name = %file_name))]
 async fn get_completed_image(
     image_manager: &rocket::State<ImageManager>,
-    job_id: JobId,
-) -> Result<NamedFile, io::Error> {
-    let JobId(job_id) = job_id;
+    file_name: String,
+) -> Result<NamedFile, Status> {
+    let Some(job_id) = file_name.strip_suffix(".jpeg") else {
+        return Err(Status::NotFound);
+    };
+    let job_id = Uuid::parse_str(job_id).map_err(|_| Status::BadRequest)?;
     let path = image_manager.stitched_image_path(job_id);
     info!(path = %path.display(), "serving completed stitched image");
-    NamedFile::open(path).await
+    NamedFile::open(path).await.map_err(|err| {
+        if err.kind() == std::io::ErrorKind::NotFound {
+            Status::NotFound
+        } else {
+            error!(error = %err, "failed to open completed stitched image");
+            Status::InternalServerError
+        }
+    })
 }
 
 #[launch]
