@@ -58,7 +58,7 @@ pub enum JobStatus {
     Failed,
 }
 
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 pub enum ProcessingJob {
     Created {
         id: Uuid,
