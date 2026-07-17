@@ -1,10 +1,8 @@
 use rocket::{
-    Responder,
-    Request,
+    Request, Responder,
     http::{Header, Status},
     response::{Redirect, Response, content::RawHtml},
 };
-
 
 #[derive(Responder)]
 pub enum JobResult {
@@ -13,11 +11,11 @@ pub enum JobResult {
 
     #[response(status = 500)]
     InternalError(RawHtml<String>),
-    
+
     #[response(status = 200)]
     Loading(RawHtml<String>),
 
-    Ready(Redirect)
+    Ready(Redirect),
 }
 
 #[derive(Responder)]

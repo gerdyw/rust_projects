@@ -1,7 +1,7 @@
 pub enum ProcessingError {
     DbError(sqlx::Error),
     ImageError(image::ImageError),
-    CalculationError(String)
+    CalculationError(String),
 }
 
 impl ProcessingError {
