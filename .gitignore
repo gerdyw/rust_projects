@@ -6,3 +6,8 @@
 lc3/PennSim.jar
 lc3/asm/*.obj
 lc3/asm/*.sym
+**/postgres_data/*
+infra/registry/data
+infra/telemetry-data
+stitch-images/output_images
+stitch-images/temp_images
