@@ -1,0 +1,1390 @@
+{
+    "version": "http://ipuz.org/v1",
+    "kind": [
+        "http://ipuz.org/crossword#1"
+    ],
+    "title": "BB-8",
+    "copyright": "TBD, depends where this runs",
+    "author": "Alex Boisvert",
+    "notes": "",
+    "dimensions": {
+        "height": 15,
+        "width": 15
+    },
+    "block": "#",
+    "empty": 0,
+    "puzzle": [
+        [
+            {
+                "cell": 1
+            },
+            {
+                "cell": 2
+            },
+            {
+                "cell": 3,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 4
+            },
+            "#",
+            {
+                "cell": 5
+            },
+            {
+                "cell": 6
+            },
+            {
+                "cell": 7
+            },
+            {
+                "cell": 8
+            },
+            "#",
+            {
+                "cell": 9
+            },
+            {
+                "cell": 10
+            },
+            {
+                "cell": 11,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 12
+            },
+            {
+                "cell": 13
+            }
+        ],
+        [
+            {
+                "cell": 14
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 15
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 16
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 17,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 18,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            "#",
+            {
+                "cell": 19
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 20
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            "#",
+            {
+                "cell": 21
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 22
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            "#",
+            "#"
+        ],
+        [
+            "#",
+            {
+                "cell": 23
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 24
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            "#",
+            {
+                "cell": 25
+            },
+            {
+                "cell": 26
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 27,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 28
+            },
+            {
+                "cell": 29
+            }
+        ],
+        [
+            "#",
+            "#",
+            {
+                "cell": 30,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 31
+            },
+            {
+                "cell": 32
+            },
+            "#",
+            {
+                "cell": 33,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 34,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            }
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            {
+                "cell": 35
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 36
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 37
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 38
+            },
+            {
+                "cell": 39
+            },
+            {
+                "cell": 40,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 41
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 42
+            },
+            "#",
+            {
+                "cell": 43
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 44
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 45
+            },
+            "#",
+            {
+                "cell": 46
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 47
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            {
+                "cell": 48,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 49,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            "#",
+            {
+                "cell": 50
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 51,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            "#",
+            "#"
+        ],
+        [
+            {
+                "cell": 52
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            "#",
+            {
+                "cell": 53
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 54
+            },
+            "#",
+            "#",
+            {
+                "cell": 55
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 56
+            },
+            "#"
+        ],
+        [
+            "#",
+            "#",
+            {
+                "cell": 57,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 58
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 59
+            },
+            {
+                "cell": 60
+            },
+            {
+                "cell": 61
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 62,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 63
+            }
+        ],
+        [
+            {
+                "cell": 64
+            },
+            {
+                "cell": 65
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 66,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 67,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            }
+        ],
+        [
+            {
+                "cell": 68
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 69
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 70
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 71
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 72
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 73
+            },
+            {
+                "cell": 0,
+                "style": {
+                    "color": "C0C0C0"
+                }
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ]
+    ],
+    "solution": [
+        [
+            "C",
+            "O",
+            "B",
+            "S",
+            "#",
+            "T",
+            "E",
+            "S",
+            "T",
+            "#",
+            "C",
+            "A",
+            "B",
+            "A",
+            "L"
+        ],
+        [
+            "N",
+            "C",
+            "A",
+            "A",
+            "#",
+            "U",
+            "G",
+            "L",
+            "I",
+            "#",
+            "A",
+            "M",
+            "I",
+            "G",
+            "O"
+        ],
+        [
+            "B",
+            "E",
+            "T",
+            "T",
+            "Y",
+            "B",
+            "O",
+            "O",
+            "P",
+            "#",
+            "P",
+            "O",
+            "K",
+            "E",
+            "S"
+        ],
+        [
+            "C",
+            "A",
+            "B",
+            "#",
+            "E",
+            "A",
+            "T",
+            "S",
+            "#",
+            "D",
+            "E",
+            "K",
+            "E",
+            "#",
+            "#"
+        ],
+        [
+            "#",
+            "N",
+            "O",
+            "N",
+            "E",
+            "#",
+            "#",
+            "H",
+            "A",
+            "R",
+            "E",
+            "#",
+            "R",
+            "A",
+            "N"
+        ],
+        [
+            "#",
+            "#",
+            "Y",
+            "O",
+            "S",
+            "H",
+            "I",
+            "#",
+            "B",
+            "E",
+            "S",
+            "T",
+            "B",
+            "U",
+            "Y"
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            "C",
+            "H",
+            "U",
+            "R",
+            "R",
+            "O",
+            "#",
+            "H",
+            "E",
+            "A",
+            "D",
+            "S"
+        ],
+        [
+            "A",
+            "B",
+            "B",
+            "A",
+            "#",
+            "H",
+            "A",
+            "I",
+            "R",
+            "S",
+            "#",
+            "E",
+            "R",
+            "I",
+            "E"
+        ],
+        [
+            "L",
+            "E",
+            "A",
+            "R",
+            "N",
+            "#",
+            "I",
+            "D",
+            "T",
+            "A",
+            "G",
+            "S",
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            "B",
+            "E",
+            "D",
+            "B",
+            "U",
+            "G",
+            "S",
+            "#",
+            "S",
+            "C",
+            "R",
+            "U",
+            "B",
+            "#",
+            "#"
+        ],
+        [
+            "A",
+            "P",
+            "B",
+            "#",
+            "C",
+            "U",
+            "E",
+            "S",
+            "#",
+            "#",
+            "E",
+            "P",
+            "I",
+            "C",
+            "#"
+        ],
+        [
+            "#",
+            "#",
+            "U",
+            "R",
+            "L",
+            "S",
+            "#",
+            "O",
+            "P",
+            "E",
+            "C",
+            "#",
+            "G",
+            "R",
+            "E"
+        ],
+        [
+            "A",
+            "N",
+            "N",
+            "I",
+            "E",
+            "#",
+            "B",
+            "A",
+            "L",
+            "L",
+            "O",
+            "T",
+            "B",
+            "O",
+            "X"
+        ],
+        [
+            "H",
+            "I",
+            "N",
+            "D",
+            "U",
+            "#",
+            "A",
+            "P",
+            "E",
+            "S",
+            "#",
+            "R",
+            "E",
+            "A",
+            "P"
+        ],
+        [
+            "H",
+            "A",
+            "Y",
+            "E",
+            "S",
+            "#",
+            "H",
+            "Y",
+            "D",
+            "E",
+            "#",
+            "I",
+            "N",
+            "T",
+            "O"
+        ]
+    ],
+    "clues": {
+        "Across": [
+            [
+                1,
+                "Male swans"
+            ],
+            [
+                5,
+                "___ the waters"
+            ],
+            [
+                9,
+                "The secret society of puzzlers that makes all your crosswords, for one"
+            ],
+            [
+                14,
+                "Sports org. that everyone hates (no, not FIFA)"
+            ],
+            [
+                15,
+                "Fruit that's not nearly as grotesque as it sounds"
+            ],
+            [
+                16,
+                "Pal, in Puerto Vallarta"
+            ],
+            [
+                17,
+                "Flapper who first appeared in the cartoon <i>Dizzy Dishes</i>"
+            ],
+            [
+                19,
+                "Gives a few jabs to"
+            ],
+            [
+                20,
+                "Taxi"
+            ],
+            [
+                21,
+                "Grub"
+            ],
+            [
+                22,
+                "Feint, in hockey lingo"
+            ],
+            [
+                23,
+                "Not any"
+            ],
+            [
+                25,
+                "The white-tailed jackrabbit, e.g."
+            ],
+            [
+                27,
+                "Did some light marathoning"
+            ],
+            [
+                30,
+                "Mario's dinosaur pal"
+            ],
+            [
+                33,
+                "Store with a blue-and-yellow color scheme"
+            ],
+            [
+                35,
+                "Cinnamon stick?"
+            ],
+            [
+                37,
+                "\"___ I win, tails I win\""
+            ],
+            [
+                38,
+                "\"Waterloo\" quartet"
+            ],
+            [
+                41,
+                "Things you're splitting if you find critiques of this puzzle"
+            ],
+            [
+                43,
+                "Pennsylvania town nicknamed \"The Lake City\""
+            ],
+            [
+                44,
+                "Acquire some knowledge"
+            ],
+            [
+                46,
+                "They show people who you really are"
+            ],
+            [
+                48,
+                "Predators that feed on blood at night"
+            ],
+            [
+                50,
+                "Work hard to get clean"
+            ],
+            [
+                52,
+                "\"I need all available units to the intersection of 4th and Main, right away!\", e.g."
+            ],
+            [
+                53,
+                "Hints for actors"
+            ],
+            [
+                55,
+                "___ Games (<i>Fortnite</i> publisher)"
+            ],
+            [
+                57,
+                "Internet addresses"
+            ],
+            [
+                59,
+                "Oil-producing nations, collectively: Abbr."
+            ],
+            [
+                62,
+                "Hurdle for an aspiring Ph.D."
+            ],
+            [
+                64,
+                "\"It's the Hard Knock Life\" musical"
+            ],
+            [
+                66,
+                "Stuff it! (no, don't, that's illegal)"
+            ],
+            [
+                68,
+                "One following the Vedanta tradition, perhaps"
+            ],
+            [
+                69,
+                "My kids' school abbreviates their Advanced Placement Environmental Science offering to this, and it's all I can think of when I read this, so please bear with me"
+            ],
+            [
+                70,
+                "Collect, as crops"
+            ],
+            [
+                71,
+                "Oft-forgotten president Rutherford"
+            ],
+            [
+                72,
+                "Jekyll's alter ego"
+            ],
+            [
+                73,
+                "Digging"
+            ]
+        ],
+        "Down": [
+            [
+                1,
+                "Channel akin to Fox Business and Bloomberg Television"
+            ],
+            [
+                2,
+                "Singer Billy or Frank"
+            ],
+            [
+                3,
+                "Little helper at the ballpark"
+            ],
+            [
+                4,
+                "Prepared to dine"
+            ],
+            [
+                5,
+                "Common instrument in Dixieland ensembles"
+            ],
+            [
+                6,
+                "Entertainment achievement I am 0/4 of the way toward"
+            ],
+            [
+                7,
+                "Splash around"
+            ],
+            [
+                8,
+                "15-20%, generally"
+            ],
+            [
+                9,
+                "\"Get it?\", in old-timey mobster slang"
+            ],
+            [
+                10,
+                "Run ___ (go hog wild)"
+            ],
+            [
+                11,
+                "Place for hogs and grogs"
+            ],
+            [
+                12,
+                "Get older"
+            ],
+            [
+                13,
+                "The, in Tijuana"
+            ],
+            [
+                18,
+                "\"I am dismayed by what just occurred\""
+            ],
+            [
+                22,
+                "Musician born An___ Romell Young"
+            ],
+            [
+                24,
+                "Like keto or the Atkins diet"
+            ],
+            [
+                26,
+                "Calls off"
+            ],
+            [
+                28,
+                "Car manufacturer headquartered in Bavaria"
+            ],
+            [
+                29,
+                "Big Apple landmark with a famous trading floor: Abbr."
+            ],
+            [
+                31,
+                "\"Well whaddaya know?\""
+            ],
+            [
+                32,
+                "\"Let's make this a little more interesting\""
+            ],
+            [
+                34,
+                "Prepares to drive"
+            ],
+            [
+                36,
+                "The \"R\" in Calvin &amp; Hobbes' \"G.R.O.S.S.\""
+            ],
+            [
+                38,
+                "Jessica who founded The Honest Company"
+            ],
+            [
+                39,
+                "<i>To ___ or Not to ___</i> (Merrie Melodies short starring the Road Runner)"
+            ],
+            [
+                40,
+                "Singer whose website is nadiesabeloquevaapasarmanana.com"
+            ],
+            [
+                42,
+                "Cul-de-___ (literally, \"ass of bag\")"
+            ],
+            [
+                45,
+                "The  ̶p̶o̶w̶e̶r̶h̶o̶u̶s̶e̶ ̶brain of the cell"
+            ],
+            [
+                47,
+                "El ___ (Artist of the Spanish Renaissance born in Crete)"
+            ],
+            [
+                49,
+                "🎵 Hop on the bus, ___ / You don't need to discuss much 🎵"
+            ],
+            [
+                51,
+                "The Elizabeth Tower in London, as it's commonly known"
+            ],
+            [
+                54,
+                "Covered in suds"
+            ],
+            [
+                56,
+                "Either of the 2Cellos musicians, e.g."
+            ],
+            [
+                58,
+                "Pioneering astronaut Sally"
+            ],
+            [
+                60,
+                "Argued in court"
+            ],
+            [
+                61,
+                "Nothing ___ Matters (Metallica power ballad)"
+            ],
+            [
+                63,
+                "Former Montreal baseballer 😭"
+            ],
+            [
+                64,
+                "\"I see!\""
+            ],
+            [
+                65,
+                "Actress Vardalos"
+            ],
+            [
+                66,
+                "\"I'm a Dickensian miser\""
+            ],
+            [
+                67,
+                "Sport with three disciplines, for short"
+            ]
+        ]
+    }
+}

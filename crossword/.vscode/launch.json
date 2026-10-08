@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'crossword'",
+            "program": "${workspaceFolder}/target/debug/crossword",
+            "args": [
+                "puzzles/Arent_We_a_Pair.ipuz"
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cargo build",
+            "env": {
+                "RUST_BACKTRACE": "1"
+            },
+            "terminal": "external"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=crossword",
+                    "--package=crossword"
+                ],
+                "filter": {
+                    "name": "crossword",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
