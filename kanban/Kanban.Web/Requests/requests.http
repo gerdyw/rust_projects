@@ -1,0 +1,106 @@
+@host = http://localhost:5293/api/v1
+
+# Replace these with the publicId values returned by the create requests below.
+@boardId = 01a1400c-a43b-7c2d-b741-b14b9e66e3a3
+@swimlaneId = 01a1400c-f86f-7f01-b2a8-4250bb89bc25
+@taskId = 01a1400d-6b49-7368-b656-7ac3057f6b80
+
+#### Boards
+
+### Get a board
+GET {{host}}/board/{{boardId}}
+Accept: application/json
+
+### Get board details
+GET {{host}}/board/detail/{{boardId}}
+
+### Create a board
+POST {{host}}/board
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Created board"
+}
+
+### Update a board
+PATCH {{host}}/board/{{boardId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "newly updated name"
+}
+
+### Delete a board
+DELETE {{host}}/board/{{boardId}}
+
+#### Swimlanes
+
+### Get swimlanes for a board
+GET {{host}}/swimlane?boardId={{boardId}}
+Accept: application/json
+
+### Get a swimlane
+GET {{host}}/swimlane/{{swimlaneId}}
+Accept: application/json
+
+### Create a swimlane
+POST {{host}}/swimlane
+Accept: application/json
+Content-Type: application/json
+
+{
+    "boardId": "{{boardId}}",
+    "name": "Completed",
+    "closeTask": true
+}
+
+### Update a swimlane
+PATCH {{host}}/swimlane/{{swimlaneId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "newly updated swimlane",
+    "closeTask": true
+}
+
+### Delete a swimlane
+DELETE {{host}}/swimlane/{{swimlaneId}}
+
+#### Tasks
+
+### Get tasks for a swimlane
+GET {{host}}/task?swimlaneId={{swimlaneId}}
+Accept: application/json
+
+### Get a task
+GET {{host}}/task/{{taskId}}
+Accept: application/json
+
+### Create a task
+POST {{host}}/task
+Accept: application/json
+Content-Type: application/json
+
+{
+    "swimlaneId": "{{swimlaneId}}",
+    "name": "Do some work",
+    "description": "Task description"
+}
+
+### Update a task
+PATCH {{host}}/task/{{taskId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "moved task",
+    "description": "updated description",
+    "swimlaneId": "{{swimlaneId}}"
+}
+
+### Delete a task
+DELETE {{host}}/task/{{taskId}}
+
