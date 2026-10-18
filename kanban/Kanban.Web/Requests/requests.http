@@ -1,4 +1,5 @@
-@host = http://localhost:5293/api/v1
+@host-api = http://localhost:5293/api/v1
+@host = http://localhost:5293
 
 # Replace these with the publicId values returned by the create requests below.
 @boardId = 01a1400c-a43b-7c2d-b741-b14b9e66e3a3
@@ -8,14 +9,14 @@
 #### Boards
 
 ### Get a board
-GET {{host}}/board/{{boardId}}
+GET {{host-api}}/board/{{boardId}}
 Accept: application/json
 
 ### Get board details
-GET {{host}}/board/detail/{{boardId}}
+GET {{host-api}}/board/detail/{{boardId}}
 
 ### Create a board
-POST {{host}}/board
+POST {{host-api}}/board
 Accept: application/json
 Content-Type: application/json
 
@@ -24,7 +25,7 @@ Content-Type: application/json
 }
 
 ### Update a board
-PATCH {{host}}/board/{{boardId}}
+PATCH {{host-api}}/board/{{boardId}}
 Accept: application/json
 Content-Type: application/json
 
@@ -33,20 +34,20 @@ Content-Type: application/json
 }
 
 ### Delete a board
-DELETE {{host}}/board/{{boardId}}
+DELETE {{host-api}}/board/{{boardId}}
 
 #### Swimlanes
 
 ### Get swimlanes for a board
-GET {{host}}/swimlane?boardId={{boardId}}
+GET {{host-api}}/swimlane?boardId={{boardId}}
 Accept: application/json
 
 ### Get a swimlane
-GET {{host}}/swimlane/{{swimlaneId}}
+GET {{host-api}}/swimlane/{{swimlaneId}}
 Accept: application/json
 
 ### Create a swimlane
-POST {{host}}/swimlane
+POST {{host-api}}/swimlane
 Accept: application/json
 Content-Type: application/json
 
@@ -57,7 +58,7 @@ Content-Type: application/json
 }
 
 ### Update a swimlane
-PATCH {{host}}/swimlane/{{swimlaneId}}
+PATCH {{host-api}}/swimlane/{{swimlaneId}}
 Accept: application/json
 Content-Type: application/json
 
@@ -67,20 +68,20 @@ Content-Type: application/json
 }
 
 ### Delete a swimlane
-DELETE {{host}}/swimlane/{{swimlaneId}}
+DELETE {{host-api}}/swimlane/{{swimlaneId}}
 
 #### Tasks
 
 ### Get tasks for a swimlane
-GET {{host}}/task?swimlaneId={{swimlaneId}}
+GET {{host-api}}/task?swimlaneId={{swimlaneId}}
 Accept: application/json
 
 ### Get a task
-GET {{host}}/task/{{taskId}}
+GET {{host-api}}/task/{{taskId}}
 Accept: application/json
 
 ### Create a task
-POST {{host}}/task
+POST {{host-api}}/task
 Accept: application/json
 Content-Type: application/json
 
@@ -91,7 +92,7 @@ Content-Type: application/json
 }
 
 ### Update a task
-PATCH {{host}}/task/{{taskId}}
+PATCH {{host-api}}/task/{{taskId}}
 Accept: application/json
 Content-Type: application/json
 
@@ -102,5 +103,17 @@ Content-Type: application/json
 }
 
 ### Delete a task
-DELETE {{host}}/task/{{taskId}}
+DELETE {{host-api}}/task/{{taskId}}
 
+##### HTML endpoints
+### Get task item
+GET {{host}}/taskitem/{{taskId}}
+Accept: text/html
+
+### Get swimlane
+GET {{host}}/swimlane/{{swimlaneId}}
+Accept: text/html
+
+### Get task item form
+GET {{host}}/taskitem/add?swimlaneId={{swimlaneId}}
+Accept: text/html

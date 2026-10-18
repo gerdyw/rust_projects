@@ -1,0 +1,13 @@
+@using Kanban.Web.Domain.Swimlanes.Fragments
+@using Kanban.Web.Entities
+
+<SwimlaneTaskCount SwimlaneId="@TaskItem.Swimlane.PublicId" TaskItemCount="@TaskItemCount" SwapOob="true" />
+<TaskItemView TaskItem="@TaskItem" />
+<AddTaskButton SwimlaneId="TaskItem.Swimlane.PublicId"></AddTaskButton>
+
+@code {
+    [Parameter, EditorRequired]
+    public required TaskItem TaskItem { get; init; }
+    [Parameter, EditorRequired]
+    public required int TaskItemCount { get; init; }
+}

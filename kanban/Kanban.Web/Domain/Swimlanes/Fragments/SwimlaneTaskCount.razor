@@ -1,0 +1,10 @@
+<span id="@SwimlaneId-count" class="count" hx-swap-oob="@(SwapOob ? "true" : null)">@TaskItemCount</span>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Guid SwimlaneId { get; init; }
+    [Parameter, EditorRequired]
+    public required int TaskItemCount { get; init; }
+    [Parameter]
+    public bool SwapOob { get; init; } = false;
+}

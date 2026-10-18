@@ -1,0 +1,20 @@
+@using Microsoft.AspNetCore.Components.Forms
+
+<li id=add-task-item>
+    <article>
+        <form hx-post="@SubmitEndpoint" hx-trigger="submit" hx-swap="outerHTML" hx-target="#add-task-item">
+            <AntiforgeryToken />
+            <input name="swimlaneId" type="hidden" value="@SwimlaneId" />
+            <label>Name: <input name="name" /></label>
+            <label>Description: <input name="description" /></label>
+            <button type="submit">Add</button>
+        </form>
+    </article>
+</li>
+
+@code {
+    [Parameter, EditorRequired]
+    public required string SubmitEndpoint { get; init; }
+    [Parameter, EditorRequired]
+    public required Guid SwimlaneId { get; init; }
+}

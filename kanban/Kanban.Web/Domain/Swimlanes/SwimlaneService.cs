@@ -15,6 +15,11 @@ public class SwimlaneService(KanbanDbContext db)
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.PublicId == publicId, ct);
 
+    public async Task<Swimlane?> GetSwimlaneDetailAsync(Guid publicId, CancellationToken ct) => await db.Swimlanes
+            .AsNoTracking()
+            .Include(s => s.TaskItems)
+            .FirstOrDefaultAsync(s => s.PublicId == publicId, ct);
+
     public async Task<Swimlane?> CreateSwimlaneAsync(Guid boardId, string name, bool closeTask, CancellationToken ct)
     {
         var board = await db.Boards.FirstOrDefaultAsync(b => b.PublicId == boardId, ct);

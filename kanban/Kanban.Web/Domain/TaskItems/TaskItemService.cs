@@ -15,9 +15,14 @@ public class TaskItemService(KanbanDbContext db)
             .AsNoTracking()
             .FirstOrDefaultAsync(t => t.PublicId == publicId, ct);
 
+    public async Task<TaskItem?> GetTaskItemDetailsAsync(Guid publicId, CancellationToken ct) =>
+        await db.TaskItems.AsNoTracking()
+            .Include(t => t.Swimlane)
+            .FirstOrDefaultAsync(t => t.PublicId == publicId, ct);
+
     public async Task<TaskItem?> CreateTaskItemAsync(Guid swimlaneId, string name, string description, CancellationToken ct)
     {
-        var swimlane = await db.Swimlanes.FirstOrDefaultAsync(s => s.PublicId == swimlaneId, ct);
+        var swimlane = await db.Swimlanes.Include(s => s.TaskItems).FirstOrDefaultAsync(s => s.PublicId == swimlaneId, ct);
         if (swimlane is null)
         {
             Console.WriteLine($"Could not find swimlane {swimlaneId}");
@@ -65,4 +70,7 @@ public class TaskItemService(KanbanDbContext db)
         var rows = await db.TaskItems.Where(t => t.PublicId == publicId).ExecuteDeleteAsync(ct);
         return rows == 1;
     }
+
+    public async Task<int> CountTaskItemsForSwimlaneAsync(int swimlaneId, CancellationToken ct) =>
+        await db.TaskItems.CountAsync(i => i.Swimlane.Id == swimlaneId, ct);
 }

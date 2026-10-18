@@ -5,7 +5,7 @@ namespace Kanban.Web.Domain.TaskItems;
 
 public static class TaskItemEndpoints
 {
-    public static void MapTaskItemEndpoints(this RouteGroupBuilder api)
+    public static RouteGroupBuilder MapTaskItemEndpoints(this RouteGroupBuilder api)
     {
         var group = api.MapGroup("/task");
         group.MapGet("/", GetTaskItems);
@@ -13,6 +13,7 @@ public static class TaskItemEndpoints
         group.MapPost("/", CreateTaskItem);
         group.MapPatch("/{publicId:guid}", UpdateTaskItem);
         group.MapDelete("/{publicId:guid}", DeleteTaskItem);
+        return api;
     }
 
     private static async Task<Ok<List<GetTaskItemResponse>>> GetTaskItems(

@@ -1,0 +1,9 @@
+@using Kanban.Web.Domain.TaskItems
+<button hx-get="@TaskItemViewEndpoints.AddTask?swimlaneId=@SwimlaneId" hx-swap="outerHTML">
+    Add
+</button>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Guid SwimlaneId { get; init; }
+}

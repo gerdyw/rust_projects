@@ -1,0 +1,21 @@
+@using Kanban.Web.Domain.TaskItems
+@using Kanban.Web.Entities
+<section id="swimlane-@Swimlane.PublicId" class="lane" aria-labelledby="@Swimlane.PublicId-title">
+    <header>
+        <h2 id="@Swimlane.PublicId-title">@Swimlane.Name</h2>
+        <SwimlaneTaskCount SwimlaneId="@Swimlane.PublicId" TaskItemCount="@Swimlane.TaskItems.Count" />
+    </header>
+
+    <ul id="lane-@Swimlane.PublicId-tasks" role="list">
+        @foreach (var task in Swimlane.TaskItems)
+        {
+            <TaskItemView TaskItem="task" />
+        }
+    </ul>
+    <AddTaskButton SwimlaneId="Swimlane.PublicId" />
+</section>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Swimlane Swimlane { get; init; }
+}

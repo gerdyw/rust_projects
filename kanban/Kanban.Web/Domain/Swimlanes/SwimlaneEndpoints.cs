@@ -5,7 +5,7 @@ namespace Kanban.Web.Domain.Swimlanes;
 
 public static class SwimlaneEndpoints
 {
-    public static void MapSwimlaneEndpoints(this RouteGroupBuilder api)
+    public static RouteGroupBuilder MapSwimlaneEndpoints(this RouteGroupBuilder api)
     {
         var group = api.MapGroup("/swimlane");
         group.MapGet("/", GetSwimlanes);
@@ -13,6 +13,7 @@ public static class SwimlaneEndpoints
         group.MapPost("/", CreateSwimlane);
         group.MapPatch("/{id:guid}", UpdateSwimlane);
         group.MapDelete("/{id:guid}", DeleteSwimlane);
+        return api;
     }
 
     private static async Task<Ok<List<GetSwimlaneResponse>>> GetSwimlanes(

@@ -1,0 +1,30 @@
+@using Kanban.Web.Domain.Boards
+@using Kanban.Web.Entities
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@Board.Name</title>
+    <script src="https://unpkg.com/htmx.org@2"></script>
+    <link rel="stylesheet" href="/app.css" />
+</head>
+
+<body>
+    <header class="app-header">
+        <a href="/">Kanban</a>
+    </header>
+
+    <main>
+        <BoardView Board="Board" />
+    </main>
+</body>
+
+</html>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Board Board { get; init; }
+}

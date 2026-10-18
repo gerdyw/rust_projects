@@ -7,7 +7,7 @@ namespace Kanban.Web.Domain.Boards;
 
 public static class BoardEndpoints
 {
-    public static void MapBoardEndpoints(this RouteGroupBuilder api)
+    public static RouteGroupBuilder MapBoardEndpoints(this RouteGroupBuilder api)
     {
         var group = api.MapGroup("/board");
         group.MapGet("/{id:guid}", GetBoard);
@@ -15,6 +15,7 @@ public static class BoardEndpoints
         group.MapPost("/", CreateBoard);
         group.MapPatch("/{id:guid}", UpdateBoard);
         group.MapDelete("/{id:guid}", DeleteBoard);
+        return api;
     }
 
     private static async Task<Results<Ok<GetBoardResponse>, NotFound>> GetBoard(

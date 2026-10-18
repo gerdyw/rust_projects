@@ -1,0 +1,15 @@
+@using Kanban.Web.Entities
+<li id="taskitem-@TaskItem.PublicId">
+    <article>
+        <h3>@TaskItem.Name</h3>
+        <button class="card-delete" hx-delete="@TaskItemViewEndpoints.Root/@TaskItem.PublicId" hx-target="closest li"
+                hx-swap="delete" hx-disabled-elt="this" hx-confirm="Delete this task?"
+                aria-label="Delete @TaskItem.Name">×</button>
+        <p>@TaskItem.Description</p>
+    </article>
+</li>
+
+@code {
+    [Parameter, EditorRequired]
+    public required TaskItem TaskItem { get; init; }
+}
