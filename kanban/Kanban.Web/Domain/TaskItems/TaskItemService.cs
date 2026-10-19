@@ -22,7 +22,7 @@ public class TaskItemService(KanbanDbContext db)
 
     public async Task<TaskItem?> CreateTaskItemAsync(Guid swimlaneId, string name, string description, CancellationToken ct)
     {
-        var swimlane = await db.Swimlanes.Include(s => s.TaskItems).FirstOrDefaultAsync(s => s.PublicId == swimlaneId, ct);
+        var swimlane = await db.Swimlanes.FirstOrDefaultAsync(s => s.PublicId == swimlaneId, ct);
         if (swimlane is null)
         {
             Console.WriteLine($"Could not find swimlane {swimlaneId}");

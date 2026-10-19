@@ -6,13 +6,16 @@
         <SwimlaneTaskCount SwimlaneId="@Swimlane.PublicId" TaskItemCount="@Swimlane.TaskItems.Count" />
     </header>
 
-    <ul id="lane-@Swimlane.PublicId-tasks" role="list">
+    <ul id="swimlane-@Swimlane.PublicId-tasks" role="list">
         @foreach (var task in Swimlane.TaskItems)
         {
             <TaskItemView TaskItem="task" />
         }
     </ul>
-    <AddTaskButton SwimlaneId="Swimlane.PublicId" />
+
+    <article id="swimlane-@Swimlane.PublicId-add">
+        <AddTaskButton SwimlaneId="Swimlane.PublicId" />
+    </article>
 </section>
 
 @code {
