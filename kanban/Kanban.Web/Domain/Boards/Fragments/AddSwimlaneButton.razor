@@ -1,8 +1,0 @@
-<section id="add-swimlane-section" class="lane">
-    <button hx-get="/swimlane/add?boardId=@BoardId" hx-target="#add-swimlane-section" hx-swap="outerHTML">Add</button>
-</section>
-
-@code {
-    [Parameter, EditorRequired]
-    public required Guid BoardId { get; set; }
-}

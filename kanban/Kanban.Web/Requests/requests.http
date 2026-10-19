@@ -21,7 +21,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "Created board"
+    "name": "Default board"
 }
 
 ### Update a board

@@ -1,0 +1,19 @@
+@using Kanban.Web.Common.Components_razor
+<section id="add-swimlane-section" class="lane" aria-labelledby="add-swimlane-title">
+    <CollapsableForm OpenButtonClass="add-trigger" OpenButtonText="Add Lane" hx-post="/swimlane/add" hx-trigger="submit"
+                     hx-target="#add-swimlane-section" hx-swap="beforebegin">
+        <header>
+            <h2>Add swimlane</h2>
+            <button type="button" class="form-close" x-on:click="formShown = false" aria-label="Close">×</button>
+        </header>
+        <input type="hidden" name="BoardId" value="@BoardId" />
+        <label>Title <input name="Name" /></label>
+        <label><input name="CloseTask" type="checkbox" value="true" /> Close tasks</label>
+        <div><button type="submit">Add</button></div>
+    </CollapsableForm>
+</section>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Guid BoardId { get; set; }
+}

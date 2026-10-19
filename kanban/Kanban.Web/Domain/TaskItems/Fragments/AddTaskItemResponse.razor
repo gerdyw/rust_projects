@@ -3,9 +3,6 @@
 
 <SwimlaneTaskCount SwimlaneId="@TaskItem.Swimlane.PublicId" TaskItemCount="@TaskItemCount" SwapOob="true" />
 <TaskItemView TaskItem="@TaskItem" />
-<article id="swimlane-@TaskItem.Swimlane.PublicId-add" hx-swap-oob="true">
-    <AddTaskButton SwimlaneId="TaskItem.Swimlane.PublicId" />
-</article>
 
 @code {
     [Parameter, EditorRequired]

@@ -6,7 +6,7 @@ public record CreateSwimlaneRequest
 {
     public required Guid BoardId { get; init; }
     public required string Name { get; init; }
-    public required bool CloseTask { get; init; }
+    public bool CloseTask { get; init; }
 }
 
 public record GetSwimlaneResponse

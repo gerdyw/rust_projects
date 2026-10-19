@@ -1,0 +1,22 @@
+@using Microsoft.AspNetCore.Components.Forms
+<div x-data="{formShown: false}">
+    <button type="button" class="@OpenButtonClass" x-show="!formShown" x-on:click="formShown = true">
+        @OpenButtonText
+    </button>
+    <form x-show="formShown" x-cloak x-ref="form" @attributes="InputAttributes" class="collapsable-form"
+          x-on:htmx:after-request="if ($event.detail.xhr.status === 200) { $refs.form.reset(); formShown = false; }">
+        <AntiforgeryToken />
+        @ChildContent
+    </form>
+</div>
+
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? InputAttributes { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter, EditorRequired]
+    public required string OpenButtonClass { get; init; }
+    [Parameter, EditorRequired]
+    public required string OpenButtonText { get; init; }
+}

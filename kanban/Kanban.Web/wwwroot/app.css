@@ -215,3 +215,97 @@ li>article:focus-within .card-delete,
         opacity: 1;
     }
 }
+
+[x-cloak] {
+    display: none !important;
+}
+
+.add-task {
+    padding-right: 0.6rem;
+}
+
+.add-trigger {
+    display: block;
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    font: inherit;
+    font-weight: 500;
+    text-align: left;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-trigger::before {
+    content: "+ ";
+    font-weight: 600;
+}
+
+.add-trigger:hover {
+    color: var(--text);
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+.collapsable-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.collapsable-form header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.collapsable-form h2 {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.collapsable-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.collapsable-form label:has(input[type="checkbox"]) {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.collapsable-form input[type="text"],
+.collapsable-form input:not([type]) {
+    width: 100%;
+}
+
+.form-close {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-close:hover {
+    color: var(--text);
+    background: var(--bg);
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.5rem;
+}

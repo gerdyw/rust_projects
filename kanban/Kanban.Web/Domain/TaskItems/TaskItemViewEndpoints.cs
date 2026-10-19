@@ -1,8 +1,5 @@
-using Kanban.Web.Domain.Boards;
-using Kanban.Web.Domain.Swimlanes;
 using Kanban.Web.Domain.Swimlanes.Fragments;
 using Kanban.Web.Domain.TaskItems.Fragments;
-using Kanban.Web.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +14,6 @@ public static class TaskItemViewEndpoints
     {
         app.MapGet($"{Root}/{{publicId:guid}}", GetTaskItemAsync);
         app.MapDelete($"{Root}/{{publicId:guid}}", DeleteTaskItemAsync);
-        app.MapGet(AddTask, GetAddTaskFormAsync);
         app.MapPost(AddTask, SubmitTaskItemAsync);
         return app;
     }
@@ -31,10 +27,6 @@ public static class TaskItemViewEndpoints
             ? new RazorComponentResult<TaskItemView>(new { TaskItem = taskItem })
             : TypedResults.NotFound();
     }
-
-    private static async Task<RazorComponentResult<NewTaskItem>> GetAddTaskFormAsync(
-        Guid swimlaneId, CancellationToken ct = default
-    ) => new(new { SubmitEndpoint = AddTask, SwimlaneId = swimlaneId });
 
     private static async Task<Results<RazorComponentResult<AddTaskItemResponse>, BadRequest>> SubmitTaskItemAsync(
        [FromForm] CreateTaskItemRequest req, TaskItemService service, CancellationToken ct = default
@@ -54,7 +46,8 @@ public static class TaskItemViewEndpoints
         }
     }
 
-    private static async Task<Results<RazorComponentResult<SwimlaneTaskCount>, NotFound>> DeleteTaskItemAsync(Guid publicId, TaskItemService service, CancellationToken ct = default)
+    private static async Task<Results<RazorComponentResult<SwimlaneTaskCount>, NotFound>> DeleteTaskItemAsync(
+        Guid publicId, TaskItemService service, CancellationToken ct = default)
     {
         var taskItem = await service.GetTaskItemDetailsAsync(publicId, ct);
         if (taskItem is null)

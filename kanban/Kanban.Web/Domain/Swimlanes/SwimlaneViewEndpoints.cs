@@ -11,7 +11,6 @@ public static class SwimlaneViewEndpoints
     {
         var group = app.MapGroup("/swimlane");
         group.MapGet("/{publicId:guid}", GetSwimlaneAsync);
-        group.MapGet("/add", GetNewSwimlaneForm);
         group.MapPost("/add", AddSwimlaneAsync);
         return app;
     }
@@ -26,20 +25,13 @@ public static class SwimlaneViewEndpoints
             : TypedResults.NotFound();
     }
 
-    private static async Task<RazorComponentResult<NewSwimlaneForm>> GetNewSwimlaneForm(
-        Guid boardId, CancellationToken ct = default
-    )
-    {
-        return new(new { BoardId = boardId, SubmitEndpoint = "/swimlane/add" });
-    }
-
-    private static async Task<Results<RazorComponentResult<CreateSwimlaneResponse>, BadRequest>> AddSwimlaneAsync(
+    private static async Task<Results<RazorComponentResult<SwimlaneView>, BadRequest>> AddSwimlaneAsync(
         [FromForm] CreateSwimlaneRequest req, SwimlaneService service, CancellationToken ct = default
     )
     {
         var swimlane = await service.CreateSwimlaneAsync(req.BoardId, req.Name, req.CloseTask, ct);
         return swimlane is { }
-            ? new RazorComponentResult<CreateSwimlaneResponse>(new { Swimlane = swimlane, req.BoardId })
+            ? new RazorComponentResult<SwimlaneView>(new { Swimlane = swimlane })
             : TypedResults.BadRequest();
     }
 }

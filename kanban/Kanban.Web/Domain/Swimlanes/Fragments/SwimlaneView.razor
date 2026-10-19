@@ -1,4 +1,5 @@
 @using Kanban.Web.Domain.TaskItems
+@using Kanban.Web.Domain.TaskItems.Fragments
 @using Kanban.Web.Entities
 <section id="swimlane-@Swimlane.PublicId" class="lane" aria-labelledby="@Swimlane.PublicId-title">
     <header>
@@ -11,11 +12,10 @@
         {
             <TaskItemView TaskItem="task" />
         }
+        <li id="swimlane-@Swimlane.PublicId-add-task">
+            <AddTaskItemComponent SwimlaneId="@Swimlane.PublicId" />
+        </li>
     </ul>
-
-    <article id="swimlane-@Swimlane.PublicId-add">
-        <AddTaskButton SwimlaneId="Swimlane.PublicId" />
-    </article>
 </section>
 
 @code {

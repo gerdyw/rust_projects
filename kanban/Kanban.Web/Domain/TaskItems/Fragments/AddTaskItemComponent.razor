@@ -1,0 +1,24 @@
+@using Kanban.Web.Common.Components_razor
+
+<article class="add-task">
+    <CollapsableForm OpenButtonClass="add-trigger" OpenButtonText="Add" hx-post="/taskitem/add"
+                     hx-trigger="submit" hx-target="@TargetSelector" hx-swap="beforebegin">
+        <header>
+            <h2>Add task</h2>
+            <button type="button" class="form-close" x-on:click="formShown = false" aria-label="Close">×</button>
+        </header>
+        <input name="swimlaneId" type="hidden" value="@SwimlaneId" />
+        <label>Name <input name="name" /></label>
+        <label>Description <input name="description" /></label>
+        <div class="form-actions">
+            <button type="submit">Add</button>
+        </div>
+    </CollapsableForm>
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Guid SwimlaneId { get; init; }
+
+    private string TargetSelector => $"#swimlane-{SwimlaneId}-add-task";
+}
