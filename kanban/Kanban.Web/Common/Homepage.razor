@@ -9,7 +9,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@Board.Name</title>
     <script src="https://unpkg.com/htmx.org@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        function initSortable(sortable) {
+            if (sortable.sortableInstance) return;
+
+            sortable.sortableInstance = new Sortable(sortable, {
+                animation: 150,
+                ghostClass: "sortable-ghost",
+                draggable: ".task-item",
+                filter: ".card-delete",
+                preventOnFilter: false,
+                group: {
+                    name: "lanes",
+                    pull: true,
+                    put: true
+                },
+                onEnd: function () {
+                    this.option("disabled", true);
+                }
+            });
+        }
+
+        htmx.onLoad(function (content) {
+            if (!content || !content.querySelectorAll) return;
+
+            // htmx:load passes the inserted element itself. For an outerHTML
+            // swap that element is the new <ul>, which querySelectorAll misses.
+            if (content.nodeType === 1 && content.matches(".sortable")) {
+                initSortable(content);
+            }
+
+            content.querySelectorAll(".sortable").forEach(initSortable);
+        });
+
+        // Re-enable after any request: on success the ul is replaced (and a fresh
+        // instance created), on failure the existing instance must be unlocked.
+        document.addEventListener("htmx:afterRequest", function () {
+            document.querySelectorAll(".sortable").forEach(function (sortable) {
+                if (sortable.sortableInstance) {
+                    sortable.sortableInstance.option("disabled", false);
+                }
+            });
+        });
+    </script>
     <link rel="stylesheet" href="/app.css" />
 </head>
 

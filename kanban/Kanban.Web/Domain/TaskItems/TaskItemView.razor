@@ -1,6 +1,7 @@
 @using Kanban.Web.Entities
-<li id="taskitem-@TaskItem.PublicId">
+<li id="taskitem-@TaskItem.PublicId" class="task-item">
     <article>
+        <input type="hidden" name="Guid" value="@TaskItem.PublicId" />
         <h3>@TaskItem.Name</h3>
         <button class="card-delete" hx-delete="@TaskItemViewEndpoints.Root/@TaskItem.PublicId" hx-target="closest li"
                 hx-swap="delete" hx-disabled-elt="this" hx-confirm="Delete this task?"

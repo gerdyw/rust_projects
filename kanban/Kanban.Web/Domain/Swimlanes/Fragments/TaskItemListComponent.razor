@@ -1,0 +1,19 @@
+@using Kanban.Web.Domain.TaskItems
+@using Kanban.Web.Domain.TaskItems.Fragments
+@using Kanban.Web.Entities
+
+<ul id="swimlane-@SwimlaneId-tasks" class="sortable" role="list" hx-swap-oob="@(SwapOob ? "true" : null)">
+    @foreach (var task in TaskItems.OrderBy(t => t.Position).ThenBy(t => t.Id))
+    {
+        <TaskItemView TaskItem="task" />
+    }
+</ul>
+
+@code {
+    [Parameter, EditorRequired]
+    public required IEnumerable<TaskItem> TaskItems { get; init; }
+    [Parameter, EditorRequired]
+    public required Guid SwimlaneId { get; init; }
+    [Parameter]
+    public bool SwapOob { get; init; } = false;
+}

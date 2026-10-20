@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Components.Forms
+<form class="@Class" hx-post="@HxPost" hx-trigger="add, update" hx-target="@HxTarget" hx-swap="@HxSwap">
+    <AntiforgeryToken />
+    <input type="hidden" name="DestParentId" value="@ParentId" />
+    @ChildContent
+</form>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; init; }
+    [Parameter, EditorRequired]
+    public required Guid ParentId { get; init; }
+    [Parameter, EditorRequired]
+    public required string Class { get; init; }
+    [Parameter, EditorRequired]
+    public required string HxPost { get; init; }
+    [Parameter]
+    public string? HxTarget { get; init; }
+    [Parameter]
+    public string? HxSwap { get; init; }
+}

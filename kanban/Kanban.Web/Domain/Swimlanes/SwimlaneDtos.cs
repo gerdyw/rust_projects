@@ -13,6 +13,8 @@ public record GetSwimlaneResponse
 {
     public required Guid Id { get; init; }
     public required string Name { get; init; }
+    // public required Guid BoardId { get; init; }
+    // public required int Position { get; init; }
     public required bool CloseTask { get; init; }
 }
 

@@ -9,6 +9,8 @@ public class SwimlaneService(KanbanDbContext db)
     public async Task<List<Swimlane>> GetSwimlanesAsync(Guid boardId, CancellationToken ct) => await db.Swimlanes
             .AsNoTracking()
             .Where(s => s.Board.PublicId == boardId)
+            .OrderBy(s => s.Position)
+            .ThenBy(s => s.Id)
             .ToListAsync(ct);
 
     public async Task<Swimlane?> GetSwimlaneAsync(Guid publicId, CancellationToken ct) => await db.Swimlanes
@@ -17,7 +19,7 @@ public class SwimlaneService(KanbanDbContext db)
 
     public async Task<Swimlane?> GetSwimlaneDetailAsync(Guid publicId, CancellationToken ct) => await db.Swimlanes
             .AsNoTracking()
-            .Include(s => s.TaskItems)
+            .Include(s => s.TaskItems.OrderBy(t => t.Position).ThenBy(t => t.Id))
             .FirstOrDefaultAsync(s => s.PublicId == publicId, ct);
 
     public async Task<Swimlane?> CreateSwimlaneAsync(Guid boardId, string name, bool closeTask, CancellationToken ct)
@@ -29,10 +31,17 @@ public class SwimlaneService(KanbanDbContext db)
             return null;
         }
 
+        var highestPosition = await db.Swimlanes
+            .Where(s => s.BoardId == board.Id)
+            .OrderBy(s => s.Position)
+            .Select(s => s.Position)
+            .LastOrDefaultAsync(ct);
+
         var swimlane = new Swimlane
         {
-            Board = board,
             Name = name,
+            Board = board,
+            Position = highestPosition + 1,
             CloseTask = closeTask
         };
 

@@ -1,0 +1,18 @@
+@using Kanban.Web.Domain.Swimlanes.Fragments
+@using Kanban.Web.Entities
+
+<SwimlaneTaskCount SwimlaneId="@DestSwimlane.PublicId" TaskItemCount="@DestSwimlane.TaskItems.Count" SwapOob="true" />
+<TaskItemListComponent SwimlaneId="@DestSwimlane.PublicId" TaskItems="@DestSwimlane.TaskItems" />
+
+@foreach (var swimlane in SourceSwimlanes)
+{
+    <SwimlaneTaskCount SwimlaneId="@swimlane.PublicId" TaskItemCount="@swimlane.TaskItems.Count" SwapOob="true" />
+    <TaskItemListComponent SwimlaneId="@swimlane.PublicId" TaskItems="@swimlane.TaskItems" SwapOob="true" />
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public required Swimlane DestSwimlane { get; init; }
+    [Parameter]
+    public IEnumerable<Swimlane> SourceSwimlanes { get; init; } = [];
+}

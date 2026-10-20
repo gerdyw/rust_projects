@@ -8,14 +8,13 @@ public class TaskItemService(KanbanDbContext db)
 {
     public async Task<List<TaskItem>> GetTaskItemsAsync(Guid swimlaneId, CancellationToken ct) => await db.TaskItems
             .AsNoTracking()
+            .Include(t => t.Swimlane)
             .Where(t => t.Swimlane.PublicId == swimlaneId)
+            .OrderBy(t => t.Position)
+            .ThenBy(t => t.Id)
             .ToListAsync(ct);
 
-    public async Task<TaskItem?> GetTaskItemAsync(Guid publicId, CancellationToken ct) => await db.TaskItems
-            .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.PublicId == publicId, ct);
-
-    public async Task<TaskItem?> GetTaskItemDetailsAsync(Guid publicId, CancellationToken ct) =>
+    public async Task<TaskItem?> GetTaskItemAsync(Guid publicId, CancellationToken ct) =>
         await db.TaskItems.AsNoTracking()
             .Include(t => t.Swimlane)
             .FirstOrDefaultAsync(t => t.PublicId == publicId, ct);
@@ -29,10 +28,17 @@ public class TaskItemService(KanbanDbContext db)
             return null;
         }
 
+        var highestPosition = await db.TaskItems
+            .Where(t => t.SwimlaneId == swimlane.Id)
+            .OrderBy(t => t.Position)
+            .Select(t => t.Position)
+            .LastOrDefaultAsync(ct);
+
         var taskItem = new TaskItem
         {
-            Swimlane = swimlane,
             Name = name,
+            Swimlane = swimlane,
+            Position = highestPosition + 1,
             Description = description,
             Closed = swimlane.CloseTask
         };
@@ -63,6 +69,47 @@ public class TaskItemService(KanbanDbContext db)
         taskItem.Description = req.Description ?? taskItem.Description;
         await db.SaveChangesAsync(ct);
         return taskItem;
+    }
+
+    public async Task<(Swimlane, List<Swimlane>)?> MoveTaskItemsAsync(Guid destSwimlaneId, IEnumerable<Guid> taskItemIds, CancellationToken ct)
+    {
+        var destSwimlane = await db.Swimlanes.FirstOrDefaultAsync(s => s.PublicId == destSwimlaneId, ct);
+
+        if (destSwimlane is null) return null;
+
+        var taskItems = await db.TaskItems.Where(t => taskItemIds
+            .Contains(t.PublicId))
+            .Include(t => t.Swimlane)
+            .ThenInclude(s => s.TaskItems)
+            .ToDictionaryAsync(t => t.PublicId, ct);
+
+        var swimlaneIds = taskItems.Values.Select(t => t.Swimlane.PublicId).ToHashSet();
+        swimlaneIds.Add(destSwimlane.PublicId);
+
+        foreach (var (id, idx) in taskItemIds.Select((id, idx) => (id, idx)))
+        {
+            if (taskItems.TryGetValue(id, out var taskItem))
+            {
+                taskItem.Position = idx;
+                taskItem.Swimlane = destSwimlane;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        await db.SaveChangesAsync(ct);
+
+        var swimlanes = await db.Swimlanes
+            .AsNoTracking()
+            .Where(s => swimlaneIds.Contains(s.PublicId))
+            .Include(s => s.TaskItems.OrderBy(t => t.Position).ThenBy(t => t.Id))
+            .ToListAsync(ct);
+        destSwimlane = swimlanes.First(s => s.PublicId == destSwimlaneId);
+        var sourceSwimlanes = swimlanes.Where(s => s.PublicId != destSwimlaneId).ToList();
+
+        return (destSwimlane, sourceSwimlanes);
     }
 
     public async Task<bool> DeleteTaskItemAsync(Guid publicId, CancellationToken ct)

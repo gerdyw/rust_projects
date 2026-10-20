@@ -17,8 +17,8 @@ public class BoardService(KanbanDbContext db)
     public async Task<Board?> GetBoardDetailAsync(Guid publicId, CancellationToken ct) =>
         await db.Boards
             .AsNoTracking()
-            .Include(b => b.Swimlanes)
-            .ThenInclude(s => s.TaskItems)
+            .Include(b => b.Swimlanes.OrderBy(s => s.Position).ThenBy(s => s.Id))
+            .ThenInclude(s => s.TaskItems.OrderBy(t => t.Position).ThenBy(t => t.Id))
             .FirstOrDefaultAsync(b => b.PublicId == publicId, ct);
 
     public async Task<Board> CreateBoardAsync(string name, CancellationToken ct)

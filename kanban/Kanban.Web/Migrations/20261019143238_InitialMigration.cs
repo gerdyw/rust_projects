@@ -33,8 +33,9 @@ namespace Kanban.Web.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BoardId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    BoardId = table.Column<int>(type: "integer", nullable: false),
+                    Position = table.Column<int>(type: "integer", nullable: false),
                     CloseTask = table.Column<bool>(type: "boolean", nullable: false),
                     PublicId = table.Column<Guid>(type: "uuid", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
@@ -57,6 +58,7 @@ namespace Kanban.Web.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SwimlaneId = table.Column<int>(type: "integer", nullable: false),
+                    Position = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Closed = table.Column<bool>(type: "boolean", nullable: false),

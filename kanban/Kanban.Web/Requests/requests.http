@@ -2,7 +2,7 @@
 @host = http://localhost:5293
 
 # Replace these with the publicId values returned by the create requests below.
-@boardId = 01a1400c-a43b-7c2d-b741-b14b9e66e3a3
+@boardId = 01a15494-a7e6-7d5c-b4ed-89d9844969ee
 @swimlaneId = 01a1400c-f86f-7f01-b2a8-4250bb89bc25
 @taskId = 01a1400d-6b49-7368-b656-7ac3057f6b80
 

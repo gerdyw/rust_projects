@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kanban.Web.Migrations
 {
     [DbContext(typeof(KanbanDbContext))]
-    [Migration("20261015145015_InitialMigration")]
+    [Migration("20261019143238_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -76,6 +76,9 @@ namespace Kanban.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("PublicId")
                         .HasColumnType("uuid");
 
@@ -112,6 +115,9 @@ namespace Kanban.Web.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("PublicId")
                         .HasColumnType("uuid");

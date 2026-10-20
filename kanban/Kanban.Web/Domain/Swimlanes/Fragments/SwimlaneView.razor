@@ -1,24 +1,26 @@
+@using Kanban.Web.Common.Components
 @using Kanban.Web.Domain.TaskItems
 @using Kanban.Web.Domain.TaskItems.Fragments
 @using Kanban.Web.Entities
-<section id="swimlane-@Swimlane.PublicId" class="lane" aria-labelledby="@Swimlane.PublicId-title">
+
+<section id="swimlane-@Swimlane.PublicId" class="lane" aria-labelledby="@Swimlane.PublicId-title"
+         hx-swap-oob="@(SwapOob ? "true" : null)">
     <header>
         <h2 id="@Swimlane.PublicId-title">@Swimlane.Name</h2>
         <SwimlaneTaskCount SwimlaneId="@Swimlane.PublicId" TaskItemCount="@Swimlane.TaskItems.Count" />
     </header>
-
-    <ul id="swimlane-@Swimlane.PublicId-tasks" role="list">
-        @foreach (var task in Swimlane.TaskItems)
-        {
-            <TaskItemView TaskItem="task" />
-        }
-        <li id="swimlane-@Swimlane.PublicId-add-task">
-            <AddTaskItemComponent SwimlaneId="@Swimlane.PublicId" />
-        </li>
-    </ul>
+    <MovableComponentsForm Class="lane-tasks" ParentId="@Swimlane.PublicId" HxPost="@TaskItemViewEndpoints.MoveTasks"
+                           HxTarget="@TasksTarget" HxSwap="outerHTML">
+        <TaskItemListComponent SwimlaneId="Swimlane.PublicId" TaskItems="Swimlane.TaskItems" />
+    </MovableComponentsForm>
+    <AddTaskItemComponent SwimlaneId="@Swimlane.PublicId" />
 </section>
 
 @code {
     [Parameter, EditorRequired]
     public required Swimlane Swimlane { get; init; }
+    [Parameter]
+    public bool SwapOob { get; init; } = false;
+
+    private string TasksTarget => $"#swimlane-{Swimlane.PublicId}-tasks";
 }

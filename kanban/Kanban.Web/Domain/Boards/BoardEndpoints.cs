@@ -48,7 +48,7 @@ public static class BoardEndpoints
                 Name = s.Name,
                 CloseTask = s.CloseTask,
                 TaskItems = s.TaskItems.Select(
-                    t => new GetTaskItemResponse { Id = t.PublicId, Name = t.Name, Description = t.Description, Closed = t.Closed }
+                    t => new GetTaskItemResponse { Id = t.PublicId, Name = t.Name, SwimlaneId = s.PublicId, Position = t.Position, Description = t.Description, Closed = t.Closed }
                 ).ToList()
             }).ToList()
         };

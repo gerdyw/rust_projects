@@ -73,6 +73,9 @@ namespace Kanban.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("PublicId")
                         .HasColumnType("uuid");
 
@@ -109,6 +112,9 @@ namespace Kanban.Web.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("PublicId")
                         .HasColumnType("uuid");

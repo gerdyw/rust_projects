@@ -1,5 +1,8 @@
+using Kanban.Web.Common.Dtos;
+using Kanban.Web.Domain.TaskItems.Fragments;
 using Kanban.Web.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Kanban.Web.Domain.TaskItems;
 
@@ -11,6 +14,7 @@ public static class TaskItemEndpoints
         group.MapGet("/", GetTaskItems);
         group.MapGet("/{publicId:guid}", GetTaskItem);
         group.MapPost("/", CreateTaskItem);
+        // group.MapPost("/move", MoveTask);
         group.MapPatch("/{publicId:guid}", UpdateTaskItem);
         group.MapDelete("/{publicId:guid}", DeleteTaskItem);
         return api;
@@ -63,10 +67,30 @@ public static class TaskItemEndpoints
         return result ? TypedResults.NoContent() : TypedResults.NotFound();
     }
 
+    // private static async Task<Results<Ok<ReorderedTaskItemResponse>, NotFound>> MoveTask(
+    //     [FromForm] ReorderIdsDto req, TaskItemService service, CancellationToken ct = default
+    // )
+    // {
+    //     var outcome = await service.MoveTaskItemsAsync(req.DestinationParentId, req.Guids, ct);
+    //     if (outcome is not { } result)
+    //     {
+    //         return TypedResults.NotFound();
+    //     }
+
+    //     (Swimlane destLane, List<Swimlane> sourceLanes) = result;
+
+    //     return TypedResults.Ok(new ReorderedTaskItemResponse
+    //     {
+    //         DestSwimlane = 
+    //     })
+    // }
+
     private static GetTaskItemResponse ToResponse(TaskItem taskItem) => new()
     {
         Id = taskItem.PublicId,
         Name = taskItem.Name,
+        SwimlaneId = taskItem.Swimlane.PublicId,
+        Position = taskItem.Position,
         Description = taskItem.Description,
         Closed = taskItem.Closed
     };
