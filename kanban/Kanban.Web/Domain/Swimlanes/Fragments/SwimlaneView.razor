@@ -10,7 +10,7 @@
         <SwimlaneTaskCount SwimlaneId="@Swimlane.PublicId" TaskItemCount="@Swimlane.TaskItems.Count" />
     </header>
     <MovableComponentsForm Class="lane-tasks" ParentId="@Swimlane.PublicId" HxPost="@TaskItemViewEndpoints.MoveTasks"
-                           HxTarget="@TasksTarget" HxSwap="outerHTML">
+                           HxSwap="none">
         <TaskItemListComponent SwimlaneId="Swimlane.PublicId" TaskItems="Swimlane.TaskItems" />
     </MovableComponentsForm>
     <AddTaskItemComponent SwimlaneId="@Swimlane.PublicId" />
@@ -21,6 +21,4 @@
     public required Swimlane Swimlane { get; init; }
     [Parameter]
     public bool SwapOob { get; init; } = false;
-
-    private string TasksTarget => $"#swimlane-{Swimlane.PublicId}-tasks";
 }
