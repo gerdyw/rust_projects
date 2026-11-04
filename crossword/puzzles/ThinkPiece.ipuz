@@ -1,0 +1,904 @@
+{
+  "copyright": "© 2023 Crossword Nexus. CC BY 4.0 License.",
+  "solution": [
+    [
+      "D",
+      "O",
+      "M",
+      "I",
+      "N",
+      "O",
+      "#",
+      "F",
+      "E",
+      "T",
+      "A",
+      "#",
+      "A",
+      "M",
+      "I",
+      "D"
+    ],
+    [
+      "E",
+      "D",
+      "I",
+      "S",
+      "O",
+      "N",
+      "#",
+      "O",
+      "N",
+      "Y",
+      "X",
+      "#",
+      "R",
+      "I",
+      "P",
+      "A"
+    ],
+    [
+      "T",
+      "O",
+      "N",
+      "E",
+      "R",
+      "O",
+      "W",
+      "R",
+      "O",
+      "P",
+      "E",
+      "#",
+      "C",
+      "L",
+      "A",
+      "M"
+    ],
+    [
+      "E",
+      "R",
+      "I",
+      "E",
+      "#",
+      "#",
+      "A",
+      "M",
+      "S",
+      "O",
+      "#",
+      "T",
+      "H",
+      "E",
+      "S",
+      "E"
+    ],
+    [
+      "R",
+      "S",
+      "S",
+      "#",
+      "I",
+      "O",
+      "W",
+      "A",
+      "#",
+      "#",
+      "M",
+      "A",
+      "I",
+      "#",
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      "S",
+      "A",
+      "R",
+      "A",
+      "T",
+      "O",
+      "G",
+      "A",
+      "S",
+      "M",
+      "I",
+      "L",
+      "E"
+    ],
+    [
+      "S",
+      "T",
+      "E",
+      "A",
+      "M",
+      "S",
+      "#",
+      "T",
+      "P",
+      "E",
+      "D",
+      "#",
+      "E",
+      "D",
+      "I",
+      "T"
+    ],
+    [
+      "H",
+      "A",
+      "L",
+      "L",
+      "S",
+      "#",
+      "B",
+      "I",
+      "E",
+      "L",
+      "#",
+      "A",
+      "D",
+      "E",
+      "P",
+      "T"
+    ],
+    [
+      "E",
+      "X",
+      "A",
+      "M",
+      "#",
+      "M",
+      "A",
+      "N",
+      "N",
+      "#",
+      "P",
+      "L",
+      "E",
+      "A",
+      "S",
+      "E"
+    ],
+    [
+      "D",
+      "I",
+      "L",
+      "A",
+      "T",
+      "I",
+      "N",
+      "G",
+      "S",
+      "I",
+      "T",
+      "E",
+      "S",
+      "#",
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      "H",
+      "A",
+      "D",
+      "#",
+      "#",
+      "E",
+      "R",
+      "A",
+      "S",
+      "#",
+      "C",
+      "S",
+      "T"
+    ],
+    [
+      "S",
+      "A",
+      "T",
+      "A",
+      "N",
+      "#",
+      "R",
+      "A",
+      "S",
+      "A",
+      "#",
+      "#",
+      "C",
+      "H",
+      "A",
+      "R"
+    ],
+    [
+      "A",
+      "L",
+      "L",
+      "Y",
+      "#",
+      "R",
+      "O",
+      "M",
+      "A",
+      "N",
+      "E",
+      "M",
+      "P",
+      "I",
+      "R",
+      "E"
+    ],
+    [
+      "A",
+      "I",
+      "D",
+      "E",
+      "#",
+      "A",
+      "T",
+      "O",
+      "M",
+      "#",
+      "G",
+      "O",
+      "A",
+      "L",
+      "I",
+      "E"
+    ],
+    [
+      "B",
+      "A",
+      "R",
+      "K",
+      "#",
+      "D",
+      "E",
+      "K",
+      "E",
+      "#",
+      "O",
+      "B",
+      "S",
+      "E",
+      "S",
+      "S"
+    ]
+  ],
+  "kind": ["http://ipuz.org/crossword#1"],
+  "author": "Alex Boisvert",
+  "puzzle": [
+    [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      "#",
+      7,
+      8,
+      9,
+      10,
+      "#",
+      11,
+      12,
+      13,
+      14
+    ],
+    [
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      16,
+      0,
+      0,
+      0,
+      "#",
+      17,
+      0,
+      0,
+      0
+    ],
+    [
+      18,
+      0,
+      0,
+      0,
+      0,
+      0,
+      19,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      20,
+      0,
+      0,
+      0
+    ],
+    [
+      21,
+      0,
+      0,
+      0,
+      "#",
+      "#",
+      22,
+      0,
+      0,
+      0,
+      "#",
+      23,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      24,
+      0,
+      0,
+      "#",
+      25,
+      26,
+      0,
+      0,
+      "#",
+      "#",
+      27,
+      0,
+      0,
+      "#",
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      28,
+      0,
+      0,
+      0,
+      0,
+      29,
+      30,
+      0,
+      0,
+      0,
+      31,
+      32,
+      33
+    ],
+    [
+      34,
+      35,
+      36,
+      0,
+      0,
+      0,
+      "#",
+      37,
+      0,
+      0,
+      0,
+      "#",
+      38,
+      0,
+      0,
+      0
+    ],
+    [
+      39,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      40,
+      0,
+      0,
+      0,
+      "#",
+      41,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      42,
+      0,
+      0,
+      0,
+      "#",
+      43,
+      0,
+      0,
+      0,
+      "#",
+      44,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      45,
+      0,
+      0,
+      0,
+      46,
+      0,
+      0,
+      0,
+      0,
+      47,
+      0,
+      0,
+      0,
+      "#",
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      48,
+      0,
+      0,
+      "#",
+      "#",
+      49,
+      0,
+      0,
+      0,
+      "#",
+      50,
+      51,
+      52
+    ],
+    [
+      53,
+      54,
+      55,
+      0,
+      0,
+      "#",
+      56,
+      57,
+      0,
+      0,
+      "#",
+      "#",
+      58,
+      0,
+      0,
+      0
+    ],
+    [
+      59,
+      0,
+      0,
+      0,
+      "#",
+      60,
+      0,
+      0,
+      0,
+      0,
+      61,
+      62,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      63,
+      0,
+      0,
+      0,
+      "#",
+      64,
+      0,
+      0,
+      0,
+      "#",
+      65,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      66,
+      0,
+      0,
+      0,
+      "#",
+      67,
+      0,
+      0,
+      0,
+      "#",
+      68,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "origin": "CrossFire encoder v1",
+  "block": "#",
+  "title": "Think Piece",
+  "version": "http://ipuz.org/v2",
+  "empty": "0",
+  "dimensions": {
+    "width": 16,
+    "height": 15
+  },
+  "clues": {
+    "Down": [
+      [
+        1,
+        "Advise against"
+      ],
+      [
+        2,
+        "Unpleasant smells"
+      ],
+      [
+        3,
+        "Coopers, e.g."
+      ],
+      [
+        4,
+        "\"Gotcha\""
+      ],
+      [
+        5,
+        "Neither fish ___ fowl"
+      ],
+      [
+        6,
+        "Plastic ___ Band"
+      ],
+      [
+        7,
+        "Concern for an editor"
+      ],
+      [
+        8,
+        "Slaughter with a \"mad dash\" in baseball lore"
+      ],
+      [
+        9,
+        "If you misspell something on purpose, does it count as one of these? Sound off in the comments"
+      ],
+      [
+        10,
+        "Feller?"
+      ],
+      [
+        11,
+        "Mathematician who supposedly ran naked down the streets of Syracuse when he discovered the buoyancy principle"
+      ],
+      [
+        12,
+        "1,760 yards"
+      ],
+      [
+        13,
+        "Hoppy beers"
+      ],
+      [
+        14,
+        "Helen Mirren, for one"
+      ],
+      [
+        19,
+        "Noted hoagie seller in the Delaware Valley region"
+      ],
+      [
+        23,
+        "Grad students who help out professors"
+      ],
+      [
+        25,
+        "Pet food commpany owned by Mars. Inc."
+      ],
+      [
+        26,
+        "Surgery spots: Abbr."
+      ],
+      [
+        27,
+        "Magazine featuring \"Spy vs. Spy\""
+      ],
+      [
+        28,
+        "Notable alumna of Universidad Iberoamericana"
+      ],
+      [
+        29,
+        "\"Let me in\", to Ali Baba"
+      ],
+      [
+        30,
+        "Hair holder"
+      ],
+      [
+        31,
+        "\"Hey, what's the big ___?\""
+      ],
+      [
+        32,
+        "Smackers"
+      ],
+      [
+        33,
+        "Diminutive suffix"
+      ],
+      [
+        34,
+        "Slough off"
+      ],
+      [
+        35,
+        "Rumble down the runway"
+      ],
+      [
+        36,
+        "Airline whose hub is Ben Gurion Airport"
+      ],
+      [
+        40,
+        "Forbid"
+      ],
+      [
+        41,
+        "Angel City Brewing offerings"
+      ],
+      [
+        43,
+        "Not so great"
+      ],
+      [
+        44,
+        "Group from which you might get an email with the subject line \"5th Grade Class Picture\""
+      ],
+      [
+        46,
+        "Color akin to beige"
+      ],
+      [
+        47,
+        "Country in which you'd find the highest peak in the Middle East"
+      ],
+      [
+        50,
+        "Nation whose flag looks a whole lot like the Texas flag"
+      ],
+      [
+        51,
+        "Traditional Indian garments"
+      ],
+      [
+        52,
+        "Ashes, e.g."
+      ],
+      [
+        53,
+        "Swedish automaker that ceased operations in 2016"
+      ],
+      [
+        54,
+        "Et ___ (and so on)"
+      ],
+      [
+        55,
+        "\"Here's a recap\", online"
+      ],
+      [
+        56,
+        "Straightforward memorization technique"
+      ],
+      [
+        57,
+        "Run ___ (go wild)"
+      ],
+      [
+        58,
+        "Early April VIPs"
+      ],
+      [
+        60,
+        "Partner of DEG, on a calculator"
+      ],
+      [
+        61,
+        "One of Freud's agents of the psychic apparatus"
+      ],
+      [
+        62,
+        "Generic name for a Minecraft creature"
+      ]
+    ],
+    "Across": [
+      [
+        1,
+        "Bond's love interest in <i>Thunderball</i> and <i>Never Say Never Again</i>"
+      ],
+      [
+        7,
+        "Greek salad topper"
+      ],
+      [
+        11,
+        "In the thick of"
+      ],
+      [
+        15,
+        "New Jersey city in which you'd find Menlo Park Mall"
+      ],
+      [
+        16,
+        "Gemstone related to agate"
+      ],
+      [
+        17,
+        "Kelly of <i>Live with Regis and Kelly</i>"
+      ],
+      [
+        18,
+        "Cordage used to demonstrate the basis of serial music?"
+      ],
+      [
+        20,
+        "Epitome of happiness, for some reason"
+      ],
+      [
+        21,
+        "Pennsylvania city that placed third on <i>The Daily Beast</i>'s list of \"snowiest places in the United States\""
+      ],
+      [
+        22,
+        "Playground retort"
+      ],
+      [
+        23,
+        "\"If ___ walls could talk\""
+      ],
+      [
+        24,
+        "XML that powered Crossword Butler (RIP)"
+      ],
+      [
+        25,
+        "State in which John Wayne was born"
+      ],
+      [
+        27,
+        "___ Tai"
+      ],
+      [
+        28,
+        "Racetrack winner's facial expression?"
+      ],
+      [
+        34,
+        "Really irritates"
+      ],
+      [
+        37,
+        "Played a Halloween prank"
+      ],
+      [
+        38,
+        "Make changes to"
+      ],
+      [
+        39,
+        "\"Deck the ___\""
+      ],
+      [
+        40,
+        "Jessica of <i>Blade: Trinity</i>"
+      ],
+      [
+        41,
+        "Thoroughly proficient"
+      ],
+      [
+        42,
+        "Bane of a high schooler's existence"
+      ],
+      [
+        43,
+        "Singer/songwriter Aimee"
+      ],
+      [
+        44,
+        "\"I'm begging you!\""
+      ],
+      [
+        45,
+        "Places for eye exams?"
+      ],
+      [
+        48,
+        "\"You ___ to be there\""
+      ],
+      [
+        49,
+        "Taylor Swift tour that we could NOT get tickets to no matter how hard we tried"
+      ],
+      [
+        50,
+        "Winter hours, in Little Rock"
+      ],
+      [
+        53,
+        "\"___ is God\" (sign seen at Sabres games in the '90s, in honor of skater Miroslav)"
+      ],
+      [
+        56,
+        "Tabula ___"
+      ],
+      [
+        58,
+        "Burn lightly"
+      ],
+      [
+        59,
+        "<i>Austin &amp; ___</i> (Disney Channel show about a singer/songwriter duo)"
+      ],
+      [
+        60,
+        "Historical period I've been thinking about nonstop which explains both the huge gap between this puzzle and the last and also this puzzle's theme entries"
+      ],
+      [
+        63,
+        "___ de camp"
+      ],
+      [
+        64,
+        "\"Up and ___!\" (Radioactive Man's catchphrase)"
+      ],
+      [
+        65,
+        "Martin Brodeur, for one"
+      ],
+      [
+        66,
+        "Warning from a Weimaraner"
+      ],
+      [
+        67,
+        "Fake-out, in hockey lingo"
+      ],
+      [
+        68,
+        "Preoccupy way too much"
+      ]
+    ]
+  }
+}

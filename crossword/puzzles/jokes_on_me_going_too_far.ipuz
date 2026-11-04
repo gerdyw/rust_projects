@@ -1,0 +1,3281 @@
+{
+    "version": "http://ipuz.org/v1",
+    "kind": [
+        "http://ipuz.org/crossword#1"
+    ],
+    "author": "Alex Boisvert",
+    "title": "Joke's On Me",
+    "copyright": "\u00a9 2023 Crossword Nexus. CC BY 4.0 License.",
+    "notes": "Several of the answers in this crossword are too long and won\u2019t fit in the spaces provided. Each of these answers will either begin or end in the gray square immediately before or after it. When the puzzle is done, all the gray squares will have been used exactly once. The letters in them (reading left to right, line by line) will spell out a quip from Somerset Maugham that may as well have been about this puzzle type.",
+    "dimensions": {
+        "width": 15,
+        "height": 15
+    },
+    "block": "#",
+    "empty": "_",
+    "puzzle": [
+        [
+            {
+                "cell": 1,
+                "style": {}
+            },
+            {
+                "cell": 2,
+                "style": {}
+            },
+            {
+                "cell": 3,
+                "style": {}
+            },
+            {
+                "cell": 4,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 5,
+                "style": {}
+            },
+            {
+                "cell": 6,
+                "style": {}
+            },
+            {
+                "cell": 7,
+                "style": {}
+            },
+            {
+                "cell": 8,
+                "style": {}
+            },
+            {
+                "cell": 9,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 10,
+                "style": {}
+            },
+            {
+                "cell": 11,
+                "style": {}
+            },
+            {
+                "cell": 12,
+                "style": {}
+            },
+            {
+                "cell": 13,
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 14,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 15,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 16,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 17,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 18,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 19,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 20,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 21,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 22,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 23,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 24,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 25,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            }
+        ],
+        [
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 26,
+                "style": {}
+            },
+            {
+                "cell": 27,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 28,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": 29,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 30,
+                "style": {}
+            },
+            {
+                "cell": 31,
+                "style": {}
+            },
+            {
+                "cell": 32,
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 33,
+                "style": {}
+            },
+            {
+                "cell": 34,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": 35,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 36,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 37,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 38,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": 39,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 40,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": 41,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 42,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 43,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": 44,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 45,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 46,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 47,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": 48,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 49,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            }
+        ],
+        [
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 50,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 51,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": 52,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 53,
+                "style": {}
+            },
+            {
+                "cell": 54,
+                "style": {}
+            },
+            {
+                "cell": 55,
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 56,
+                "style": {}
+            },
+            {
+                "cell": 57,
+                "style": {}
+            },
+            {
+                "cell": 58,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 59,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 60,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 61,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 62,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 63,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 64,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 65,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 66,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ],
+        [
+            {
+                "cell": 67,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 68,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {
+                    "color": "999999"
+                }
+            },
+            {
+                "cell": 69,
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            },
+            {
+                "cell": "_",
+                "style": {}
+            }
+        ]
+    ],
+    "solution": [
+        [
+            "D",
+            "O",
+            "M",
+            "E",
+            "Q",
+            "U",
+            "A",
+            "S",
+            "A",
+            "R",
+            "U",
+            "S",
+            "T",
+            "E",
+            "D"
+        ],
+        [
+            "I",
+            "N",
+            "O",
+            "N",
+            "O",
+            "N",
+            "F",
+            "I",
+            "L",
+            "E",
+            "T",
+            "A",
+            "I",
+            "G",
+            "A"
+        ],
+        [
+            "L",
+            "I",
+            "N",
+            "D",
+            "A",
+            "A",
+            "L",
+            "M",
+            "O",
+            "S",
+            "T",
+            "G",
+            "L",
+            "O",
+            "M"
+        ],
+        [
+            "A",
+            "C",
+            "T",
+            "S",
+            "I",
+            "G",
+            "A",
+            "L",
+            "E",
+            "O",
+            "B",
+            "E",
+            "T",
+            "T",
+            "E"
+        ],
+        [
+            "T",
+            "E",
+            "E",
+            "N",
+            "M",
+            "I",
+            "M",
+            "I",
+            "I",
+            "P",
+            "A",
+            "T",
+            "S",
+            "A",
+            "S"
+        ],
+        [
+            "E",
+            "R",
+            "C",
+            "A",
+            "P",
+            "V",
+            "E",
+            "S",
+            "S",
+            "E",
+            "L",
+            "I",
+            "S",
+            "I",
+            "S"
+        ],
+        [
+            "S",
+            "H",
+            "A",
+            "R",
+            "E",
+            "D",
+            "C",
+            "H",
+            "I",
+            "N",
+            "E",
+            "T",
+            "E",
+            "R",
+            "I"
+        ],
+        [
+            "C",
+            "O",
+            "R",
+            "N",
+            "I",
+            "E",
+            "R",
+            "A",
+            "T",
+            "T",
+            "A",
+            "I",
+            "N",
+            "E",
+            "D"
+        ],
+        [
+            "A",
+            "D",
+            "L",
+            "I",
+            "B",
+            "G",
+            "A",
+            "S",
+            "L",
+            "O",
+            "W",
+            "T",
+            "I",
+            "D",
+            "E"
+        ],
+        [
+            "N",
+            "E",
+            "O",
+            "E",
+            "M",
+            "A",
+            "N",
+            "T",
+            "I",
+            "S",
+            "G",
+            "O",
+            "O",
+            "U",
+            "B"
+        ],
+        [
+            "S",
+            "T",
+            "I",
+            "P",
+            "A",
+            "S",
+            "T",
+            "O",
+            "N",
+            "C",
+            "E",
+            "U",
+            "R",
+            "N",
+            "S"
+        ],
+        [
+            "F",
+            "I",
+            "R",
+            "E",
+            "D",
+            "T",
+            "L",
+            "O",
+            "V",
+            "E",
+            "E",
+            "S",
+            "I",
+            "L",
+            "O"
+        ],
+        [
+            "E",
+            "R",
+            "A",
+            "S",
+            "F",
+            "O",
+            "I",
+            "L",
+            "E",
+            "D",
+            "O",
+            "U",
+            "T",
+            "E",
+            "R"
+        ],
+        [
+            "T",
+            "E",
+            "N",
+            "O",
+            "R",
+            "O",
+            "P",
+            "I",
+            "N",
+            "E",
+            "W",
+            "R",
+            "I",
+            "S",
+            "T"
+        ],
+        [
+            "A",
+            "S",
+            "K",
+            "S",
+            "I",
+            "N",
+            "S",
+            "E",
+            "T",
+            "S",
+            "T",
+            "E",
+            "S",
+            "S",
+            "A"
+        ]
+    ],
+    "clues": {
+        "Across": [
+            {
+                "clue": "Chrome ___ (rhymey nickname for a bald man)",
+                "number": "1",
+                "cells": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        2,
+                        1
+                    ],
+                    [
+                        3,
+                        1
+                    ],
+                    [
+                        4,
+                        1
+                    ]
+                ]
+            },
+            {
+                "clue": "[doesn't understand wikipedia article] REALLY BRIGHT SPACE THING",
+                "number": "5",
+                "cells": [
+                    [
+                        6,
+                        1
+                    ],
+                    [
+                        7,
+                        1
+                    ],
+                    [
+                        8,
+                        1
+                    ],
+                    [
+                        9,
+                        1
+                    ],
+                    [
+                        10,
+                        1
+                    ]
+                ]
+            },
+            {
+                "clue": "\"\u00bfC\u00f3mo est\u00e1 ___?\"",
+                "number": "10",
+                "cells": [
+                    [
+                        12,
+                        1
+                    ],
+                    [
+                        13,
+                        1
+                    ],
+                    [
+                        14,
+                        1
+                    ],
+                    [
+                        15,
+                        1
+                    ]
+                ]
+            },
+            {
+                "clue": "Privy to",
+                "number": "14",
+                "cells": [
+                    [
+                        1,
+                        2
+                    ],
+                    [
+                        2,
+                        2
+                    ],
+                    [
+                        3,
+                        2
+                    ],
+                    [
+                        4,
+                        2
+                    ]
+                ]
+            },
+            {
+                "clue": "In a document somewhere at the police station",
+                "number": "15",
+                "cells": [
+                    [
+                        6,
+                        2
+                    ],
+                    [
+                        7,
+                        2
+                    ],
+                    [
+                        8,
+                        2
+                    ],
+                    [
+                        9,
+                        2
+                    ],
+                    [
+                        10,
+                        2
+                    ]
+                ]
+            },
+            {
+                "clue": "Like much of northern Canada",
+                "number": "16",
+                "cells": [
+                    [
+                        12,
+                        2
+                    ],
+                    [
+                        13,
+                        2
+                    ],
+                    [
+                        14,
+                        2
+                    ],
+                    [
+                        15,
+                        2
+                    ]
+                ]
+            },
+            {
+                "clue": "First name that is etymologically unrelated to the identical Spanish word meaning \"beautiful\"",
+                "number": "17",
+                "cells": [
+                    [
+                        1,
+                        3
+                    ],
+                    [
+                        2,
+                        3
+                    ],
+                    [
+                        3,
+                        3
+                    ],
+                    [
+                        4,
+                        3
+                    ]
+                ]
+            },
+            {
+                "clue": "Nearly",
+                "number": "18",
+                "cells": [
+                    [
+                        6,
+                        3
+                    ],
+                    [
+                        7,
+                        3
+                    ],
+                    [
+                        8,
+                        3
+                    ],
+                    [
+                        9,
+                        3
+                    ],
+                    [
+                        10,
+                        3
+                    ]
+                ]
+            },
+            {
+                "clue": "___ onto (take possession of)",
+                "number": "19",
+                "cells": [
+                    [
+                        12,
+                        3
+                    ],
+                    [
+                        13,
+                        3
+                    ],
+                    [
+                        14,
+                        3
+                    ],
+                    [
+                        15,
+                        3
+                    ]
+                ]
+            },
+            {
+                "clue": "Bible book written by Luke (this clue is not a dupe)",
+                "number": "20",
+                "cells": [
+                    [
+                        1,
+                        4
+                    ],
+                    [
+                        2,
+                        4
+                    ],
+                    [
+                        3,
+                        4
+                    ],
+                    [
+                        4,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "Stiff wind",
+                "number": "21",
+                "cells": [
+                    [
+                        6,
+                        4
+                    ],
+                    [
+                        7,
+                        4
+                    ],
+                    [
+                        8,
+                        4
+                    ],
+                    [
+                        9,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "Midler of <i>Hocus Pocus</i>",
+                "number": "22",
+                "cells": [
+                    [
+                        11,
+                        4
+                    ],
+                    [
+                        12,
+                        4
+                    ],
+                    [
+                        13,
+                        4
+                    ],
+                    [
+                        14,
+                        4
+                    ],
+                    [
+                        15,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "One dealing with college applications, maybe",
+                "number": "23",
+                "cells": [
+                    [
+                        1,
+                        5
+                    ],
+                    [
+                        2,
+                        5
+                    ],
+                    [
+                        3,
+                        5
+                    ]
+                ]
+            },
+            {
+                "clue": "Actress Rogers whose given first name is \"Miriam\"",
+                "number": "24",
+                "cells": [
+                    [
+                        5,
+                        5
+                    ],
+                    [
+                        6,
+                        5
+                    ],
+                    [
+                        7,
+                        5
+                    ],
+                    [
+                        8,
+                        5
+                    ]
+                ]
+            },
+            {
+                "clue": "Tap gently",
+                "number": "25",
+                "cells": [
+                    [
+                        10,
+                        5
+                    ],
+                    [
+                        11,
+                        5
+                    ],
+                    [
+                        12,
+                        5
+                    ]
+                ]
+            },
+            {
+                "clue": "Crown for a tooth",
+                "number": "26",
+                "cells": [
+                    [
+                        3,
+                        6
+                    ],
+                    [
+                        4,
+                        6
+                    ],
+                    [
+                        5,
+                        6
+                    ]
+                ]
+            },
+            {
+                "clue": "Noah's Ark, for one",
+                "number": "28",
+                "cells": [
+                    [
+                        7,
+                        6
+                    ],
+                    [
+                        8,
+                        6
+                    ],
+                    [
+                        9,
+                        6
+                    ],
+                    [
+                        10,
+                        6
+                    ],
+                    [
+                        11,
+                        6
+                    ]
+                ]
+            },
+            {
+                "clue": "Egyptian goddess prominent in magical texts",
+                "number": "30",
+                "cells": [
+                    [
+                        13,
+                        6
+                    ],
+                    [
+                        14,
+                        6
+                    ],
+                    [
+                        15,
+                        6
+                    ]
+                ]
+            },
+            {
+                "clue": "In common",
+                "number": "33",
+                "cells": [
+                    [
+                        1,
+                        7
+                    ],
+                    [
+                        2,
+                        7
+                    ],
+                    [
+                        3,
+                        7
+                    ],
+                    [
+                        4,
+                        7
+                    ],
+                    [
+                        5,
+                        7
+                    ],
+                    [
+                        6,
+                        7
+                    ]
+                ]
+            },
+            {
+                "clue": "Kate ___ Park (<i>New Yorker</i> assistant crossword editor)",
+                "number": "36",
+                "cells": [
+                    [
+                        8,
+                        7
+                    ],
+                    [
+                        9,
+                        7
+                    ],
+                    [
+                        10,
+                        7
+                    ]
+                ]
+            },
+            {
+                "clue": "Hatcher of <i>Lois &amp; Clark</i>",
+                "number": "37",
+                "cells": [
+                    [
+                        12,
+                        7
+                    ],
+                    [
+                        13,
+                        7
+                    ],
+                    [
+                        14,
+                        7
+                    ],
+                    [
+                        15,
+                        7
+                    ]
+                ]
+            },
+            {
+                "clue": "More groan-worthy",
+                "number": "38",
+                "cells": [
+                    [
+                        1,
+                        8
+                    ],
+                    [
+                        2,
+                        8
+                    ],
+                    [
+                        3,
+                        8
+                    ],
+                    [
+                        4,
+                        8
+                    ],
+                    [
+                        5,
+                        8
+                    ],
+                    [
+                        6,
+                        8
+                    ],
+                    [
+                        7,
+                        8
+                    ]
+                ]
+            },
+            {
+                "clue": "Managed to reach",
+                "number": "40",
+                "cells": [
+                    [
+                        9,
+                        8
+                    ],
+                    [
+                        10,
+                        8
+                    ],
+                    [
+                        11,
+                        8
+                    ],
+                    [
+                        12,
+                        8
+                    ],
+                    [
+                        13,
+                        8
+                    ],
+                    [
+                        14,
+                        8
+                    ],
+                    [
+                        15,
+                        8
+                    ]
+                ]
+            },
+            {
+                "clue": "Make something up",
+                "number": "42",
+                "cells": [
+                    [
+                        1,
+                        9
+                    ],
+                    [
+                        2,
+                        9
+                    ],
+                    [
+                        3,
+                        9
+                    ],
+                    [
+                        4,
+                        9
+                    ]
+                ]
+            },
+            {
+                "clue": "Ford fuel",
+                "number": "43",
+                "cells": [
+                    [
+                        6,
+                        9
+                    ],
+                    [
+                        7,
+                        9
+                    ],
+                    [
+                        8,
+                        9
+                    ]
+                ]
+            },
+            {
+                "clue": "Good time to go clamming",
+                "number": "45",
+                "cells": [
+                    [
+                        10,
+                        9
+                    ],
+                    [
+                        11,
+                        9
+                    ],
+                    [
+                        12,
+                        9
+                    ],
+                    [
+                        13,
+                        9
+                    ],
+                    [
+                        14,
+                        9
+                    ],
+                    [
+                        15,
+                        9
+                    ]
+                ]
+            },
+            {
+                "clue": "Keanu's role, in <i>The Matrix</i>",
+                "number": "46",
+                "cells": [
+                    [
+                        1,
+                        10
+                    ],
+                    [
+                        2,
+                        10
+                    ],
+                    [
+                        3,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "\"Praying\" insect",
+                "number": "47",
+                "cells": [
+                    [
+                        5,
+                        10
+                    ],
+                    [
+                        6,
+                        10
+                    ],
+                    [
+                        7,
+                        10
+                    ],
+                    [
+                        8,
+                        10
+                    ],
+                    [
+                        9,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "Icky sticky stuff",
+                "number": "49",
+                "cells": [
+                    [
+                        11,
+                        10
+                    ],
+                    [
+                        12,
+                        10
+                    ],
+                    [
+                        13,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "Hoppy drinks",
+                "number": "50",
+                "cells": [
+                    [
+                        4,
+                        11
+                    ],
+                    [
+                        5,
+                        11
+                    ],
+                    [
+                        6,
+                        11
+                    ]
+                ]
+            },
+            {
+                "clue": "Eleven, in Espa\u00f1a",
+                "number": "51",
+                "cells": [
+                    [
+                        8,
+                        11
+                    ],
+                    [
+                        9,
+                        11
+                    ],
+                    [
+                        10,
+                        11
+                    ],
+                    [
+                        11,
+                        11
+                    ]
+                ]
+            },
+            {
+                "clue": "Decorative vases",
+                "number": "53",
+                "cells": [
+                    [
+                        13,
+                        11
+                    ],
+                    [
+                        14,
+                        11
+                    ],
+                    [
+                        15,
+                        11
+                    ]
+                ]
+            },
+            {
+                "clue": "Let go",
+                "number": "56",
+                "cells": [
+                    [
+                        1,
+                        12
+                    ],
+                    [
+                        2,
+                        12
+                    ],
+                    [
+                        3,
+                        12
+                    ],
+                    [
+                        4,
+                        12
+                    ],
+                    [
+                        5,
+                        12
+                    ]
+                ]
+            },
+            {
+                "clue": "Absolutely adore",
+                "number": "59",
+                "cells": [
+                    [
+                        7,
+                        12
+                    ],
+                    [
+                        8,
+                        12
+                    ],
+                    [
+                        9,
+                        12
+                    ],
+                    [
+                        10,
+                        12
+                    ]
+                ]
+            },
+            {
+                "clue": "\"That sounded like a ___ tipping over\" (Lisa Simpson line that lives in my head rent-free)",
+                "number": "60",
+                "cells": [
+                    [
+                        12,
+                        12
+                    ],
+                    [
+                        13,
+                        12
+                    ],
+                    [
+                        14,
+                        12
+                    ],
+                    [
+                        15,
+                        12
+                    ]
+                ]
+            },
+            {
+                "clue": "Look, you'll have to come back in a few years if you want this clued as [Time periods] or whatever, but I have to clue this as the Taylor Swift tour at the moment",
+                "number": "61",
+                "cells": [
+                    [
+                        1,
+                        13
+                    ],
+                    [
+                        2,
+                        13
+                    ],
+                    [
+                        3,
+                        13
+                    ],
+                    [
+                        4,
+                        13
+                    ]
+                ]
+            },
+            {
+                "clue": "Ruined, as plans",
+                "number": "62",
+                "cells": [
+                    [
+                        6,
+                        13
+                    ],
+                    [
+                        7,
+                        13
+                    ],
+                    [
+                        8,
+                        13
+                    ],
+                    [
+                        9,
+                        13
+                    ],
+                    [
+                        10,
+                        13
+                    ]
+                ]
+            },
+            {
+                "clue": "External",
+                "number": "63",
+                "cells": [
+                    [
+                        12,
+                        13
+                    ],
+                    [
+                        13,
+                        13
+                    ],
+                    [
+                        14,
+                        13
+                    ],
+                    [
+                        15,
+                        13
+                    ]
+                ]
+            },
+            {
+                "clue": "Pavarotti, Domingo, or Carreras, e.g.",
+                "number": "64",
+                "cells": [
+                    [
+                        1,
+                        14
+                    ],
+                    [
+                        2,
+                        14
+                    ],
+                    [
+                        3,
+                        14
+                    ],
+                    [
+                        4,
+                        14
+                    ]
+                ]
+            },
+            {
+                "clue": "Give your point of view",
+                "number": "65",
+                "cells": [
+                    [
+                        6,
+                        14
+                    ],
+                    [
+                        7,
+                        14
+                    ],
+                    [
+                        8,
+                        14
+                    ],
+                    [
+                        9,
+                        14
+                    ],
+                    [
+                        10,
+                        14
+                    ]
+                ]
+            },
+            {
+                "clue": "\"Flicked\" body part",
+                "number": "66",
+                "cells": [
+                    [
+                        12,
+                        14
+                    ],
+                    [
+                        13,
+                        14
+                    ],
+                    [
+                        14,
+                        14
+                    ],
+                    [
+                        15,
+                        14
+                    ]
+                ]
+            },
+            {
+                "clue": "Pops the question",
+                "number": "67",
+                "cells": [
+                    [
+                        1,
+                        15
+                    ],
+                    [
+                        2,
+                        15
+                    ],
+                    [
+                        3,
+                        15
+                    ],
+                    [
+                        4,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Little maps inside bigger maps",
+                "number": "68",
+                "cells": [
+                    [
+                        6,
+                        15
+                    ],
+                    [
+                        7,
+                        15
+                    ],
+                    [
+                        8,
+                        15
+                    ],
+                    [
+                        9,
+                        15
+                    ],
+                    [
+                        10,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Actress Thompson of <i>Thor: Love and Thunder</i>",
+                "number": "69",
+                "cells": [
+                    [
+                        12,
+                        15
+                    ],
+                    [
+                        13,
+                        15
+                    ],
+                    [
+                        14,
+                        15
+                    ],
+                    [
+                        15,
+                        15
+                    ]
+                ]
+            }
+        ],
+        "Down": [
+            {
+                "clue": "Embiggen",
+                "number": "1",
+                "cells": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        1,
+                        2
+                    ],
+                    [
+                        1,
+                        3
+                    ],
+                    [
+                        1,
+                        4
+                    ],
+                    [
+                        1,
+                        5
+                    ]
+                ]
+            },
+            {
+                "clue": "In reserve",
+                "number": "2",
+                "cells": [
+                    [
+                        2,
+                        1
+                    ],
+                    [
+                        2,
+                        2
+                    ],
+                    [
+                        2,
+                        3
+                    ],
+                    [
+                        2,
+                        4
+                    ],
+                    [
+                        2,
+                        5
+                    ]
+                ]
+            },
+            {
+                "clue": "Place associated with extravagant displays of wealth",
+                "number": "3",
+                "cells": [
+                    [
+                        3,
+                        1
+                    ],
+                    [
+                        3,
+                        2
+                    ],
+                    [
+                        3,
+                        3
+                    ],
+                    [
+                        3,
+                        4
+                    ],
+                    [
+                        3,
+                        5
+                    ],
+                    [
+                        3,
+                        6
+                    ],
+                    [
+                        3,
+                        7
+                    ],
+                    [
+                        3,
+                        8
+                    ],
+                    [
+                        3,
+                        9
+                    ],
+                    [
+                        3,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "Puts a stop to",
+                "number": "4",
+                "cells": [
+                    [
+                        4,
+                        1
+                    ],
+                    [
+                        4,
+                        2
+                    ],
+                    [
+                        4,
+                        3
+                    ],
+                    [
+                        4,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "Eel, on a sushi menu",
+                "number": "5",
+                "cells": [
+                    [
+                        6,
+                        1
+                    ],
+                    [
+                        6,
+                        2
+                    ],
+                    [
+                        6,
+                        3
+                    ],
+                    [
+                        6,
+                        4
+                    ],
+                    [
+                        6,
+                        5
+                    ]
+                ]
+            },
+            {
+                "clue": "Burning",
+                "number": "6",
+                "cells": [
+                    [
+                        7,
+                        1
+                    ],
+                    [
+                        7,
+                        2
+                    ],
+                    [
+                        7,
+                        3
+                    ],
+                    [
+                        7,
+                        4
+                    ],
+                    [
+                        7,
+                        5
+                    ],
+                    [
+                        7,
+                        6
+                    ]
+                ]
+            },
+            {
+                "clue": "Made-up language for a series of video games",
+                "number": "7",
+                "cells": [
+                    [
+                        8,
+                        1
+                    ],
+                    [
+                        8,
+                        2
+                    ],
+                    [
+                        8,
+                        3
+                    ],
+                    [
+                        8,
+                        4
+                    ],
+                    [
+                        8,
+                        5
+                    ],
+                    [
+                        8,
+                        6
+                    ],
+                    [
+                        8,
+                        7
+                    ]
+                ]
+            },
+            {
+                "clue": "Burn soother",
+                "number": "8",
+                "cells": [
+                    [
+                        9,
+                        1
+                    ],
+                    [
+                        9,
+                        2
+                    ],
+                    [
+                        9,
+                        3
+                    ],
+                    [
+                        9,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "In medias ___",
+                "number": "9",
+                "cells": [
+                    [
+                        10,
+                        1
+                    ],
+                    [
+                        10,
+                        2
+                    ],
+                    [
+                        10,
+                        3
+                    ]
+                ]
+            },
+            {
+                "clue": "Comedian Bob who is not a Muay Thai champion from <i>Street Fighter II</i>",
+                "number": "10",
+                "cells": [
+                    [
+                        12,
+                        1
+                    ],
+                    [
+                        12,
+                        2
+                    ],
+                    [
+                        12,
+                        3
+                    ],
+                    [
+                        12,
+                        4
+                    ],
+                    [
+                        12,
+                        5
+                    ]
+                ]
+            },
+            {
+                "clue": "Leans a little bit",
+                "number": "11",
+                "cells": [
+                    [
+                        13,
+                        1
+                    ],
+                    [
+                        13,
+                        2
+                    ],
+                    [
+                        13,
+                        3
+                    ],
+                    [
+                        13,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "Entertainment award foursome",
+                "number": "12",
+                "cells": [
+                    [
+                        14,
+                        1
+                    ],
+                    [
+                        14,
+                        2
+                    ],
+                    [
+                        14,
+                        3
+                    ],
+                    [
+                        14,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "Maggie Smith and Helen Mirren, for two",
+                "number": "13",
+                "cells": [
+                    [
+                        15,
+                        1
+                    ],
+                    [
+                        15,
+                        2
+                    ],
+                    [
+                        15,
+                        3
+                    ],
+                    [
+                        15,
+                        4
+                    ]
+                ]
+            },
+            {
+                "clue": "Bundle of hay",
+                "number": "22",
+                "cells": [
+                    [
+                        11,
+                        4
+                    ],
+                    [
+                        11,
+                        5
+                    ],
+                    [
+                        11,
+                        6
+                    ]
+                ]
+            },
+            {
+                "clue": "Architect of the Louvre Pyramid",
+                "number": "24",
+                "cells": [
+                    [
+                        5,
+                        5
+                    ],
+                    [
+                        5,
+                        6
+                    ],
+                    [
+                        5,
+                        7
+                    ],
+                    [
+                        5,
+                        8
+                    ]
+                ]
+            },
+            {
+                "clue": "Considering",
+                "number": "25",
+                "cells": [
+                    [
+                        10,
+                        5
+                    ],
+                    [
+                        10,
+                        6
+                    ],
+                    [
+                        10,
+                        7
+                    ],
+                    [
+                        10,
+                        8
+                    ],
+                    [
+                        10,
+                        9
+                    ]
+                ]
+            },
+            {
+                "clue": "Palmer with a notable \"army\"",
+                "number": "27",
+                "cells": [
+                    [
+                        4,
+                        6
+                    ],
+                    [
+                        4,
+                        7
+                    ],
+                    [
+                        4,
+                        8
+                    ],
+                    [
+                        4,
+                        9
+                    ]
+                ]
+            },
+            {
+                "clue": "\"Are you sure about that?\"",
+                "number": "29",
+                "cells": [
+                    [
+                        9,
+                        6
+                    ],
+                    [
+                        9,
+                        7
+                    ],
+                    [
+                        9,
+                        8
+                    ]
+                ]
+            },
+            {
+                "clue": "Affliction affecting 17- and 18-year-olds",
+                "number": "30",
+                "cells": [
+                    [
+                        13,
+                        6
+                    ],
+                    [
+                        13,
+                        7
+                    ],
+                    [
+                        13,
+                        8
+                    ],
+                    [
+                        13,
+                        9
+                    ],
+                    [
+                        13,
+                        10
+                    ],
+                    [
+                        13,
+                        11
+                    ],
+                    [
+                        13,
+                        12
+                    ],
+                    [
+                        13,
+                        13
+                    ],
+                    [
+                        13,
+                        14
+                    ],
+                    [
+                        13,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Showed on TV",
+                "number": "31",
+                "cells": [
+                    [
+                        14,
+                        6
+                    ],
+                    [
+                        14,
+                        7
+                    ],
+                    [
+                        14,
+                        8
+                    ],
+                    [
+                        14,
+                        9
+                    ]
+                ]
+            },
+            {
+                "clue": "Secondary recording",
+                "number": "32",
+                "cells": [
+                    [
+                        15,
+                        6
+                    ],
+                    [
+                        15,
+                        7
+                    ],
+                    [
+                        15,
+                        8
+                    ],
+                    [
+                        15,
+                        9
+                    ]
+                ]
+            },
+            {
+                "clue": "Processes, as a bar code",
+                "number": "33",
+                "cells": [
+                    [
+                        1,
+                        7
+                    ],
+                    [
+                        1,
+                        8
+                    ],
+                    [
+                        1,
+                        9
+                    ],
+                    [
+                        1,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "___ Island (state that hosts the Newport Jazz Festival)",
+                "number": "34",
+                "cells": [
+                    [
+                        2,
+                        7
+                    ],
+                    [
+                        2,
+                        8
+                    ],
+                    [
+                        2,
+                        9
+                    ],
+                    [
+                        2,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "<i>Fin d'Arabesque</i> painter",
+                "number": "35",
+                "cells": [
+                    [
+                        6,
+                        7
+                    ],
+                    [
+                        6,
+                        8
+                    ],
+                    [
+                        6,
+                        9
+                    ],
+                    [
+                        6,
+                        10
+                    ],
+                    [
+                        6,
+                        11
+                    ]
+                ]
+            },
+            {
+                "clue": "Bandleader Puente",
+                "number": "37",
+                "cells": [
+                    [
+                        12,
+                        7
+                    ],
+                    [
+                        12,
+                        8
+                    ],
+                    [
+                        12,
+                        9
+                    ],
+                    [
+                        12,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "Go on angrily about how water isn't actually wet, say",
+                "number": "39",
+                "cells": [
+                    [
+                        7,
+                        8
+                    ],
+                    [
+                        7,
+                        9
+                    ],
+                    [
+                        7,
+                        10
+                    ]
+                ]
+            },
+            {
+                "clue": "[Blushing]",
+                "number": "41",
+                "cells": [
+                    [
+                        11,
+                        8
+                    ],
+                    [
+                        11,
+                        9
+                    ],
+                    [
+                        11,
+                        10
+                    ],
+                    [
+                        11,
+                        11
+                    ]
+                ]
+            },
+            {
+                "clue": "Rat",
+                "number": "44",
+                "cells": [
+                    [
+                        8,
+                        9
+                    ],
+                    [
+                        8,
+                        10
+                    ],
+                    [
+                        8,
+                        11
+                    ],
+                    [
+                        8,
+                        12
+                    ],
+                    [
+                        8,
+                        13
+                    ],
+                    [
+                        8,
+                        14
+                    ],
+                    [
+                        8,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Magazine with \"fold-ins\"",
+                "number": "47",
+                "cells": [
+                    [
+                        5,
+                        10
+                    ],
+                    [
+                        5,
+                        11
+                    ],
+                    [
+                        5,
+                        12
+                    ]
+                ]
+            },
+            {
+                "clue": "Make up",
+                "number": "48",
+                "cells": [
+                    [
+                        9,
+                        10
+                    ],
+                    [
+                        9,
+                        11
+                    ],
+                    [
+                        9,
+                        12
+                    ],
+                    [
+                        9,
+                        13
+                    ],
+                    [
+                        9,
+                        14
+                    ],
+                    [
+                        9,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Mexican dough",
+                "number": "50",
+                "cells": [
+                    [
+                        4,
+                        11
+                    ],
+                    [
+                        4,
+                        12
+                    ],
+                    [
+                        4,
+                        13
+                    ],
+                    [
+                        4,
+                        14
+                    ],
+                    [
+                        4,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Formally surrenders",
+                "number": "52",
+                "cells": [
+                    [
+                        10,
+                        11
+                    ],
+                    [
+                        10,
+                        12
+                    ],
+                    [
+                        10,
+                        13
+                    ],
+                    [
+                        10,
+                        14
+                    ],
+                    [
+                        10,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "\"But what if ...\"",
+                "number": "54",
+                "cells": [
+                    [
+                        14,
+                        11
+                    ],
+                    [
+                        14,
+                        12
+                    ],
+                    [
+                        14,
+                        13
+                    ],
+                    [
+                        14,
+                        14
+                    ],
+                    [
+                        14,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Kinda",
+                "number": "55",
+                "cells": [
+                    [
+                        15,
+                        11
+                    ],
+                    [
+                        15,
+                        12
+                    ],
+                    [
+                        15,
+                        13
+                    ],
+                    [
+                        15,
+                        14
+                    ],
+                    [
+                        15,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Common Greek salad topper",
+                "number": "56",
+                "cells": [
+                    [
+                        1,
+                        12
+                    ],
+                    [
+                        1,
+                        13
+                    ],
+                    [
+                        1,
+                        14
+                    ],
+                    [
+                        1,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Starts to wear out",
+                "number": "57",
+                "cells": [
+                    [
+                        2,
+                        12
+                    ],
+                    [
+                        2,
+                        13
+                    ],
+                    [
+                        2,
+                        14
+                    ],
+                    [
+                        2,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Put in order",
+                "number": "58",
+                "cells": [
+                    [
+                        3,
+                        12
+                    ],
+                    [
+                        3,
+                        13
+                    ],
+                    [
+                        3,
+                        14
+                    ],
+                    [
+                        3,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "Smackers",
+                "number": "59",
+                "cells": [
+                    [
+                        7,
+                        12
+                    ],
+                    [
+                        7,
+                        13
+                    ],
+                    [
+                        7,
+                        14
+                    ],
+                    [
+                        7,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "\"Okay, why not\"",
+                "number": "60",
+                "cells": [
+                    [
+                        12,
+                        12
+                    ],
+                    [
+                        12,
+                        13
+                    ],
+                    [
+                        12,
+                        14
+                    ],
+                    [
+                        12,
+                        15
+                    ]
+                ]
+            },
+            {
+                "clue": "<i>Tiny ___ Adventures</i>",
+                "number": "62",
+                "cells": [
+                    [
+                        6,
+                        13
+                    ],
+                    [
+                        6,
+                        14
+                    ],
+                    [
+                        6,
+                        15
+                    ]
+                ]
+            }
+        ]
+    }
+}

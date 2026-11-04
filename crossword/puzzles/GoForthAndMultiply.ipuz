@@ -1,0 +1,794 @@
+{
+    "version": "http://ipuz.org/v1",
+    "kind": [
+        "http://ipuz.org/crossword#1"
+    ],
+    "title": "Go Forth And Multiply",
+    "copyright": "© 2024 Crossword Nexus. CC BY 4.0 License.",
+    "author": "Alex Boisvert",
+    "notes": "",
+    "dimensions": {
+        "height": 14,
+        "width": 10
+    },
+    "block": "#",
+    "empty": 0,
+    "puzzle": [
+        [
+            {
+                "cell": 1
+            },
+            {
+                "cell": 2
+            },
+            {
+                "cell": 3
+            },
+            "#",
+            {
+                "cell": 4
+            },
+            {
+                "cell": 5
+            },
+            {
+                "cell": 6
+            },
+            {
+                "cell": 7
+            },
+            {
+                "cell": 8
+            },
+            {
+                "cell": 9
+            }
+        ],
+        [
+            {
+                "cell": 10
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 11
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 12
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 13
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 14
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 15
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            {
+                "cell": 16
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 17
+            },
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            {
+                "cell": 18
+            },
+            {
+                "cell": 19
+            },
+            {
+                "cell": 20
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 21
+            },
+            {
+                "cell": 22
+            },
+            {
+                "cell": 23
+            }
+        ],
+        [
+            {
+                "cell": 24
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            "#",
+            "#",
+            {
+                "cell": 25
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 26
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 27
+            },
+            "#",
+            "#",
+            "#",
+            {
+                "cell": 28
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 29
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 30
+            },
+            {
+                "cell": 31
+            },
+            {
+                "cell": 32
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            {
+                "cell": 33
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            {
+                "cell": 34
+            },
+            {
+                "cell": 35
+            },
+            {
+                "cell": 36
+            },
+            "#",
+            {
+                "cell": 37
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 38
+            },
+            {
+                "cell": 39
+            },
+            {
+                "cell": 40
+            }
+        ],
+        [
+            {
+                "cell": 41
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 42
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 43
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 44
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ],
+        [
+            {
+                "cell": 45
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            },
+            "#",
+            {
+                "cell": 46
+            },
+            {
+                "cell": 0
+            },
+            {
+                "cell": 0
+            }
+        ]
+    ],
+    "solution": [
+        [
+            "R",
+            "O",
+            "W",
+            "#",
+            "S",
+            "T",
+            "E",
+            "E",
+            "L",
+            "E"
+        ],
+        [
+            "A",
+            "H",
+            "A",
+            "#",
+            "E",
+            "Y",
+            "E",
+            "G",
+            "E",
+            "L"
+        ],
+        [
+            "F",
+            "I",
+            "R",
+            "S",
+            "T",
+            "C",
+            "L",
+            "A",
+            "S",
+            "S"
+        ],
+        [
+            "T",
+            "O",
+            "M",
+            "A",
+            "T",
+            "O",
+            "#",
+            "N",
+            "S",
+            "A"
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            "D",
+            "E",
+            "B",
+            "T",
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            "O",
+            "U",
+            "T",
+            "E",
+            "R",
+            "B",
+            "A",
+            "N",
+            "K",
+            "S"
+        ],
+        [
+            "M",
+            "P",
+            "H",
+            "#",
+            "#",
+            "#",
+            "D",
+            "A",
+            "R",
+            "K"
+        ],
+        [
+            "N",
+            "O",
+            "I",
+            "R",
+            "#",
+            "#",
+            "#",
+            "P",
+            "O",
+            "E"
+        ],
+        [
+            "I",
+            "N",
+            "N",
+            "E",
+            "R",
+            "P",
+            "E",
+            "A",
+            "C",
+            "E"
+        ],
+        [
+            "#",
+            "#",
+            "#",
+            "M",
+            "O",
+            "O",
+            "D",
+            "#",
+            "#",
+            "#"
+        ],
+        [
+            "S",
+            "R",
+            "I",
+            "#",
+            "O",
+            "N",
+            "E",
+            "D",
+            "A",
+            "Y"
+        ],
+        [
+            "L",
+            "A",
+            "S",
+            "T",
+            "M",
+            "I",
+            "N",
+            "U",
+            "T",
+            "E"
+        ],
+        [
+            "A",
+            "M",
+            "E",
+            "L",
+            "I",
+            "E",
+            "#",
+            "C",
+            "O",
+            "T"
+        ],
+        [
+            "P",
+            "I",
+            "E",
+            "C",
+            "E",
+            "S",
+            "#",
+            "T",
+            "M",
+            "I"
+        ]
+    ],
+    "clues": {
+        "Across": [
+            [
+                1,
+                "Column's counterpart, in linear algebra"
+            ],
+            [
+                4,
+                "Brosnan role"
+            ],
+            [
+                10,
+                "\"The Living Daylights\" band"
+            ],
+            [
+                11,
+                "Hydrating facial solution"
+            ],
+            [
+                12,
+                "Coach alternative"
+            ],
+            [
+                14,
+                "🎵You like ___, and I like ___🎵"
+            ],
+            [
+                15,
+                "\"No Such Agency\""
+            ],
+            [
+                16,
+                "Red ink"
+            ],
+            [
+                18,
+                "Netflix drama set in North Carolina"
+            ],
+            [
+                24,
+                "Dashboard abbreviation"
+            ],
+            [
+                25,
+                "Lacking light"
+            ],
+            [
+                26,
+                "Genre of <i>The Big Sleep</i> and <i>The Big Heat</i>"
+            ],
+            [
+                28,
+                "Ghost-like enemy in <i>The Legend of Zelda</i> franchise named for an author"
+            ],
+            [
+                29,
+                "Zen-like state"
+            ],
+            [
+                33,
+                "\"___ Indigo\" (Ellington standard)"
+            ],
+            [
+                34,
+                "___ Lanka"
+            ],
+            [
+                37,
+                "Eventually"
+            ],
+            [
+                41,
+                "Eleventh-hour"
+            ],
+            [
+                43,
+                "2001 Audrey Tautou film"
+            ],
+            [
+                44,
+                "Not-as-bad-as-the-ground sleeping solution"
+            ],
+            [
+                45,
+                "Reese's ___"
+            ],
+            [
+                46,
+                "\"I definitely didn't need to know that\""
+            ]
+        ],
+        "Down": [
+            [
+                1,
+                "Basic water transport"
+            ],
+            [
+                2,
+                "State whose license plate has a word cloud with words like \"Erie\" and \"Steel\" and \"Rock &amp; Roll\""
+            ],
+            [
+                3,
+                "Comfortable, temperature-wise"
+            ],
+            [
+                4,
+                "A \"sporting dog of sweet temper and show-stopping good looks\", per the AKC"
+            ],
+            [
+                5,
+                "Centerfielder who stole home plate 54 times"
+            ],
+            [
+                6,
+                "Slippery swimmer"
+            ],
+            [
+                7,
+                "Richard of \"A Summer Place\""
+            ],
+            [
+                8,
+                "Minus"
+            ],
+            [
+                9,
+                "Disney character voiced by Idina Menzel"
+            ],
+            [
+                13,
+                "Marquis de ___"
+            ],
+            [
+                17,
+                "Bit"
+            ],
+            [
+                18,
+                "Prefix meaning \"all\""
+            ],
+            [
+                19,
+                "\"Once ___ a time ...\""
+            ],
+            [
+                20,
+                "___ mints"
+            ],
+            [
+                21,
+                "California wine region"
+            ],
+            [
+                22,
+                "Ray who founded McDonald's"
+            ],
+            [
+                23,
+                "___-Ball"
+            ],
+            [
+                27,
+                "\"What's the Frequency, Kenneth?\" band"
+            ],
+            [
+                30,
+                "One sharing the rent"
+            ],
+            [
+                31,
+                "Li'l gallopers"
+            ],
+            [
+                32,
+                "Genesis setting"
+            ],
+            [
+                34,
+                "\"Starbucks Unveils $7 Wake-Up ___\" - The Onion"
+            ],
+            [
+                35,
+                "Actor Malek of \"No Time to Die\""
+            ],
+            [
+                36,
+                "\"Gotcha\""
+            ],
+            [
+                38,
+                "Word with \"air\" or \"tear\""
+            ],
+            [
+                39,
+                "⚛️"
+            ],
+            [
+                40,
+                "Possible name for Utah's future hockey team 🤞"
+            ],
+            [
+                42,
+                "\"Waterfalls\" trio"
+            ]
+        ]
+    }
+}

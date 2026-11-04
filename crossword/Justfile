@@ -1,0 +1,12 @@
+tail-debug:
+    just truncate-debug
+    tail -f logs/debug.log
+
+truncate-debug:
+    truncate -s 0 logs/debug.log
+
+tail-commands:
+    tail -f logs/commands.log
+
+truncate-commands:
+    truncate -s 0 logs/commands.log

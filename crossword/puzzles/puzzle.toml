@@ -1,0 +1,25 @@
+size = 5
+
+grid = """
+.HERO
+GAVIN
+ITALY
+FEDEX
+TREY.
+"""
+
+across = [
+    "Main character",
+    "Men's name",
+    "Boot-shaped country",
+    "Shipping company",
+    "Card game",
+]
+
+down = [
+    "One who dislikes intensely",
+    "Escape or avoid",
+    "Common surname or first name",
+    "Black gemstone",
+    "Present",
+]
