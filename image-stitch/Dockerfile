@@ -5,29 +5,31 @@ FROM messense/rust-musl-cross:aarch64-musl AS builder
 
 WORKDIR /app
 
-# Copy dependency manifests
-COPY Cargo.toml Cargo.lock* ./
+# Copy manifests and shared crate needed to resolve path dependencies.
+COPY image-stitch/Cargo.toml image-stitch/Cargo.lock* image-stitch/
+COPY crates/db_init/Cargo.toml crates/db_init/
+COPY crates/db_init/src crates/db_init/src
 
 # Create a dummy main.rs to cache dependencies
-RUN mkdir -p src && \
-    echo "fn main() {}" > src/main.rs && \
-    echo "pub fn dummy() {}" > src/lib.rs
+RUN mkdir -p image-stitch/src && \
+    echo "fn main() {}" > image-stitch/src/main.rs && \
+    echo "pub fn dummy() {}" > image-stitch/src/lib.rs
 
 # Build dependencies (this layer will be cached)
-RUN cargo build --release --target aarch64-unknown-linux-musl
+RUN cargo build --release --target aarch64-unknown-linux-musl --manifest-path image-stitch/Cargo.toml
 
 # Remove dummy files
-RUN rm -rf src
+RUN rm -rf image-stitch/src
 
 # Copy actual source code
-COPY src ./src
-COPY migrations ./migrations
-COPY .sqlx ./.sqlx
+COPY image-stitch/src image-stitch/src
+COPY image-stitch/migrations image-stitch/migrations
+COPY image-stitch/.sqlx image-stitch/.sqlx
 
 # Build the actual application
 ENV SQLX_OFFLINE=true
-RUN touch src/lib.rs src/main.rs && \
-    cargo build --release --target aarch64-unknown-linux-musl
+RUN touch image-stitch/src/lib.rs image-stitch/src/main.rs && \
+    cargo build --release --target aarch64-unknown-linux-musl --manifest-path image-stitch/Cargo.toml
 
 # Stage 2: Create minimal runtime image
 FROM alpine:3.19
@@ -38,10 +40,10 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates tzdata
 
 # Copy the compiled binary from builder
-COPY --from=builder /app/target/aarch64-unknown-linux-musl/release/image-stitch /usr/local/bin/image-stitch
+COPY --from=builder /app/image-stitch/target/aarch64-unknown-linux-musl/release/image-stitch /usr/local/bin/image-stitch
 
 # Copy migrations directory
-COPY --from=builder /app/migrations /app/migrations
+COPY --from=builder /app/image-stitch/migrations /app/migrations
 
 # Create non-root user
 RUN addgroup -g 1000 appuser && \

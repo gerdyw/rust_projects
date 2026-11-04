@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE image_processing_jobs\n            SET status = 'failed', error_message = $1\n            WHERE id = $2\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "ed9cb6844b25cd5a2e4cdd50e2f4a8cc81ef03cebd9a846fe2fa840b68909841"
+}

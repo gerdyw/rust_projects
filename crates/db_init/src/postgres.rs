@@ -172,7 +172,9 @@ pub async fn init_pool(config: &DbConfig) -> Result<PgPool, DbInitError> {
         .after_connect(move |conn, _meta| {
             let schema_identifier = schema_identifier.clone();
             Box::pin(async move {
-                let set_schema_sql = format!("set search_path = {}", schema_identifier);
+                // Keep service schema first while retaining access to extension
+                // functions commonly installed in public (e.g. uuid-ossp/pgcrypto).
+                let set_schema_sql = format!("set search_path = {}, public", schema_identifier);
                 sqlx::query(&set_schema_sql).execute(conn).await?;
                 Ok(())
             })

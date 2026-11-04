@@ -1,0 +1,71 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                UPDATE image_processing_jobs\n                SET status = 'submission_complete'\n                WHERE id = $1\n                RETURNING id,\n                    created_at,\n                    updated_at,\n                    status as \"status: JobStatus\",\n                    image_count,\n                    submitted_count,\n                    error_message ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "created_at",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 2,
+        "name": "updated_at",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 3,
+        "name": "status: JobStatus",
+        "type_info": {
+          "Custom": {
+            "name": "job_status",
+            "kind": {
+              "Enum": [
+                "created",
+                "submission_complete",
+                "processing",
+                "completed",
+                "failed"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "image_count",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "submitted_count",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 6,
+        "name": "error_message",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "58120d77dca57924631e1f28d05b5dcb584b72a83efacc14823197d84abdb423"
+}

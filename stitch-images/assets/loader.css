@@ -1,0 +1,111 @@
+.loader {
+  width: 48px;
+  height: 48px;
+}
+
+.loader-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.loader:before,
+.loader:after {
+  content: "";
+  display: block;
+  height: 24px;
+  background: #39ff14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.8), 0 0 2px #39ff14;
+  animation: mvx 0.3s infinite ease-in alternate;
+}
+
+.loader:before {
+  animation-name: mvrx;
+}
+
+.loader-text {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: #39ff14;
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.8), 0 0 2px #39ff14;
+  animation: pulse-text 0.9s infinite ease-in-out;
+}
+
+.loader-text::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(57, 255, 20, 0) 0%,
+    rgba(57, 255, 20, 0.28) 46%,
+    rgba(57, 255, 20, 0.6) 50%,
+    rgba(57, 255, 20, 0.28) 54%,
+    rgba(57, 255, 20, 0) 100%
+  );
+  mix-blend-mode: screen;
+  transform: translateX(-120%);
+  animation: scan-flicker 2.2s infinite cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.loading-dots::before {
+  content: "";
+  display: inline-block;
+  width: 3ch;
+  text-align: left;
+  animation: dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes mvx {
+  100% { transform: translateY(50%); }
+}
+
+@keyframes mvrx {
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes dots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+  100% { content: ""; }
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 0.8;
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.8), 0 0 2px #39ff14;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 16px rgba(57, 255, 20, 0.95), 0 0 3px #39ff14;
+  }
+}
+
+@keyframes scan-flicker {
+  0%, 35% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  39% {
+    opacity: 0.45;
+  }
+  46% {
+    transform: translateX(120%);
+    opacity: 0.2;
+  }
+  52%, 100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+    

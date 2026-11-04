@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                UPDATE image_processing_jobs\n                SET status = 'completed'\n                WHERE id = $1\n                AND submitted_count = image_count\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "49336a8c5ac2f7a2c2323f377863921babfe4c0e97c8ff8c09c12424cda73bf6"
+}

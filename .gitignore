@@ -2,7 +2,6 @@
 **/*.db
 **/.DS_STORE
 **/*.DS_Store
-**/*.env
 lc3/PennSim.jar
 lc3/asm/*.obj
 lc3/asm/*.sym
