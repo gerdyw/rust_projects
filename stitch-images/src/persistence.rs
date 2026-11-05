@@ -37,7 +37,7 @@ impl ImageManager {
     pub async fn retrieve_temp_images_for_job(
         &self,
         job_id: Uuid,
-        submitted_count: u32
+        submitted_count: u32,
     ) -> Result<Vec<DynamicImage>, ImageError> {
         let image_futures = (0..submitted_count)
             .into_iter()
@@ -51,11 +51,23 @@ impl ImageManager {
         image.save(path)
     }
 
-    pub fn remove_job_images(&self, job_id: Uuid, image_count: u32) -> io::Result<()> {
-        self.temp_image_paths(job_id, image_count).iter().map(|path| fs::remove_file(path)).collect()
+    pub fn stitched_image_path(&self, job_id: Uuid) -> PathBuf {
+        let filename = format!("{job_id}.jpeg");
+        PathBuf::from(&self.0.dest_images_dir).join(filename)
     }
 
-    async fn retrieve_temp_image(&self, job_id: Uuid, idx: u32) -> Result<DynamicImage, ImageError> {
+    pub fn remove_job_images(&self, job_id: Uuid, image_count: u32) -> io::Result<()> {
+        self.temp_image_paths(job_id, image_count)
+            .iter()
+            .map(|path| fs::remove_file(path))
+            .collect()
+    }
+
+    async fn retrieve_temp_image(
+        &self,
+        job_id: Uuid,
+        idx: u32,
+    ) -> Result<DynamicImage, ImageError> {
         let path = self.temp_image_path(job_id, idx);
         let image = ImageReader::open(&path)?.with_guessed_format()?.decode()?;
         Ok(apply_exif_orientation_from_path(&path, image))
@@ -66,13 +78,11 @@ impl ImageManager {
         PathBuf::from(&self.0.temp_images_dir).join(filename)
     }
 
-    fn stitched_image_path(&self, job_id: Uuid) -> PathBuf {
-        let filename = format!("{job_id}.jpeg");
-        PathBuf::from(&self.0.dest_images_dir).join(filename)
-    }
-
     fn temp_image_paths(&self, job_id: Uuid, image_count: u32) -> Vec<PathBuf> {
-        (0..image_count).into_iter().map(|idx| self.temp_image_path(job_id, idx)).collect()
+        (0..image_count)
+            .into_iter()
+            .map(|idx| self.temp_image_path(job_id, idx))
+            .collect()
     }
 }
 

@@ -1,6 +1,13 @@
 use rocket::{Route, State, get, response::Redirect, routes};
 
-use crate::{api::models::JobId, db::{models::ProcessingJob, repo::JobRepo}, view::{models::{HxRedirectResponse, JobPollResult, JobResult}, page::{ErrorPage, LoadingPage}}};
+use crate::{
+    api::models::JobId,
+    db::{models::ProcessingJob, repo::JobRepo},
+    view::{
+        models::{HxRedirectResponse, JobPollResult, JobResult},
+        page::{ErrorPage, LoadingPage},
+    },
+};
 
 #[get("/<job_id>")]
 pub async fn get_job_page(repo: &State<JobRepo>, job_id: JobId) -> JobResult {
@@ -9,7 +16,7 @@ pub async fn get_job_page(repo: &State<JobRepo>, job_id: JobId) -> JobResult {
     let job = match repo.get_job(job_id).await {
         Ok(job) => job,
         Err(sqlx::Error::RowNotFound) => {
-            return JobResult::NotFound(ErrorPage("Job not found".to_string()).render())
+            return JobResult::NotFound(ErrorPage("Job not found".to_string()).render());
         }
         Err(err) => {
             match err.as_database_error() {
@@ -17,8 +24,8 @@ pub async fn get_job_page(repo: &State<JobRepo>, job_id: JobId) -> JobResult {
                 None => eprintln!("unknown error"),
             };
             return JobResult::InternalError(
-                ErrorPage("An unexpected error has occurred".to_string()).render()
-            )
+                ErrorPage("An unexpected error has occurred".to_string()).render(),
+            );
         }
     };
 
