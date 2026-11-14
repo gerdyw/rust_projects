@@ -65,9 +65,43 @@ public class SwimlaneService(KanbanDbContext db)
         return swimlane;
     }
 
-    public async Task<bool> DeleteSwimlaneAsync(Guid publicId, CancellationToken ct)
+    public async Task<DeleteSwimlaneOutcome> DeleteSwimlaneAsync(Guid publicId, CancellationToken ct)
     {
-        var rows = await db.Swimlanes.Where(s => s.PublicId == publicId).ExecuteDeleteAsync(ct);
-        return rows == 1;
+        var lane = await db.Swimlanes
+            .Where(s => s.PublicId == publicId)
+            .Select(s => new { s.Id, HasTasks = s.TaskItems.Any() })
+            .FirstOrDefaultAsync(ct);
+
+        if (lane is null) return DeleteSwimlaneOutcome.NotFound;
+        if (lane.HasTasks) return DeleteSwimlaneOutcome.NotEmpty;
+
+        await db.Swimlanes.Where(s => s.Id == lane.Id).ExecuteDeleteAsync(ct);
+        return DeleteSwimlaneOutcome.Deleted;
     }
+
+    public async Task<bool> ReorderSwimlanesAsync(Guid boardPublicId, IReadOnlyList<Guid> orderedIds, CancellationToken ct)
+    {
+        var lanes = await db.Swimlanes
+            .Where(s => s.Board.PublicId == boardPublicId)
+            .ToDictionaryAsync(s => s.PublicId, ct);
+
+        var isComplete = orderedIds.Count == lanes.Count
+            && orderedIds.Distinct().Count() == orderedIds.Count
+            && orderedIds.All(lanes.ContainsKey);
+
+        if (!isComplete) return false;
+
+        for (var i = 0; i < orderedIds.Count; i++)
+            lanes[orderedIds[i]].Position = i;
+
+        await db.SaveChangesAsync(ct);
+        return true;
+    }
+}
+
+public enum DeleteSwimlaneOutcome
+{
+    Deleted,
+    NotFound,
+    NotEmpty
 }

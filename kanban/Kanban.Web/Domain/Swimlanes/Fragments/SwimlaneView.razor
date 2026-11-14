@@ -3,11 +3,23 @@
 @using Kanban.Web.Domain.TaskItems.Fragments
 @using Kanban.Web.Entities
 
-<section id="swimlane-@Swimlane.PublicId" class="lane" aria-labelledby="@Swimlane.PublicId-title"
+<section id="swimlane-@Swimlane.PublicId" class="lane swimlane" data-lane="@Swimlane.PublicId"
+         aria-labelledby="@Swimlane.PublicId-title"
          hx-swap-oob="@(SwapOob ? "true" : null)">
     <header>
         <h2 id="@Swimlane.PublicId-title">@Swimlane.Name</h2>
-        <SwimlaneTaskCount SwimlaneId="@Swimlane.PublicId" TaskItemCount="@Swimlane.TaskItems.Count" />
+        <div class="lane-actions">
+            <SwimlaneTaskCount SwimlaneId="@Swimlane.PublicId" TaskItemCount="@Swimlane.TaskItems.Count" />
+            <button type="button" class="lane-delete"
+                    hx-delete="@DeleteUrl"
+                    hx-target="closest .lane"
+                    hx-swap="delete"
+                    hx-disabled-elt="this"
+                    hx-confirm="Delete this column?"
+                    disabled="@HasTasks"
+                    title="@(HasTasks ? "Move or delete the tasks in this column first" : "Delete this column")"
+                    aria-label="Delete @Swimlane.Name">×</button>
+        </div>
     </header>
     <MovableComponentsForm Class="lane-tasks" ParentId="@Swimlane.PublicId" HxPost="@TaskItemViewEndpoints.MoveTasks"
                            HxSwap="none">
@@ -21,4 +33,7 @@
     public required Swimlane Swimlane { get; init; }
     [Parameter]
     public bool SwapOob { get; init; } = false;
+
+    private bool HasTasks => Swimlane.TaskItems.Count > 0;
+    private string DeleteUrl => $"{SwimlaneViewEndpoints.Root}/{Swimlane.PublicId}";
 }

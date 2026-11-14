@@ -32,6 +32,42 @@
                 });
             }
 
+            function initLaneSortable(lanes) {
+                if (lanes.laneSortableInstance) return;
+
+                lanes.laneSortableInstance = new Sortable(lanes, {
+                    animation: 150,
+                    ghostClass: "sortable-ghost",
+                    draggable: ".swimlane",
+                    handle: "header",
+                    filter: "button",
+                    preventOnFilter: false,
+                    onEnd: function () {
+                        this.option("disabled", true);
+
+                        var board = lanes.closest("[data-board]");
+                        if (!board || !lanes.dataset.moveUrl) return;
+
+                        var body = {
+                            boardId: board.dataset.board,
+                            laneIds: Array.from(lanes.querySelectorAll("[data-lane]")).map(function (el) {
+                                return el.dataset.lane;
+                            })
+                        };
+
+                        fetch(lanes.dataset.moveUrl, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(body)
+                        }).finally(function () {
+                            if (lanes.laneSortableInstance) {
+                                lanes.laneSortableInstance.option("disabled", false);
+                            }
+                        });
+                    }
+                });
+            }
+
             htmx.onLoad(function (content) {
                 if (!content || !content.querySelectorAll) return;
 
@@ -42,6 +78,12 @@
                 }
 
                 content.querySelectorAll(".sortable").forEach(initSortable);
+
+                if (content.nodeType === 1 && content.matches(".lanes")) {
+                    initLaneSortable(content);
+                }
+
+                content.querySelectorAll(".lanes").forEach(initLaneSortable);
             });
 
             // Re-enable after any request: on success the ul is replaced (and a fresh

@@ -1,10 +1,13 @@
 @using Kanban.Web.Common.Components
+@using Kanban.Web.Domain.Swimlanes
 @using Kanban.Web.Domain.Swimlanes.Fragments
 @using Kanban.Web.Entities
 
 <section id="board-@Board.PublicId" aria-labelledby="board-@Board.Id-title">
     <h1 id="board-@Board.PublicId-title">@Board.Name</h1>
-    <div class="lanes" id="board-@Board.PublicId-lanes">
+    <div class="lanes" id="board-@Board.PublicId-lanes"
+         data-board="@Board.PublicId"
+         data-move-url="@SwimlaneViewEndpoints.MoveLanes">
         @foreach (var lane in Board.Swimlanes)
         {
             <SwimlaneView Swimlane="lane" />

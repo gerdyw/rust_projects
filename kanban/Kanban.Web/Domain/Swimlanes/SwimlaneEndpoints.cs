@@ -56,11 +56,14 @@ public static class SwimlaneEndpoints
             : TypedResults.NotFound();
     }
 
-    private static async Task<Results<NoContent, NotFound>> DeleteSwimlane(
+    private static async Task<Results<NoContent, NotFound, Conflict>> DeleteSwimlane(
         Guid id, SwimlaneService service, CancellationToken ct)
     {
-        var result = await service.DeleteSwimlaneAsync(id, ct);
-        return result ? TypedResults.NoContent() : TypedResults.NotFound();
+        var outcome = await service.DeleteSwimlaneAsync(id, ct);
+
+        if (outcome == DeleteSwimlaneOutcome.Deleted) return TypedResults.NoContent();
+        if (outcome == DeleteSwimlaneOutcome.NotEmpty) return TypedResults.Conflict();
+        return TypedResults.NotFound();
     }
 
     private static GetSwimlaneResponse ToResponse(Swimlane swimlane) => new()
